@@ -1,21 +1,40 @@
 # myKit
 
+[![pypi version](https://img.shields.io/pypi/v/mykit?logo=pypi)](https://pypi.org/project/mykit/)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://choosealicense.com/licenses/mit/)
+
+Python utility toolkit.
 
 
 ## Installation
 
+```sh
+pip install mykit
+```
 
 
 ## Usage
 
+```python
+from mykit.kit.text import byteFmt
+from mykit.app.arrow import Arrow
+from mykit.app.slider import Slider
+
+
+x = byteFmt(3141592653589793)
+print(x)  # 2.79 PiB
+```
 
 
 ## FAQ
 
+- 
 
 
 ## Changelog
 
+- 1.0.0 (June 12, 2023):
+    - `kit/quick_visual/plot2d.py`: changed argument name: `graph2d_cfg` -> `cfg`
 - 0.1.3 (June 12, 2023):
     - removed `get_gray` from `mykit/mykit/kit/color.py`
     - transform `mykit/mykit/kit/gui/button/` -> `mykit/mykit/app/button.py`
