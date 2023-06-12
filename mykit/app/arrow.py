@@ -2,21 +2,18 @@ import math as _math
 import random as _random
 import tkinter as _tk
 
-from carbon.math import (
+from mykit.kit.math import (
     get_angle as _get_angle,
-    rotate_coordinate as _rotate_coordinate
+    rotate as _rotate
 )
 
 
-class _Shape:
+class Arrow:
 
     page: _tk.Canvas = None
     @staticmethod
     def set_page(page: _tk.Canvas, /) -> None:
-        _Shape.page = page
-
-
-class Arrow(_Shape):
+        Arrow.page = page
 
     arrows: dict[str, 'Arrow'] = {}
     arrow_tags: dict[str, list['Arrow']] = {}
@@ -79,10 +76,10 @@ class Arrow(_Shape):
 
     def _redraw(self):
 
-        _Shape.page.delete(f'Arrow_{self.id}')
+        Arrow.page.delete(f'Arrow_{self.id}')
 
         if self.visible:
-            _Shape.page.create_line(
+            Arrow.page.create_line(
                 self.from_x, self.from_y,
                 self.to_x, self.to_y,
                 fill=self.color, width=self.width_rod, tags=f'Arrow_{self.id}'
@@ -97,15 +94,15 @@ class Arrow(_Shape):
             
             ## Remember `tip_left` and `tip_right` with y-positive towards the top,
             ## as they transformed under normal Cartesian coordinates.
-            tip_left = _rotate_coordinate(-tipx, -tipy, 0, 0, angle)
-            tip_right = _rotate_coordinate(tipx, -tipy, 0, 0, angle)
+            tip_left = _rotate(-tipx, -tipy, 0, 0, angle)
+            tip_right = _rotate(tipx, -tipy, 0, 0, angle)
 
             ## Revert to the tkinter coordinate scheme, where y-positive is oriented downwards.
             tip_left = (self.to_x+tip_left[0], self.to_y-tip_left[1])
             tip_right = (self.to_x+tip_right[0], self.to_y-tip_right[1])
 
             tip_points = [tip_left, (self.to_x, self.to_y), tip_right]
-            _Shape.page.create_line(tip_points, fill=self.color, width=self.width_tip, tags=f'Arrow_{self.id}')
+            Arrow.page.create_line(tip_points, fill=self.color, width=self.width_tip, tags=f'Arrow_{self.id}')
             ## </creating the tip>
 
 
