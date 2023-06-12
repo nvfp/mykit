@@ -4,15 +4,6 @@ import typing as _typing
 
 
 class Button:
-    """
-    The next version of `carbon.gui.button.Button`.
-
-    ## What's new
-    - Arguments reordering, default value changes
-    - Added colors (button color, border color, label color) parameters
-    - Added height (button's height) parameters
-    - Param `id` and `label` are now optional
-    """
 
     page: _tk.Canvas = None
     @staticmethod
@@ -24,17 +15,14 @@ class Button:
 
     def __init__(
         self,
-        x: int,
-        y: int,
-        fn: _typing.Callable[[], None],
-        
+        x: int = 0,
+        y: int = 0,
+        fn: _typing.Callable[[], None] | None = None,
         label: str = '',
-
+        label_font: str | tuple[str, int] = 'Verdana 8',
         anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'] = 'nw',
-
         width: int = 100,
         height: int = 18,
-        
         locked: bool = False,
         visible: bool = True,
 
@@ -52,27 +40,24 @@ class Button:
     ) -> None:
         """
         ## Params
-        - `x` and `y` is the position of the `anchor`
+        - `x` and `y` is the position of the `anchor` (not the center of the button)
         - `color_btn_normal`: button's color
         - `color_bd_normal`: button's border color
         - `color_lbl_normal`: button's label color
         """
 
+        ## make sure the page has already been set
+        if Button.page is None:
+            raise AssertionError('It seems you forgot to do `Button.set_page(page)`.')
+
         self.x = x
         self.y = y
         self.fn = fn
-
-        ## below isn't necessary because will be checked at `self._anchoring()`  (delete below code soon)
-        # if anchor.lower() not in ['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']:
-        #     raise ValueError(f'Invalid anchor value: {repr(anchor)}')
-        # self.anchor = anchor.lower()
-        self.anchor = anchor
-
         self.label = label
-        
+        self.label_font = label_font
+        self.anchor = anchor
         self.width = width
         self.height = height
-
         self.locked = locked
         self.visible = visible
 
@@ -87,9 +72,9 @@ class Button:
 
         ## self.id ensures that we can modify a specific instance without affecting the others
         if id is None:
-            self.id = str(_random.randint(-10000, 10000))
+            self.id = str(_random.randint(0, 100_000))
             while self.id in Button.buttons:
-                self.id = str(_random.randint(-10000, 10000))
+                self.id = str(_random.randint(0, 100_000))
         else:
             self.id = id
             if self.id in Button.buttons:
@@ -111,52 +96,17 @@ class Button:
         ## </tags>
 
 
-        ## preprocess
-        self._anchoring()
-
-
         ## runtime
+
         self.default_label = label
         self.pressed = False
         self.hovered = False
 
 
         ## init
+
         self._redraw()
 
-    def _anchoring(self):
-        
-        self.anchor = self.anchor.lower()
-        
-        if self.anchor == 'center':
-            self.ctr_x = self.x
-            self.ctr_y = self.y
-        elif self.anchor == 'n':
-            self.ctr_x = self.x
-            self.ctr_y = self.y + self.height/2
-        elif self.anchor == 'ne':
-            self.ctr_x = self.x - self.width/2
-            self.ctr_y = self.y + self.height/2
-        elif self.anchor == 'e':
-            self.ctr_x = self.x - self.width/2
-            self.ctr_y = self.y
-        elif self.anchor == 'se':
-            self.ctr_x = self.x - self.width/2
-            self.ctr_y = self.y - self.height/2
-        elif self.anchor == 's':
-            self.ctr_x = self.x
-            self.ctr_y = self.y - self.height/2
-        elif self.anchor == 'sw':
-            self.ctr_x = self.x + self.width/2
-            self.ctr_y = self.y - self.height/2
-        elif self.anchor == 'w':
-            self.ctr_x = self.x + self.width/2
-            self.ctr_y = self.y
-        elif self.anchor == 'nw':
-            self.ctr_x = self.x + self.width/2
-            self.ctr_y = self.y + self.height/2
-        else:
-            raise ValueError(f'Unexpected anchor value: {repr(self.anchor)}')
 
     def _redraw(self):
 
@@ -181,82 +131,86 @@ class Button:
 
         if self.visible:
 
+            ## This overhead will be executed each time this function is called.
+            ## It may be inefficient, but it makes the code cleaner.
+            X, Y = self.get_anchor_loc('center')  # the center of the button
+
             Button.page.create_rectangle(
-                self.ctr_x - self.width/2, self.ctr_y - self.height/2,
-                self.ctr_x + self.width/2, self.ctr_y + self.height/2,
+                X - self.width/2, Y - self.height/2,
+                X + self.width/2, Y + self.height/2,
                 fill=color_btn, width=1, outline=color_bd,
                 tags=f'Button_{self.id}'
             )
             Button.page.create_text(
-                self.ctr_x, self.ctr_y,
-                text=self.label, font='Arial 9',
+                X, Y,
+                text=self.label, font=self.label_font,
                 fill=color_lbl,
                 tags=f'Button_{self.id}'
             )
 
-    def hover(self):
-        
-        mousex = Button.page.winfo_pointerx()
-        mousey = Button.page.winfo_pointery()
 
-        if (
-            (self.ctr_x-self.width/2 <= mousex <= self.ctr_x+self.width/2)
-            and
-            (self.ctr_y-self.height/2 <= mousey <= self.ctr_y+self.height/2)
-            and
-            (not self.locked)
-            and
-            (self.visible)
-            and
-            (not self.hovered)
-        ):
+    def _hover(self):
+
+        w2 = self.width/2
+        h2 = self.height/2
+        
+        x = Button.page.winfo_pointerx()
+        y = Button.page.winfo_pointery()
+
+        X, Y = self.get_anchor_loc('center')
+
+        ## `True` if the mouse cursor is inside the button
+        inside = (X-w2 <= x <= X+w2) and (Y-h2 <= y <= Y+h2)
+
+        if inside and (not self.locked) and self.visible and (not self.hovered):
             self.hovered = True
-            self._redraw()
-        elif (
-            (self.hovered)
-            and
-            (not ((self.ctr_x-self.width/2 <= mousex <= self.ctr_x+self.width/2) and (self.ctr_y-self.height/2 <= mousey <= self.ctr_y+self.height/2)))
-        ):
+            self._redraw()  # just redraw once here
+
+        elif self.hovered and (not inside):
             self.hovered = False
-            self._redraw()
+            self._redraw()  # just redraw once here
 
-    def press(self):
-        
-        mousex = Button.page.winfo_pointerx()
-        mousey = Button.page.winfo_pointery()
-
-        if (
-            (self.ctr_x-self.width/2 <= mousex <= self.ctr_x+self.width/2)
-            and
-            (self.ctr_y-self.height/2 <= mousey <= self.ctr_y+self.height/2)
-            and
-            (not self.locked)
-            and
-            (self.visible)
-        ):
-            self.pressed = True
-            self._redraw()
-
-    def release(self):
-        if self.pressed:
-            self.pressed = False
-            self._redraw()
-            self.fn()
+        ## reminder: don't put it right here because it will redraw regardless of the hovered state
+        # self._redraw()
 
     @staticmethod
     def hover_listener():
         for button in Button.buttons.values():
-            button.hover()
+            button._hover()
+
+
+    def press(self):
+        
+        x = Button.page.winfo_pointerx()
+        y = Button.page.winfo_pointery()
+
+        X, Y = self.get_anchor_loc('center')
+        w2 = self.width/2
+        h2 = self.height/2
+        inside = (X-w2 <= x <= X+w2) and (Y-h2 <= y <= Y+h2)
+
+        if inside and (not self.locked) and self.visible:
+            self.pressed = True
+            self._redraw()
 
     @staticmethod
     def press_listener():
         for button in Button.buttons.values():
             button.press()
 
+
+    def release(self):
+        if self.pressed:
+            self.pressed = False
+            self._redraw()            
+            if self.fn is not None:
+                self.fn()
+
     @staticmethod
     def release_listener():
         for button in list(Button.buttons.values()):
             button.release()
+
 
     def set_lock(self, locked: bool, /):
         if self.locked is not locked:
@@ -270,6 +224,11 @@ class Button:
     @staticmethod
     def set_lock_by_tag(tag: str, locked: bool, /):
         for button in Button.button_tags[tag]:
+            button.set_lock(locked)
+
+    @staticmethod
+    def set_lock_all(locked: bool, /):
+        for button in Button.buttons.values():
             button.set_lock(locked)
 
 
@@ -294,7 +253,10 @@ class Button:
 
 
     def set_label(self, label: str | None, /):
-        """if `None` -> default label."""
+        """
+        If `label = None`, the default label (the one assigned
+        when the instance was created) will be used.
+        """
 
         if label is None:
             label = self.default_label
@@ -317,21 +279,130 @@ class Button:
         Button.buttons[id].set_fn(fn)
 
 
-    def move(self, x: int, y: int, /, anchor: str | None = None) -> None:
-        """move the button (using the default anchor if `anchor=None`)"""
-        
+    def get_anchor_loc(
+        self,
+        anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'],
+        /
+    ) -> tuple[int, int]:
+        """To get the button's center coordinate, use `anchor='center'`"""
+
+        W = self.width
+        H = self.height
+
+        ## get the coordinates for the center (X, Y)
+        if self.anchor == 'center':
+            X = self.x
+            Y = self.y
+        elif self.anchor == 'n':
+            X = self.x
+            Y = self.y + H/2
+        elif self.anchor == 'ne':
+            X = self.x - W/2
+            Y = self.y + H/2
+        elif self.anchor == 'e':
+            X = self.x - W/2
+            Y = self.y
+        elif self.anchor == 'se':
+            X = self.x - W/2
+            Y = self.y - H/2
+        elif self.anchor == 's':
+            X = self.x
+            Y = self.y - H/2
+        elif self.anchor == 'sw':
+            X = self.x + W/2
+            Y = self.y - H/2
+        elif self.anchor == 'w':
+            X = self.x + W/2
+            Y = self.y
+        elif self.anchor == 'nw':
+            X = self.x + W/2
+            Y = self.y + H/2
+
+        ## returning the requested anchor location
+        if anchor == 'center':
+            return (X, Y)
+        elif anchor == 'n':
+            return (X, Y-H/2)
+        elif anchor == 'ne':
+            return (X+W/2, Y-H/2)
+        elif anchor == 'e':
+            return (X+W/2, Y)
+        elif anchor == 'se':
+            return (X+W/2, Y+H/2)
+        elif anchor == 's':
+            return (X, Y+H/2)
+        elif anchor == 'sw':
+            return (X-W/2, Y+H/2)
+        elif anchor == 'w':
+            return (X-W/2, Y)
+        elif anchor == 'nw':
+            return (X-W/2, Y-H/2)
+        else:
+            raise ValueError(f'Invalid anchor value: {repr(anchor)}')
+
+    @staticmethod
+    def get_anchor_loc_by_id(
+        id: str,
+        anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'],
+        /
+    ) -> tuple[int, int]:
+        return Button.buttons[id].get_anchor_loc(anchor)
+
+
+    def move(
+        self,
+        x: int,
+        y: int,
+        /,
+        anchor: _typing.Optional[_typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
+    ) -> None:
+        """If `anchor = None`, the current anchor will be used."""
         self.x = x
         self.y = y
-        
         if anchor is not None:
             self.anchor = anchor
-
-        self._anchoring()
         self._redraw()
 
     @staticmethod
-    def move_by_id(id: str, x: int, y: int, /) -> None:
-        Button.buttons[id].move(x, y)
+    def move_by_id(
+        id: str,
+        x: int,
+        y: int,
+        /,
+        anchor: _typing.Optional[_typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
+    ) -> None:
+        Button.buttons[id].move(x, y, anchor)
+
+
+    def align(
+        self,
+        target: 'Button',
+        anchor: str = 'nw',
+        target_anchor: str = 'ne',
+        xgap: float = 15,
+        ygap: float = 0
+    ) -> 'Button':
+        """
+        Valid options for `anchor` and `target_anchor` are `['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']`.
+
+        NOTE: if you want to align with other widgets like `carbon.gui.label`
+              or `carbon.gui.slider`, make sure their version supports the
+              `get_anchor_loc` method
+        """
+
+        ## getting the target anchor location
+        x, y = target.get_anchor_loc(target_anchor)
+
+        ## shifting
+        x += xgap
+        y += ygap
+
+        ## moving the label
+        self.move(x, y, anchor)
+
+        ## return the instance so that this method can also be used when
+        ## creating the instance, like `btn_2 = Button().align(btn_1)`.
+        return self
 
 
     def destroy(self) -> None:
@@ -344,13 +415,13 @@ class Button:
                     Button.button_tags.pop(tag)
 
         Button.page.delete(f'Button_{self.id}')
+    
+    @staticmethod
+    def destroy_by_id(id: str, /) -> None:
+        Button.buttons[id].destroy()
 
     @staticmethod
     def destroy_by_tag(tag: str, /) -> None:
-
-        if tag not in Button.button_tags:
-            return
-
         for button in list(Button.button_tags[tag]):
             button.destroy()
 
@@ -358,15 +429,3 @@ class Button:
     def destroy_all() -> None:
         for button in list(Button.buttons.values()):
             button.destroy()
-    
-
-    def get_bounding_box(self) -> tuple[float, float, float, float]:
-        tl_x = self.ctr_x - self.width/2
-        tl_y = self.ctr_y - self.height/2
-        dr_x = self.ctr_x + self.width/2
-        dr_y = self.ctr_y + self.height/2
-        return [tl_x, tl_y, dr_x, dr_y]
-
-    @staticmethod
-    def get_bounding_box_by_id(id: str, /) -> tuple[float, float, float, float]:
-        return Button.buttons[id].get_bounding_box()
