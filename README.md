@@ -88,7 +88,7 @@ Mostly, basic functions (standalone, input-in-output-out) are the ones that unde
 ## Changelog
 
 - 0.1.0 (June 12, 2023):
-    - migrated all modules from `carbon` into `mykit/src/kit`
+    - migrated all modules from [carbon](https://github.com/nvfp/carbon) into `mykit/src/kit`
     - deleted `mykit/src/kit/math`
     - added `mykit/src/rec`
     - renamed `mykit/src/kit/time` to `mykit/src/kit/timelib`
