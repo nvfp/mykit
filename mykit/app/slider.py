@@ -2,23 +2,10 @@ import random as _random
 import tkinter as _tk
 import typing as _typing
 
-from carbon.utils import minmax_normalization as _norm
+from mykit.kit.utils import minmax_normalization as _norm
 
 
 class _Slider:
-    """
-    The next version of `carbon.gui.slider`
-
-    ---
-
-    ## New
-    - The page-focus mechanism is no longer used in order to reduce complexity
-    - Now the colors can be customized through arguments
-    - The slider dimension can be adjusted
-    - Params `id`, `x`, `y`, `min`, `max`, `step`, and `init` are now optional
-    - Added a `tolerance` parameter to determine how closely the cursor needs
-      to be to the slider's step values for it to move to a new value
-    """
 
     page: _tk.Canvas = None
     @staticmethod
@@ -378,10 +365,6 @@ class _Slider:
     ) -> '_Slider':
         """
         Valid options for `anchor` and `target_anchor` are `['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']`.
-
-        NOTE: if you want to align with other widgets like `carbon.gui.label`
-              or `carbon.gui.button`, make sure their version supports the
-              `get_anchor_loc` method
         """
 
         ## getting the target anchor location

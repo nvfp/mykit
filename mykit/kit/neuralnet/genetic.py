@@ -2,7 +2,7 @@ import random as _random
 import numpy as _np
 import typing as _typing
 
-from carbon.neuralnet.dense import DenseNN as _DenseNN
+from mykit.kit.neuralnet.dense import DenseNN as _DenseNN
 
 
 class GeneticNN:

@@ -2,7 +2,7 @@ import numpy as _np
 import random as _random
 import typing as _typing
 
-from carbon.math import relu as _ReLU
+from mykit.kit.math import relu as _ReLU
 
 
 class DenseNN:

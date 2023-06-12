@@ -384,10 +384,6 @@ class Button:
     ) -> 'Button':
         """
         Valid options for `anchor` and `target_anchor` are `['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']`.
-
-        NOTE: if you want to align with other widgets like `carbon.gui.label`
-              or `carbon.gui.slider`, make sure their version supports the
-              `get_anchor_loc` method
         """
 
         ## getting the target anchor location

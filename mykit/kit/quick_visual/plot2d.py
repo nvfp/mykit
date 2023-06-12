@@ -1,7 +1,7 @@
 import tkinter as _tk
 from typing import Optional as _Optional
 
-from carbon.graph.graph2d import graph2d as _graph2d
+from mykit.kit.graph.graph2d import graph2d as _graph2d
 
 
 def plot2d(
