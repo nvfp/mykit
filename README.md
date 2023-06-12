@@ -97,6 +97,7 @@ Mostly, basic functions (standalone, input-in-output-out) are the ones that unde
     - deleted `mykit/mykit/kit/graph/graph2d/`
     - transform `mykit/mykit/kit/graph/graph2d/v2.py` -> `mykit/mykit/kit/graph/graph2d.py`
     - transform `mykit/mykit/kit/time/` -> `mykit/mykit/kit/time.py`
+    - transform `mykit/mykit/kit/utils/` -> `mykit/mykit/kit/utils.py`
 
 
 ## Troubleshoot
