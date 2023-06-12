@@ -1,8 +1,8 @@
 import re as _re
 import typing as _typing
 
-from carbon.path import open_file as _open_file
-from carbon.utils import is_valid_var_name as _is_valid_var_name
+from mykit.kit.path import open_file as _open_file
+from mykit.kit.utils import is_valid_var_name as _is_valid_var_name
 
 
 class KeyCrate:
