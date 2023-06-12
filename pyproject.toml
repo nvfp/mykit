@@ -5,11 +5,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mykit"
-version = "0.1.5"
+version = "0.1.6"
 description = "Python utility library"
 readme = "README.md"
 requires-python = ">=3.7"
-license = {text = "MIT License"}
+license = {text = "MIT"}
 authors = [
   	{name = "Nicholas Valentinus", email = "nvfastplease@gmail.com"},
 ]
@@ -34,9 +34,12 @@ dependencies = [
 
 
 [project.urls]
-repo = "https://github.com/nvfp/mykit"
+homepage = "https://nvfp.github.io/mykit"
+documentation = "https://nvfp.github.io/mykit/docs"
 tracker = "https://github.com/nvfp/mykit/issues"
+repo = "https://github.com/nvfp/mykit"
+changelog = "https://nvfp.github.io/mykit/changelog"
 
 
 [project.scripts]
-mykit123foo = "mykit.__main__:main"
+mykit = "mykit.__main__:main"
