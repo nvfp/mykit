@@ -1,6 +1,6 @@
 import unittest
 
-from carbon.color import (
+from mykit.kit.color import (
     interpolate_color,
     get_gray,
     getgray,

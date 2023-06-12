@@ -88,10 +88,13 @@ Mostly, basic functions (standalone, input-in-output-out) are the ones that unde
 ## Changelog
 
 - 0.1.0 (June 12, 2023):
-    - migrated all modules from [carbon](https://github.com/nvfp/carbon) into `mykit/src/kit`
-    - deleted `mykit/src/kit/math`
-    - added `mykit/src/rec`
-    - renamed `mykit/src/kit/time` to `mykit/src/kit/timelib`
+    - migrated all modules from [carbon](https://github.com/nvfp/carbon) into `mykit/mykit/kit/`
+    - deleted `mykit/mykit/kit/math/`
+    - added `mykit/mykit/rec/` and `mykit/mykit/app/`
+    - transform `mykit/mykit/kit/color/` -> `mykit/mykit/kit/color.py`
+    - moved `mykit/mykit/kit/color/test_color.py` to `mykit/tests/test_kit/test_color.py`
+
+    - renamed `mykit/mykit/kit/time` to `mykit/mykit/kit/timelib`
 
 
 ## Troubleshoot
