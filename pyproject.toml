@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mykit"
-version = "0.1.3"
+version = "0.1.4"
 description = "Python utility library"
 authors = [
   {name = "Nicholas Valentinus", email = "nvfastplease@gmail.com"},
@@ -14,6 +14,7 @@ readme = "README.md"
 license = {file = "LICENSE"}
 requires-python = ">=3.7"
 classifiers = [
+	"Topic :: Scientific/Engineering",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -22,6 +23,26 @@ classifiers = [
 keywords = ["python", "toolkit", "mykit"]
 
 
+[metadata]
+author = "Nicholas Valentinus"
+home_page = "https://github.com/nvfp/mykit"
+license = "MIT"
+
+[options]
+packages = ["mykit123xyz456abc"]
+include_package_data = true
+install_requires = [
+	"numba>=0.55.2",
+	"numpy>=1.22.4"
+]
+
+
 [project.urls]
 repo = "https://github.com/nvfp/mykit"
 tracker = "https://github.com/nvfp/mykit/issues"
+
+
+[options.entry_points]
+console_scripts = {
+    "mykittest = mykit.__main__:main",
+}
