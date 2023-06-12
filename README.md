@@ -93,8 +93,7 @@ Mostly, basic functions (standalone, input-in-output-out) are the ones that unde
     - added `mykit/mykit/rec/` and `mykit/mykit/app/`
     - transform `mykit/mykit/kit/color/` -> `mykit/mykit/kit/color.py`
     - moved `mykit/mykit/kit/color/test_color.py` to `mykit/tests/test_kit/test_color.py`
-
-    - renamed `mykit/mykit/kit/time` to `mykit/mykit/kit/timelib`
+    - transform `mykit/mykit/kit/time/` -> `mykit/mykit/kit/time.py`
 
 
 ## Troubleshoot

@@ -1,8 +1,3 @@
-"""
-
-Reminder: This module has been renamed to "timelib" to prevent confusion with the built-in Python library "time".
-
-"""
 import re as _re
 
 
