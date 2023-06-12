@@ -1,0 +1,5 @@
+
+
+# It's recommended to use the "==" version, but a higher version may also be okay.
+numba>=0.55.2
+numpy>=1.22.4
