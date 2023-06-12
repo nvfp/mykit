@@ -1,6 +1,3 @@
-"""
-This module is the next generation of carbon.math
-"""
 import numpy as _np
 
 

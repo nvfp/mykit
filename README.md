@@ -96,6 +96,8 @@ Mostly, basic functions (standalone, input-in-output-out) are the ones that unde
     - transform `mykit/mykit/kit/ffmpeg/` -> `mykit/mykit/kit/ffmpeg.py`
     - deleted `mykit/mykit/kit/graph/graph2d/`
     - transform `mykit/mykit/kit/graph/graph2d/v2.py` -> `mykit/mykit/kit/graph/graph2d.py`
+    - transform `mykit/mykit/kit/maths/` -> `mykit/mykit/kit/math.py`
+    - moved `mykit/mykit/kit/maths/test_maths.py` -> `mykit/tests/test_math.py`
     - transform `mykit/mykit/kit/noise/` -> `mykit/mykit/kit/noise.py`
     - transform `mykit/mykit/kit/path/` -> `mykit/mykit/kit/path.py`
     - transform `mykit/mykit/kit/text/` -> `mykit/mykit/kit/text.py`
