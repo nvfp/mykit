@@ -28,5 +28,5 @@ keywords = ["python", "toolkit", "mykit"]
 
 
 [project.urls]
-Repository = "https://github.com/nvfp/mykit"
-Bug Tracker = "https://github.com/nvfp/mykit/issues"
+repo = "https://github.com/nvfp/mykit"
+tracker = "https://github.com/nvfp/mykit/issues"
