@@ -1,21 +1,21 @@
+import random as _random
 import tkinter as _tk
+import typing as _typing
 
 
 class Label:
 
     labels: dict[str, 'Label'] = {}
-    # tags: dict[str, list['Label']] = {}  # clash with `self.tags`
     label_tags: dict[str, list['Label']] = {}
 
     def __init__(
         self,
-        id: str,
-        x: int,
-        y: int,
-        text: str,
-        font: str | tuple[str, int] = 'Consolas 10',
+        x: int = 0,
+        y: int = 0,
+        text: str = '',
+        font: str | tuple[str, int] = 'Verdana 10',
         justify: str = 'left',
-        anchor: str = 'nw',
+        anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'] = 'nw',
         fg: str = '#ccc',
         bg: str = '#111',
         bd: str = '#555',
@@ -24,16 +24,17 @@ class Label:
         padx: int = 0,
         pady: int = 0,
         visible: bool = True,
+
+        id: str | None = None,
         tags: str | list[str] | None = None,
     ):
+        """
+        `x`: the x-position for the `anchor` argument, not the center of the label
+        `y`: the y-position for the `anchor` argument, not the center of the label
+        """
 
-        self.id = id
-        if id in Label.labels:
-            raise ValueError(f'The id {repr(id)} is duplicated.')
-        Label.labels[id] = self
-
-        self.x = x
-        self.y = y
+        self.x = x  # reminder: this is the x-position for the `anchor` argument, not the center of the label
+        self.y = y  # reminder: this is the y-position for the `anchor` argument, not the center of the label
         self.font = font
         self.text = text
         self.anchor = anchor
@@ -52,6 +53,17 @@ class Label:
 
         if visible:
             self.label.place(x=x, y=y, anchor=anchor)
+
+        ## self.id ensures that we can modify a specific instance without affecting the others
+        if id is None:
+            self.id = str(_random.randint(0, 100_000))
+            while self.id in Label.labels:
+                self.id = str(_random.randint(0, 100_000))
+        else:
+            self.id = id
+            if self.id in Label.labels:
+                raise ValueError(f'The id {repr(id)} is duplicated.')
+        Label.labels[self.id] = self
 
         ## <tags>
         if type(tags) is str:
@@ -140,46 +152,118 @@ class Label:
     def get_height_by_id(id: str, /) -> int:
         return Label.labels[id].get_height()
 
-    
-    def get_bounding_box(self) -> tuple[int, int, int, int]:
 
-        X = self.x
-        Y = self.y
+    def get_anchor_loc(self, anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'], /) -> tuple[int, int]:
+        """To get the center of the label coordinates, use `anchor='center'`"""
+
         W = self.get_width()
         H = self.get_height()
 
+        ## get the coordinates for the center (X, Y)
         if self.anchor == 'center':
-            return (X - W/2, Y - H/2, X + W/2, Y + H/2)
+            X = self.x
+            Y = self.y
         elif self.anchor == 'n':
-            return (X - W/2, Y, X + W/2, Y + H)
+            X = self.x
+            Y = self.y + H/2
         elif self.anchor == 'ne':
-            return (X - W, Y, X, Y + H)
+            X = self.x - W/2
+            Y = self.y + H/2
         elif self.anchor == 'e':
-            return (X - W, Y - H/2, X, Y + H/2)
+            X = self.x - W/2
+            Y = self.y
         elif self.anchor == 'se':
-            return (X - W, Y - H, X, Y)
+            X = self.x - W/2
+            Y = self.y - H/2
         elif self.anchor == 's':
-            return (X - W/2, Y - H, X + W/2, Y)
+            X = self.x
+            Y = self.y - H/2
         elif self.anchor == 'sw':
-            return (X, Y - H, X + W, Y)
+            X = self.x + W/2
+            Y = self.y - H/2
         elif self.anchor == 'w':
-            return (X, Y - H/2, X + W, Y + H/2)
+            X = self.x + W/2
+            Y = self.y
         elif self.anchor == 'nw':
-            return (X, Y, X + W, Y + H)
+            X = self.x + W/2
+            Y = self.y + H/2
+
+        ## returning the requested anchor location
+        if anchor == 'center':
+            return (X, Y)
+        elif anchor == 'n':
+            return (X, Y-H/2)
+        elif anchor == 'ne':
+            return (X+W/2, Y-H/2)
+        elif anchor == 'e':
+            return (X+W/2, Y)
+        elif anchor == 'se':
+            return (X+W/2, Y+H/2)
+        elif anchor == 's':
+            return (X, Y+H/2)
+        elif anchor == 'sw':
+            return (X-W/2, Y+H/2)
+        elif anchor == 'w':
+            return (X-W/2, Y)
+        elif anchor == 'nw':
+            return (X-W/2, Y-H/2)
+        else:
+            raise ValueError(f'Invalid anchor value: {repr(anchor)}')
 
     @staticmethod
-    def get_bounding_box_by_id(id: str, /) -> tuple[int, int, int, int]:
-        return Label.labels[id].get_bounding_box()
+    def get_anchor_loc_by_id(id: str, anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'], /) -> tuple[int, int]:
+        return Label.labels[id].get_anchor_loc(anchor)
 
     
-    def move(self, x: int, y: int, /) -> None:
+    def move(self, x: int, y: int, /, anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'] | None = None) -> None:
+        """If `anchor = None`, the current anchor will be used."""
         self.x = x
         self.y = y
+        if anchor is not None:
+            self.anchor = anchor
+        # self.label.place(x=x, y=y, anchor=anchor)  # reminder: don't do this because `anchor` could be `None`
         self.label.place(x=x, y=y, anchor=self.anchor)
 
     @staticmethod
-    def move_by_id(id: str, x: int, y: int, /) -> None:
-        Label.labels[id].move(x, y)
+    def move_by_id(
+        id: str,
+        x: int,
+        y: int,
+        /,
+        anchor: _typing.Optional[_typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
+    ) -> None:
+        Label.labels[id].move(x, y, anchor)
+
+
+    def align(
+        self,
+        target: 'Label',
+        anchor: str = 'nw',
+        target_anchor: str = 'ne',
+        xgap: float = 15,
+        ygap: float = 0
+    ) -> 'Label':
+        """
+        Valid options for `anchor` and `target_anchor` are `['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']`.
+
+        NOTE: if you want to align with other widgets like `carbon.gui.button`
+              or `carbon.gui.slider`, make sure their version supports the
+              `get_anchor_loc` method
+        """
+
+        ## getting the target anchor location
+        x, y = target.get_anchor_loc(target_anchor)
+
+        ## shifting
+        x += xgap
+        y += ygap
+
+        ## moving the label
+        self.move(x, y, anchor)
+
+        ## return the instance so that this method can also be used when
+        ## creating the instance, like `label_2 = Label(text='foo').align(label_1)`.
+        return self
 
 
     def destroy(self) -> None:
@@ -192,15 +276,13 @@ class Label:
                     Label.label_tags.pop(tag)
         
         self.label.destroy()
+    
+    @staticmethod
+    def destroy_by_id(id: str, /) -> None:
+        Label.labels[id].destroy()
 
     @staticmethod
     def destroy_by_tag(tag: str, /) -> None:
-
-        if tag not in Label.label_tags:
-            return
-
-        ## Use `list(Label.label_tags[tag])` instead of `Label.label_tags[tag]`
-        ## since `Label.label_tags[tag]` changes during iteration.
         for label in list(Label.label_tags[tag]):
             label.destroy()
 

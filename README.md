@@ -19,6 +19,7 @@
 - 0.1.3 (June 12, 2023):
     - removed `get_gray` from `mykit/mykit/kit/color.py`
     - transform `mykit/mykit/kit/gui/button/` -> `mykit/mykit/app/button.py`
+    - transform `mykit/mykit/kit/gui/label/` -> `mykit/mykit/app/label.py`
 - 0.1.0 (June 12, 2023):
     - migrated all modules from [carbon](https://github.com/nvfp/carbon) into `mykit/mykit/kit/`
     - deleted `mykit/mykit/kit/math/`
