@@ -1,6 +1,9 @@
 import os
+import pkg_resources
 
 
-LIB_VER = '0.1.2'
+__version__ = pkg_resources.get_distribution('mykit').version
+
+
 LIB_DIR_PTH = os.path.dirname(os.path.abspath(__file__))
 LIB_NAME = os.path.basename(LIB_DIR_PTH)
