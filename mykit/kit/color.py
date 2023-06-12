@@ -36,30 +36,6 @@ def interpolate_color(color1: str, color2: str, x: float) -> str:
     return interpolated_color
 
 
-def get_gray(lum: int = 128, alpha: float = 1.0, /) -> str:
-    """
-    Return grayscale color in hexadecimal.
-
-    ---
-
-    ## Params
-    - `lum`: luminance, interval: [0, 255].
-    - `alpha`: opacity, interval: [0, 1].
-
-    ## Demo
-    >>> get_gray(255, 1)
-    '#ffffff'
-    >>> get_gray(255, 0)
-    '#000000'
-    >>> get_gray(128, 1)
-    '#808080'
-
-    ## Docs
-    - This function has been deprecated; use `getgray` instead.
-    """
-    lum_prime = round(lum*alpha)
-    return f'#{lum_prime:02x}{lum_prime:02x}{lum_prime:02x}'
-
 def getgray(alpha: float, /, max_lum: int = 255) -> str:
     """
     Returns a hexadecimal color value representing a grayscale shade based on the given alpha and maximum luminance.
@@ -73,9 +49,6 @@ def getgray(alpha: float, /, max_lum: int = 255) -> str:
     ## Demo
     >>> getgray(0.5)
     '#808080'
-
-    ## Docs
-    - This function is the next version of `get_gray` (optimized, better variable names, and improved argument order).
     """
     a = f'{round(max_lum*alpha):02x}'
     return f'#{a}{a}{a}'
