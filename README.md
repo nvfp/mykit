@@ -22,6 +22,8 @@
     - transform `mykit/mykit/kit/gui/label/` -> `mykit/mykit/app/label.py`
     - transform `mykit/mykit/kit/gui/slider/` -> `mykit/mykit/app/slider.py`
     - transform `mykit/mykit/kit/gui/shape/` -> `mykit/mykit/app/arrow.py`
+    - transform `mykit/mykit/kit/neuralnet/dense/` -> `mykit/mykit/kit/neuralnet/dense.py`
+    - transform `mykit/mykit/kit/neuralnet/genetic/` -> `mykit/mykit/kit/neuralnet/genetic.py`
 - 0.1.0 (June 12, 2023):
     - migrated all modules from [carbon](https://github.com/nvfp/carbon) into `mykit/mykit/kit/`
     - deleted `mykit/mykit/kit/math/`
