@@ -2,7 +2,7 @@ import math
 import numpy as np
 import unittest
 
-from carbon.maths import (
+from mykit.kit.math import (
     tanh,
     sigmoid,
     relu,
