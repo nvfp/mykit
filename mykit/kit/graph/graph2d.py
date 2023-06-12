@@ -2,8 +2,6 @@ import random as _random
 import tkinter as _tk
 import typing as _typing
 
-from carbon.gui.shape import Arrow  # not suitable as axes due to complicated removal mechanism
-
 
 class Graph2D:
 
