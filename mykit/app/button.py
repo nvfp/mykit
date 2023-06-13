@@ -1,14 +1,10 @@
 import random as _random
-import tkinter as _tk
 import typing as _typing
 
+from mykit.app import _Rt
 
-class Button:
 
-    page: _tk.Canvas = None
-    @staticmethod
-    def set_page(page: _tk.Canvas, /) -> None:
-        Button.page = page
+class Button(_Rt):
 
     buttons: dict[str, 'Button'] = {}
     button_tags: dict[str, list['Button']] = {}
@@ -46,9 +42,8 @@ class Button:
         - `color_lbl_normal`: button's label color
         """
 
-        ## make sure the page has already been set
         if Button.page is None:
-            raise AssertionError('It seems you forgot to do `Button.set_page(page)`.')
+            raise AssertionError('App has not been initialized.')
 
         self.x = x
         self.y = y
