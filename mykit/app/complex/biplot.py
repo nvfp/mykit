@@ -1,0 +1,469 @@
+import random as _random
+import tkinter as _tk
+import typing as _typing
+
+
+class Biplot:
+
+    page: _tk.Canvas = None
+    @staticmethod
+    def set_page(page: _tk.Canvas, /):
+        Graph2D.page = page
+
+    graphs: dict[str, 'Graph2D'] = {}
+    graph_tags: dict[str, list['Graph2D']] = {}
+
+    def __init__(
+        self,
+        points: list[tuple[float, float]],
+        /,
+        xmin: _typing.Optional[float] = None,
+        xmax: _typing.Optional[float] = None,
+        ymin: _typing.Optional[float] = None,
+        ymax: _typing.Optional[float] = None,
+
+        width: int = 300,
+        height: int = 200,
+        tl_x: int = 0,
+        tl_y: int = 0,
+
+        pad_x: float = 0.03,
+        pad_y: float = 0.07,
+        show_tick: bool = True,
+        show_grid: bool = True,
+        ntick_x: int = 10,
+        ntick_y: int = 10,
+        tick_len: int = 12,
+        arrow_size: int = 7,
+        arrow_width: int = 2,
+
+        grid_color: str = '#555',
+        axes_color: str = '#ccc',
+        axes_label_color: str = '#ccc',
+
+        title: str = '',
+        title_color: str = '#fff',
+        title_font: str | tuple = ('Arial Bold', 15),
+
+        x_axis_label: str = '',
+        x_axis_label_shift: int = 15,
+        x_axis_label_font: str | tuple = ('Arial Bold', 12),
+        y_axis_label: str = '',
+        y_axis_label_shift: int = 15,
+        y_axis_label_font: str | tuple = ('Arial Bold', 12),
+
+        tick_x_prefix: str = '',
+        tick_x_suffix: str = '',
+        tick_x_shift: int = 0,
+        tick_x_font: str | tuple = 'Consolas 9',
+        tick_x_prec: int = 1,
+        tick_y_prefix: str = '',
+        tick_y_suffix: str = '',
+        tick_y_shift: int = 0,
+        tick_y_font: str | tuple = 'Consolas 9',
+        tick_y_prec: int = 1,
+        tick_color: str = '#ccc',
+
+        plot_color: str = '#7f7',
+        plot_thick: int = 1,  # line width
+
+        show_points: bool = False,
+        points_rad: int = 7,
+        points_color: str = '#a77',
+        points_border: str = '#eee',
+
+        id: str | None = None,
+        tags: str | list[str] | None = None,
+    ):
+        """
+        To display this graph, there should be a minimum of 2 pairs of points in `points`.
+
+        ---
+
+        ## Params
+        - `xrange`: if `None` -> using the x-range from `points`
+        - `yrange`: if `None` -> using the y-range from `points`
+        """
+
+        self.points = points
+
+        self.xmin = xmin
+        self.xmax = xmax
+        self.ymin = ymin
+        self.ymax = ymax
+
+        self.width = width
+        self.height = height
+        self.tl_x = tl_x
+        self.tl_y = tl_y
+
+        self.pad_x = pad_x
+        self.pad_y = pad_y
+        self.show_tick = show_tick
+        self.show_grid = show_grid
+        self.ntick_x = ntick_x
+        self.ntick_y = ntick_y
+        self.tick_len = tick_len
+        self.arrow_size = arrow_size
+        self.arrow_width = arrow_width
+
+        self.grid_color = grid_color
+        self.axes_color = axes_color
+        self.axes_label_color = axes_label_color
+
+        self.title = title
+        self.title_color = title_color
+        self.title_font = title_font
+
+        self.x_axis_label = x_axis_label
+        self.x_axis_label_shift = x_axis_label_shift
+        self.x_axis_label_font = x_axis_label_font
+        self.y_axis_label = y_axis_label
+        self.y_axis_label_shift = y_axis_label_shift
+        self.y_axis_label_font = y_axis_label_font
+
+        self.tick_x_prefix = tick_x_prefix
+        self.tick_x_suffix = tick_x_suffix
+        self.tick_x_shift = tick_x_shift
+        self.tick_x_font = tick_x_font
+        self.tick_x_prec = tick_x_prec
+        self.tick_y_prefix = tick_y_prefix
+        self.tick_y_suffix = tick_y_suffix
+        self.tick_y_shift = tick_y_shift
+        self.tick_y_font = tick_y_font
+        self.tick_y_prec = tick_y_prec
+        self.tick_color = tick_color
+
+        self.plot_color = plot_color
+        self.plot_thick = plot_thick
+
+        self.show_points = show_points
+        self.points_rad = points_rad
+        self.points_color = points_color
+        self.points_border = points_border
+
+        ## `self.id`: to make sure that we can modify a specific instance without affecting the others
+        if id is None:
+            self.id = _random.randint(-10000, 10000)
+            while self.id in Graph2D.graphs:
+                self.id = _random.randint(-10000, 10000)
+        else:
+            self.id = id
+            if self.id in Graph2D.graphs:
+                raise ValueError(f'The id {repr(id)} is duplicated.')
+        Graph2D.graphs[self.id] = self
+
+        ## <tags>
+        if type(tags) is str:
+            self.tags = [tags]
+        elif (type(tags) is list) or (type(tags) is tuple) or (tags is None):
+            self.tags = tags
+
+        if tags is not None:
+            for tag in self.tags:
+                if tag in Graph2D.graph_tags:
+                    Graph2D.graph_tags[tag].append(self)
+                else:
+                    Graph2D.graph_tags[tag] = [self]
+        ## </tags>
+
+
+        ## <preprocessing>
+        self.plot_width = width*(1-pad_x)
+        self.plot_height = height*(1-pad_y)
+        ## </preprocessing>
+
+
+        ## init
+        self._redraw()
+
+    def _redraw(self):
+        """redraw the entire graph"""
+
+        x_values = [p[0] for p in self.points]
+        if self.xmin is None:
+            XMIN = min(x_values)
+        else:
+            XMIN = self.xmin
+        if self.xmax is None:
+            XMAX = max(x_values)
+        else:
+            XMAX = self.xmax
+
+        y_values = [p[1] for p in self.points]
+        if self.ymin is None:
+            YMIN = min(y_values)
+        else:
+            YMIN = self.ymin
+        if self.ymax is None:
+            YMAX = max(y_values)
+        else:
+            YMAX = self.ymax
+
+        LEN_X = XMAX - XMIN
+        LEN_Y = YMAX - YMIN
+
+
+        ## title
+        Graph2D.page.create_text(
+            self.tl_x+self.width/2, self.tl_y,
+            text=self.title, font=self.title_font, fill=self.title_color,
+            tags=f'Graph2D_{self.id}'
+        )
+
+
+        ## grids
+        if self.show_grid:
+
+            ## vertical grids
+            for x in range(self.ntick_x):
+                X = self.tl_x + ((x+1)/self.ntick_x)*self.plot_width
+                Graph2D.page.create_line(
+                    X, self.tl_y+(self.height-self.plot_height),
+                    X, self.tl_y+self.height,
+                    fill=self.grid_color, width=1, tags=f'Graph2D_{self.id}'
+                )
+
+            ## horizontal grids
+            for y in range(self.ntick_y):
+                Y = self.tl_y+self.height - ((y+1)/self.ntick_y)*self.plot_height
+                Graph2D.page.create_line(
+                    self.tl_x                , Y,
+                    self.tl_x+self.plot_width, Y,
+                    fill=self.grid_color, width=1, tags=f'Graph2D_{self.id}'
+                )
+
+
+        ## x-axis
+        Graph2D.page.create_line(
+            self.tl_x           , self.tl_y+self.height,
+            self.tl_x+self.width, self.tl_y+self.height,
+            fill=self.axes_color, width=1, tags=f'Graph2D_{self.id}'
+        )
+        ## x-axis arrow
+        Graph2D.page.create_line(
+            self.tl_x+self.width-self.arrow_size, self.tl_y+self.height-self.arrow_size,
+            self.tl_x+self.width                , self.tl_y+self.height,
+            self.tl_x+self.width-self.arrow_size, self.tl_y+self.height+self.arrow_size,
+            fill=self.axes_color, width=self.arrow_width, tags=f'Graph2D_{self.id}'
+        )
+        ## x-axis label
+        Graph2D.page.create_text(
+            self.tl_x+self.width+self.x_axis_label_shift, self.tl_y+self.height,
+            text=self.x_axis_label, anchor='w', fill=self.axes_label_color, font=self.x_axis_label_font, tags=f'Graph2D_{self.id}'
+        )
+
+        ## y-axis
+        Graph2D.page.create_line(
+            self.tl_x, self.tl_y,
+            self.tl_x, self.tl_y+self.height,
+            fill=self.axes_color, width=1, tags=f'Graph2D_{self.id}'
+        )
+        ## y-axis arrow
+        Graph2D.page.create_line(
+            self.tl_x-self.arrow_size, self.tl_y+self.arrow_size,
+            self.tl_x, self.tl_y,
+            self.tl_x+self.arrow_size, self.tl_y+self.arrow_size,
+            fill=self.axes_color, width=self.arrow_width, tags=f'Graph2D_{self.id}'
+        )
+        ## y-axis label
+        Graph2D.page.create_text(
+            self.tl_x, self.tl_y-self.y_axis_label_shift,
+            text=self.y_axis_label, anchor='s', fill=self.axes_label_color, font=self.y_axis_label_font, tags=f'Graph2D_{self.id}'
+        )
+
+
+        ## ticks
+        if self.show_tick:
+
+            ## x-axis ticks
+            for x in range(self.ntick_x+1):
+                X = self.tl_x + (x/self.ntick_x)*self.plot_width
+
+                ## tick
+                Graph2D.page.create_line(
+                    X, self.tl_y+self.height-self.tick_len/2,
+                    X, self.tl_y+self.height+self.tick_len/2,
+                    fill=self.tick_color, width=1, tags=f'Graph2D_{self.id}'
+                )
+
+                ## tick-label
+                _num = XMIN + (x/self.ntick_x)*(LEN_X)
+                if self.tick_x_prec == 0:
+                    _num = int(_num)
+                else:
+                    _num = round(_num, self.tick_x_prec)
+                text = self.tick_x_prefix + str(_num) + self.tick_x_suffix
+                Graph2D.page.create_text(
+                    X, self.tl_y+self.height+self.tick_len+self.tick_x_shift,
+                    text=text, anchor='n', font=self.tick_x_font, fill=self.axes_label_color,
+                    tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_ticks')
+                )
+
+            ## y-axis ticks
+            for y in range(self.ntick_y+1):
+                Y = self.tl_y+self.height - (y/self.ntick_y)*self.plot_height
+
+                ## tick
+                Graph2D.page.create_line(
+                    self.tl_x-self.tick_len/2, Y,
+                    self.tl_x+self.tick_len/2, Y,
+                    fill=self.tick_color, width=1, tags=f'Graph2D_{self.id}'
+                )
+
+                ## tick-label
+                _num = YMIN + (y/self.ntick_y)*(LEN_Y)
+                if self.tick_y_prec == 0:
+                    _num = int(_num)
+                else:
+                    _num = round(_num, self.tick_y_prec)
+                text = self.tick_y_prefix + str(_num) + self.tick_y_suffix
+                Graph2D.page.create_text(
+                    self.tl_x-self.tick_len-self.tick_y_shift, Y,
+                    text=text, anchor='e', font=self.tick_y_font, fill=self.axes_label_color,
+                    tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_ticks')
+                )
+
+
+        ## plot
+        coords = []
+        for x, y in self.points:
+            X = self.tl_x + (x - XMIN)*(self.plot_width/LEN_X)
+            Y = self.tl_y + self.height - (y - YMIN)*(self.plot_height/LEN_Y)
+            coords.append((X, Y))
+        Graph2D.page.create_line(
+            coords,
+            fill=self.plot_color, width=self.plot_thick,
+            tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_plot')
+        )
+
+        if self.show_points:
+            for x, y in coords:
+                Graph2D.page.create_oval(
+                    x-self.points_rad/2, y-self.points_rad/2,
+                    x+self.points_rad/2, y+self.points_rad/2,
+                    fill=self.points_color, outline=self.points_border, width=1, tags=f'Graph2D_{self.id}'
+                )
+    
+    def redraw_plot(self, points: list[tuple[float, float]], /) -> None:
+        """
+        Redraws the plot and updates the tick labels with a new set of given `points`.
+        """
+
+        self.points = points
+
+        ## The code below is duplicated from `_redraw`. While it may seem redundant,
+        ## it's currently the easiest way to achieve the desired functionality.
+
+        x_values = [p[0] for p in self.points]
+        if self.xmin is None:
+            XMIN = min(x_values)
+        else:
+            XMIN = self.xmin
+        if self.xmax is None:
+            XMAX = max(x_values)
+        else:
+            XMAX = self.xmax
+
+        y_values = [p[1] for p in self.points]
+        if self.ymin is None:
+            YMIN = min(y_values)
+        else:
+            YMIN = self.ymin
+        if self.ymax is None:
+            YMAX = max(y_values)
+        else:
+            YMAX = self.ymax
+
+        ## LEN_X and LEN_Y can't be zero
+        LEN_X = max(10**(-self.tick_x_prec), XMAX - XMIN)
+        LEN_Y = max(10**(-self.tick_y_prec), YMAX - YMIN)
+
+
+        ## redraw the ticks
+
+        Graph2D.page.delete(f'Graph2D_{self.id}_ticks')
+
+        if self.show_tick:
+
+            ## x-axis ticks
+            for x in range(self.ntick_x+1):
+                X = self.tl_x + (x/self.ntick_x)*self.plot_width
+
+                ## tick-label
+                _num = XMIN + (x/self.ntick_x)*(LEN_X)
+                if self.tick_x_prec == 0:
+                    _num = int(_num)
+                else:
+                    _num = round(_num, self.tick_x_prec)
+                text = self.tick_x_prefix + str(_num) + self.tick_x_suffix
+                Graph2D.page.create_text(
+                    X, self.tl_y+self.height+self.tick_len+self.tick_x_shift,
+                    text=text, anchor='n', font=self.tick_x_font, fill=self.axes_label_color,
+                    tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_ticks')
+                )
+
+            ## y-axis ticks
+            for y in range(self.ntick_y+1):
+                Y = self.tl_y+self.height - (y/self.ntick_y)*self.plot_height
+
+                ## tick-label
+                _num = YMIN + (y/self.ntick_y)*(LEN_Y)
+                if self.tick_y_prec == 0:
+                    _num = int(_num)
+                else:
+                    _num = round(_num, self.tick_y_prec)
+                text = self.tick_y_prefix + str(_num) + self.tick_y_suffix
+                Graph2D.page.create_text(
+                    self.tl_x-self.tick_len-self.tick_y_shift, Y,
+                    text=text, anchor='e', font=self.tick_y_font, fill=self.axes_label_color,
+                    tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_ticks')
+                )
+
+
+        ## redraw the plot
+
+        Graph2D.page.delete(f'Graph2D_{self.id}_plot')
+
+        coords = []
+        for x, y in self.points:
+            X = self.tl_x + (x - XMIN)*(self.plot_width/LEN_X)
+            Y = self.tl_y + self.height - (y - YMIN)*(self.plot_height/LEN_Y)
+            coords.append((X, Y))
+        Graph2D.page.create_line(
+            coords,
+            fill=self.plot_color, width=self.plot_thick,
+            tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_plot')
+        )
+
+    def shift_plot(self, new_points: list[tuple[float, float]], /) -> None:
+        """
+        Shifts the plot by inserting `new_points` and removing the leftmost points.
+        For example, if 2 pairs are inserted, 2 leftmost pairs will be removed.
+        Make sure that the new x values are always greater than the rightmost x value.
+        For instance, if the current rightmost x is 100, the new x values
+        should follow a sequence like 100, 101, 102.
+        """
+        n_new = len(new_points)
+        points = self.points[n_new:] + new_points
+        self.redraw_plot(points)
+
+    def add_point(self, point: tuple[float, float], max: int | None = None):
+        """
+        Adding the new point to the current plot.
+        If a max value is specified (e.g., max=100), and the total number of points
+        exceeds 100, the plot will shift by inserting the new point and removing
+        the leftmost point. If max is not specified, the point will simply be added.
+        """
+
+        points = self.points
+
+        if max is None:
+            points.append(point)
+            self.redraw_plot(points)
+        else:
+            if len(points) < max:
+                points.append(point)
+                self.redraw_plot(points)
+            else:
+                self.shift_plot([point])
