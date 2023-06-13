@@ -34,7 +34,10 @@ dependencies = [
 
 
 [tool.setuptools.packages.find]
-exclude = ["assets*"]
+exclude = [
+    "assets*",
+    "tests*"
+]
 
 
 [project.urls]
