@@ -31,7 +31,7 @@ class App(_Rt):
             borderwidth=0, highlightthickness=0
         )
         page.place(x=0, y=0)
-        App.page = page
+        App._set_page(page)
 
 
         ## <constants>
