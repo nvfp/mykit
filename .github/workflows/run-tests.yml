@@ -27,10 +27,11 @@ jobs:
     - name: Install dependencies
       run: |
         echo $GITHUB_WORKSPACE
-        ls $GITHUB_WORKSPACE
+        python mykit -v
         cd $GITHUB_WORKSPACE
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        python mykit -v
+      # python -m pip install --upgrade pip
+      # pip install -r requirements.txt
 
     - name: Run unittests
       run: python -m unittest
