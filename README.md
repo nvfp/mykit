@@ -36,8 +36,10 @@ print(x)  # 2.79 PiB
 ## Changelog
 
 - 2.0.0 (June 13, 2023):
-    - New: `app/__init__.py`
-    - Moved: `graph/graph2d.py` -> `app/complex/plot.py`
+    - Breaking changes:
+        - New mechanism for app: `app/__init__.py`
+        - Moved: `kit/graph/graph2d.py` -> `app/complex/plot.py`
+        - transform: `kit/quick_visual/plot2d.py` -> `kit/fast_visualizations/static/plot.py`
     - New: `app/complex/biplot.py`
 - 1.0.0 (June 12, 2023):
     - changed arg name: `kit/quick_visual/plot2d.py`: `graph2d_cfg` -> `cfg`

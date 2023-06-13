@@ -1,17 +1,13 @@
 import random as _random
-import tkinter as _tk
 import typing as _typing
 
+from mykit.app._runtime import Runtime as _Rt
 
-class Graph2D:
 
-    page: _tk.Canvas = None
-    @staticmethod
-    def set_page(page: _tk.Canvas, /):
-        Graph2D.page = page
+class Plot(_Rt):
 
-    graphs: dict[str, 'Graph2D'] = {}
-    graph_tags: dict[str, list['Graph2D']] = {}
+    plots: dict[str, 'Plot'] = {}
+    plot_tags: dict[str, list['Plot']] = {}
 
     def __init__(
         self,
@@ -85,6 +81,9 @@ class Graph2D:
         - `yrange`: if `None` -> using the y-range from `points`
         """
 
+        if Plot.page is None:
+            raise AssertionError('App has not been initialized.')
+
         self.points = points
 
         self.xmin = xmin
@@ -145,13 +144,13 @@ class Graph2D:
         ## `self.id`: to make sure that we can modify a specific instance without affecting the others
         if id is None:
             self.id = _random.randint(-10000, 10000)
-            while self.id in Graph2D.graphs:
+            while self.id in Plot.plots:
                 self.id = _random.randint(-10000, 10000)
         else:
             self.id = id
-            if self.id in Graph2D.graphs:
+            if self.id in Plot.plots:
                 raise ValueError(f'The id {repr(id)} is duplicated.')
-        Graph2D.graphs[self.id] = self
+        Plot.plots[self.id] = self
 
         ## <tags>
         if type(tags) is str:
@@ -161,10 +160,10 @@ class Graph2D:
 
         if tags is not None:
             for tag in self.tags:
-                if tag in Graph2D.graph_tags:
-                    Graph2D.graph_tags[tag].append(self)
+                if tag in Plot.plot_tags:
+                    Plot.plot_tags[tag].append(self)
                 else:
-                    Graph2D.graph_tags[tag] = [self]
+                    Plot.plot_tags[tag] = [self]
         ## </tags>
 
 
@@ -205,10 +204,10 @@ class Graph2D:
 
 
         ## title
-        Graph2D.page.create_text(
+        Plot.page.create_text(
             self.tl_x+self.width/2, self.tl_y,
             text=self.title, font=self.title_font, fill=self.title_color,
-            tags=f'Graph2D_{self.id}'
+            tags=f'Plot_{self.id}'
         )
 
 
@@ -218,58 +217,58 @@ class Graph2D:
             ## vertical grids
             for x in range(self.ntick_x):
                 X = self.tl_x + ((x+1)/self.ntick_x)*self.plot_width
-                Graph2D.page.create_line(
+                Plot.page.create_line(
                     X, self.tl_y+(self.height-self.plot_height),
                     X, self.tl_y+self.height,
-                    fill=self.grid_color, width=1, tags=f'Graph2D_{self.id}'
+                    fill=self.grid_color, width=1, tags=f'Plot_{self.id}'
                 )
 
             ## horizontal grids
             for y in range(self.ntick_y):
                 Y = self.tl_y+self.height - ((y+1)/self.ntick_y)*self.plot_height
-                Graph2D.page.create_line(
+                Plot.page.create_line(
                     self.tl_x                , Y,
                     self.tl_x+self.plot_width, Y,
-                    fill=self.grid_color, width=1, tags=f'Graph2D_{self.id}'
+                    fill=self.grid_color, width=1, tags=f'Plot_{self.id}'
                 )
 
 
         ## x-axis
-        Graph2D.page.create_line(
+        Plot.page.create_line(
             self.tl_x           , self.tl_y+self.height,
             self.tl_x+self.width, self.tl_y+self.height,
-            fill=self.axes_color, width=1, tags=f'Graph2D_{self.id}'
+            fill=self.axes_color, width=1, tags=f'Plot_{self.id}'
         )
         ## x-axis arrow
-        Graph2D.page.create_line(
+        Plot.page.create_line(
             self.tl_x+self.width-self.arrow_size, self.tl_y+self.height-self.arrow_size,
             self.tl_x+self.width                , self.tl_y+self.height,
             self.tl_x+self.width-self.arrow_size, self.tl_y+self.height+self.arrow_size,
-            fill=self.axes_color, width=self.arrow_width, tags=f'Graph2D_{self.id}'
+            fill=self.axes_color, width=self.arrow_width, tags=f'Plot_{self.id}'
         )
         ## x-axis label
-        Graph2D.page.create_text(
+        Plot.page.create_text(
             self.tl_x+self.width+self.x_axis_label_shift, self.tl_y+self.height,
-            text=self.x_axis_label, anchor='w', fill=self.axes_label_color, font=self.x_axis_label_font, tags=f'Graph2D_{self.id}'
+            text=self.x_axis_label, anchor='w', fill=self.axes_label_color, font=self.x_axis_label_font, tags=f'Plot_{self.id}'
         )
 
         ## y-axis
-        Graph2D.page.create_line(
+        Plot.page.create_line(
             self.tl_x, self.tl_y,
             self.tl_x, self.tl_y+self.height,
-            fill=self.axes_color, width=1, tags=f'Graph2D_{self.id}'
+            fill=self.axes_color, width=1, tags=f'Plot_{self.id}'
         )
         ## y-axis arrow
-        Graph2D.page.create_line(
+        Plot.page.create_line(
             self.tl_x-self.arrow_size, self.tl_y+self.arrow_size,
             self.tl_x, self.tl_y,
             self.tl_x+self.arrow_size, self.tl_y+self.arrow_size,
-            fill=self.axes_color, width=self.arrow_width, tags=f'Graph2D_{self.id}'
+            fill=self.axes_color, width=self.arrow_width, tags=f'Plot_{self.id}'
         )
         ## y-axis label
-        Graph2D.page.create_text(
+        Plot.page.create_text(
             self.tl_x, self.tl_y-self.y_axis_label_shift,
-            text=self.y_axis_label, anchor='s', fill=self.axes_label_color, font=self.y_axis_label_font, tags=f'Graph2D_{self.id}'
+            text=self.y_axis_label, anchor='s', fill=self.axes_label_color, font=self.y_axis_label_font, tags=f'Plot_{self.id}'
         )
 
 
@@ -281,10 +280,10 @@ class Graph2D:
                 X = self.tl_x + (x/self.ntick_x)*self.plot_width
 
                 ## tick
-                Graph2D.page.create_line(
+                Plot.page.create_line(
                     X, self.tl_y+self.height-self.tick_len/2,
                     X, self.tl_y+self.height+self.tick_len/2,
-                    fill=self.tick_color, width=1, tags=f'Graph2D_{self.id}'
+                    fill=self.tick_color, width=1, tags=f'Plot_{self.id}'
                 )
 
                 ## tick-label
@@ -294,10 +293,10 @@ class Graph2D:
                 else:
                     _num = round(_num, self.tick_x_prec)
                 text = self.tick_x_prefix + str(_num) + self.tick_x_suffix
-                Graph2D.page.create_text(
+                Plot.page.create_text(
                     X, self.tl_y+self.height+self.tick_len+self.tick_x_shift,
                     text=text, anchor='n', font=self.tick_x_font, fill=self.axes_label_color,
-                    tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_ticks')
+                    tags=(f'Plot_{self.id}', f'Plot_{self.id}_ticks')
                 )
 
             ## y-axis ticks
@@ -305,10 +304,10 @@ class Graph2D:
                 Y = self.tl_y+self.height - (y/self.ntick_y)*self.plot_height
 
                 ## tick
-                Graph2D.page.create_line(
+                Plot.page.create_line(
                     self.tl_x-self.tick_len/2, Y,
                     self.tl_x+self.tick_len/2, Y,
-                    fill=self.tick_color, width=1, tags=f'Graph2D_{self.id}'
+                    fill=self.tick_color, width=1, tags=f'Plot_{self.id}'
                 )
 
                 ## tick-label
@@ -318,10 +317,10 @@ class Graph2D:
                 else:
                     _num = round(_num, self.tick_y_prec)
                 text = self.tick_y_prefix + str(_num) + self.tick_y_suffix
-                Graph2D.page.create_text(
+                Plot.page.create_text(
                     self.tl_x-self.tick_len-self.tick_y_shift, Y,
                     text=text, anchor='e', font=self.tick_y_font, fill=self.axes_label_color,
-                    tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_ticks')
+                    tags=(f'Plot_{self.id}', f'Plot_{self.id}_ticks')
                 )
 
 
@@ -331,18 +330,18 @@ class Graph2D:
             X = self.tl_x + (x - XMIN)*(self.plot_width/LEN_X)
             Y = self.tl_y + self.height - (y - YMIN)*(self.plot_height/LEN_Y)
             coords.append((X, Y))
-        Graph2D.page.create_line(
+        Plot.page.create_line(
             coords,
             fill=self.plot_color, width=self.plot_thick,
-            tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_plot')
+            tags=(f'Plot_{self.id}', f'Plot_{self.id}_plot')
         )
 
         if self.show_points:
             for x, y in coords:
-                Graph2D.page.create_oval(
+                Plot.page.create_oval(
                     x-self.points_rad/2, y-self.points_rad/2,
                     x+self.points_rad/2, y+self.points_rad/2,
-                    fill=self.points_color, outline=self.points_border, width=1, tags=f'Graph2D_{self.id}'
+                    fill=self.points_color, outline=self.points_border, width=1, tags=f'Plot_{self.id}'
                 )
     
     def redraw_plot(self, points: list[tuple[float, float]], /) -> None:
@@ -382,7 +381,7 @@ class Graph2D:
 
         ## redraw the ticks
 
-        Graph2D.page.delete(f'Graph2D_{self.id}_ticks')
+        Plot.page.delete(f'Plot_{self.id}_ticks')
 
         if self.show_tick:
 
@@ -397,10 +396,10 @@ class Graph2D:
                 else:
                     _num = round(_num, self.tick_x_prec)
                 text = self.tick_x_prefix + str(_num) + self.tick_x_suffix
-                Graph2D.page.create_text(
+                Plot.page.create_text(
                     X, self.tl_y+self.height+self.tick_len+self.tick_x_shift,
                     text=text, anchor='n', font=self.tick_x_font, fill=self.axes_label_color,
-                    tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_ticks')
+                    tags=(f'Plot_{self.id}', f'Plot_{self.id}_ticks')
                 )
 
             ## y-axis ticks
@@ -414,26 +413,26 @@ class Graph2D:
                 else:
                     _num = round(_num, self.tick_y_prec)
                 text = self.tick_y_prefix + str(_num) + self.tick_y_suffix
-                Graph2D.page.create_text(
+                Plot.page.create_text(
                     self.tl_x-self.tick_len-self.tick_y_shift, Y,
                     text=text, anchor='e', font=self.tick_y_font, fill=self.axes_label_color,
-                    tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_ticks')
+                    tags=(f'Plot_{self.id}', f'Plot_{self.id}_ticks')
                 )
 
 
         ## redraw the plot
 
-        Graph2D.page.delete(f'Graph2D_{self.id}_plot')
+        Plot.page.delete(f'Plot_{self.id}_plot')
 
         coords = []
         for x, y in self.points:
             X = self.tl_x + (x - XMIN)*(self.plot_width/LEN_X)
             Y = self.tl_y + self.height - (y - YMIN)*(self.plot_height/LEN_Y)
             coords.append((X, Y))
-        Graph2D.page.create_line(
+        Plot.page.create_line(
             coords,
             fill=self.plot_color, width=self.plot_thick,
-            tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_plot')
+            tags=(f'Plot_{self.id}', f'Plot_{self.id}_plot')
         )
 
     def shift_plot(self, new_points: list[tuple[float, float]], /) -> None:

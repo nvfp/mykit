@@ -17,7 +17,7 @@ class App(_Rt):
     - currently available only in fullscreen mode
     """
 
-    def __init__(self, title: str, bg: str) -> None:
+    def __init__(self, title: str = 'app', bg: str = '#111111') -> None:
         
         self.root = _tk.Tk()
         self.root.attributes('-fullscreen', True)

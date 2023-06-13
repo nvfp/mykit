@@ -1,21 +1,18 @@
 import random as _random
-import tkinter as _tk
 import typing as _typing
 
+from mykit.app._runtime import Runtime as _Rt
 
-class Biplot:
 
-    page: _tk.Canvas = None
-    @staticmethod
-    def set_page(page: _tk.Canvas, /):
-        Graph2D.page = page
+class Biplot(_Rt):
 
-    graphs: dict[str, 'Graph2D'] = {}
-    graph_tags: dict[str, list['Graph2D']] = {}
+    biplots: dict[str, 'Biplot'] = {}
+    biplot_tags: dict[str, list['Biplot']] = {}
 
     def __init__(
         self,
-        points: list[tuple[float, float]],
+        points1: list[tuple[float, float]],
+        points2: list[tuple[float, float]],
         /,
         xmin: _typing.Optional[float] = None,
         xmax: _typing.Optional[float] = None,
@@ -64,13 +61,25 @@ class Biplot:
         tick_y_prec: int = 1,
         tick_color: str = '#ccc',
 
-        plot_color: str = '#7f7',
+        plot_color1: str = '#7f7',
+        plot_color2: str = '#f77',
         plot_thick: int = 1,  # line width
 
         show_points: bool = False,
         points_rad: int = 7,
         points_color: str = '#a77',
         points_border: str = '#eee',
+
+        legend1: str | None = None,
+        legend2: str | None = None,
+        legends_bar_width: int = 30,
+        legends_bar_height: int = 6,
+        legends_pad_x: int = 7,
+        legends_pad_y: int = 20,
+        legends_font: str | tuple = ('Arial Bold', 13),
+        legends_color: str = '#f5f5f5',
+        legends_shift_x: int = 30,
+        legends_shift_y: int = 10,
 
         id: str | None = None,
         tags: str | list[str] | None = None,
@@ -85,7 +94,11 @@ class Biplot:
         - `yrange`: if `None` -> using the y-range from `points`
         """
 
-        self.points = points
+        if Biplot.page is None:
+            raise AssertionError('App has not been initialized.')
+
+        self.points1 = points1
+        self.points2 = points2
 
         self.xmin = xmin
         self.xmax = xmax
@@ -134,7 +147,8 @@ class Biplot:
         self.tick_y_prec = tick_y_prec
         self.tick_color = tick_color
 
-        self.plot_color = plot_color
+        self.plot_color1 = plot_color1
+        self.plot_color2 = plot_color2
         self.plot_thick = plot_thick
 
         self.show_points = show_points
@@ -142,16 +156,27 @@ class Biplot:
         self.points_color = points_color
         self.points_border = points_border
 
+        self.legend1 = legend1
+        self.legend2 = legend2
+        self.legends_bar_width = legends_bar_width
+        self.legends_bar_height = legends_bar_height
+        self.legends_pad_x = legends_pad_x
+        self.legends_pad_y = legends_pad_y
+        self.legends_font = legends_font
+        self.legends_color = legends_color
+        self.legends_shift_x = legends_shift_x
+        self.legends_shift_y = legends_shift_y
+
         ## `self.id`: to make sure that we can modify a specific instance without affecting the others
         if id is None:
             self.id = _random.randint(-10000, 10000)
-            while self.id in Graph2D.graphs:
+            while self.id in Biplot.biplots:
                 self.id = _random.randint(-10000, 10000)
         else:
             self.id = id
-            if self.id in Graph2D.graphs:
+            if self.id in Biplot.biplots:
                 raise ValueError(f'The id {repr(id)} is duplicated.')
-        Graph2D.graphs[self.id] = self
+        Biplot.biplots[self.id] = self
 
         ## <tags>
         if type(tags) is str:
@@ -161,10 +186,10 @@ class Biplot:
 
         if tags is not None:
             for tag in self.tags:
-                if tag in Graph2D.graph_tags:
-                    Graph2D.graph_tags[tag].append(self)
+                if tag in Biplot.biplot_tags:
+                    Biplot.biplot_tags[tag].append(self)
                 else:
-                    Graph2D.graph_tags[tag] = [self]
+                    Biplot.biplot_tags[tag] = [self]
         ## </tags>
 
 
@@ -180,7 +205,7 @@ class Biplot:
     def _redraw(self):
         """redraw the entire graph"""
 
-        x_values = [p[0] for p in self.points]
+        x_values = [p[0] for p in self.points1]
         if self.xmin is None:
             XMIN = min(x_values)
         else:
@@ -190,7 +215,7 @@ class Biplot:
         else:
             XMAX = self.xmax
 
-        y_values = [p[1] for p in self.points]
+        y_values = [p[1] for p in (self.points1 + self.points2)]
         if self.ymin is None:
             YMIN = min(y_values)
         else:
@@ -205,10 +230,10 @@ class Biplot:
 
 
         ## title
-        Graph2D.page.create_text(
+        Biplot.page.create_text(
             self.tl_x+self.width/2, self.tl_y,
             text=self.title, font=self.title_font, fill=self.title_color,
-            tags=f'Graph2D_{self.id}'
+            tags=f'Biplot_{self.id}'
         )
 
 
@@ -218,58 +243,58 @@ class Biplot:
             ## vertical grids
             for x in range(self.ntick_x):
                 X = self.tl_x + ((x+1)/self.ntick_x)*self.plot_width
-                Graph2D.page.create_line(
+                Biplot.page.create_line(
                     X, self.tl_y+(self.height-self.plot_height),
                     X, self.tl_y+self.height,
-                    fill=self.grid_color, width=1, tags=f'Graph2D_{self.id}'
+                    fill=self.grid_color, width=1, tags=f'Biplot_{self.id}'
                 )
 
             ## horizontal grids
             for y in range(self.ntick_y):
                 Y = self.tl_y+self.height - ((y+1)/self.ntick_y)*self.plot_height
-                Graph2D.page.create_line(
+                Biplot.page.create_line(
                     self.tl_x                , Y,
                     self.tl_x+self.plot_width, Y,
-                    fill=self.grid_color, width=1, tags=f'Graph2D_{self.id}'
+                    fill=self.grid_color, width=1, tags=f'Biplot_{self.id}'
                 )
 
 
         ## x-axis
-        Graph2D.page.create_line(
+        Biplot.page.create_line(
             self.tl_x           , self.tl_y+self.height,
             self.tl_x+self.width, self.tl_y+self.height,
-            fill=self.axes_color, width=1, tags=f'Graph2D_{self.id}'
+            fill=self.axes_color, width=1, tags=f'Biplot_{self.id}'
         )
         ## x-axis arrow
-        Graph2D.page.create_line(
+        Biplot.page.create_line(
             self.tl_x+self.width-self.arrow_size, self.tl_y+self.height-self.arrow_size,
             self.tl_x+self.width                , self.tl_y+self.height,
             self.tl_x+self.width-self.arrow_size, self.tl_y+self.height+self.arrow_size,
-            fill=self.axes_color, width=self.arrow_width, tags=f'Graph2D_{self.id}'
+            fill=self.axes_color, width=self.arrow_width, tags=f'Biplot_{self.id}'
         )
         ## x-axis label
-        Graph2D.page.create_text(
+        Biplot.page.create_text(
             self.tl_x+self.width+self.x_axis_label_shift, self.tl_y+self.height,
-            text=self.x_axis_label, anchor='w', fill=self.axes_label_color, font=self.x_axis_label_font, tags=f'Graph2D_{self.id}'
+            text=self.x_axis_label, anchor='w', fill=self.axes_label_color, font=self.x_axis_label_font, tags=f'Biplot_{self.id}'
         )
 
         ## y-axis
-        Graph2D.page.create_line(
+        Biplot.page.create_line(
             self.tl_x, self.tl_y,
             self.tl_x, self.tl_y+self.height,
-            fill=self.axes_color, width=1, tags=f'Graph2D_{self.id}'
+            fill=self.axes_color, width=1, tags=f'Biplot_{self.id}'
         )
         ## y-axis arrow
-        Graph2D.page.create_line(
+        Biplot.page.create_line(
             self.tl_x-self.arrow_size, self.tl_y+self.arrow_size,
             self.tl_x, self.tl_y,
             self.tl_x+self.arrow_size, self.tl_y+self.arrow_size,
-            fill=self.axes_color, width=self.arrow_width, tags=f'Graph2D_{self.id}'
+            fill=self.axes_color, width=self.arrow_width, tags=f'Biplot_{self.id}'
         )
         ## y-axis label
-        Graph2D.page.create_text(
+        Biplot.page.create_text(
             self.tl_x, self.tl_y-self.y_axis_label_shift,
-            text=self.y_axis_label, anchor='s', fill=self.axes_label_color, font=self.y_axis_label_font, tags=f'Graph2D_{self.id}'
+            text=self.y_axis_label, anchor='s', fill=self.axes_label_color, font=self.y_axis_label_font, tags=f'Biplot_{self.id}'
         )
 
 
@@ -281,10 +306,10 @@ class Biplot:
                 X = self.tl_x + (x/self.ntick_x)*self.plot_width
 
                 ## tick
-                Graph2D.page.create_line(
+                Biplot.page.create_line(
                     X, self.tl_y+self.height-self.tick_len/2,
                     X, self.tl_y+self.height+self.tick_len/2,
-                    fill=self.tick_color, width=1, tags=f'Graph2D_{self.id}'
+                    fill=self.tick_color, width=1, tags=f'Biplot_{self.id}'
                 )
 
                 ## tick-label
@@ -294,10 +319,10 @@ class Biplot:
                 else:
                     _num = round(_num, self.tick_x_prec)
                 text = self.tick_x_prefix + str(_num) + self.tick_x_suffix
-                Graph2D.page.create_text(
+                Biplot.page.create_text(
                     X, self.tl_y+self.height+self.tick_len+self.tick_x_shift,
                     text=text, anchor='n', font=self.tick_x_font, fill=self.axes_label_color,
-                    tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_ticks')
+                    tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_ticks')
                 )
 
             ## y-axis ticks
@@ -305,10 +330,10 @@ class Biplot:
                 Y = self.tl_y+self.height - (y/self.ntick_y)*self.plot_height
 
                 ## tick
-                Graph2D.page.create_line(
+                Biplot.page.create_line(
                     self.tl_x-self.tick_len/2, Y,
                     self.tl_x+self.tick_len/2, Y,
-                    fill=self.tick_color, width=1, tags=f'Graph2D_{self.id}'
+                    fill=self.tick_color, width=1, tags=f'Biplot_{self.id}'
                 )
 
                 ## tick-label
@@ -318,44 +343,86 @@ class Biplot:
                 else:
                     _num = round(_num, self.tick_y_prec)
                 text = self.tick_y_prefix + str(_num) + self.tick_y_suffix
-                Graph2D.page.create_text(
+                Biplot.page.create_text(
                     self.tl_x-self.tick_len-self.tick_y_shift, Y,
                     text=text, anchor='e', font=self.tick_y_font, fill=self.axes_label_color,
-                    tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_ticks')
+                    tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_ticks')
                 )
 
 
-        ## plot
-        coords = []
-        for x, y in self.points:
+        ## plot 1
+        coords1 = []
+        for x, y in self.points1:
             X = self.tl_x + (x - XMIN)*(self.plot_width/LEN_X)
             Y = self.tl_y + self.height - (y - YMIN)*(self.plot_height/LEN_Y)
-            coords.append((X, Y))
-        Graph2D.page.create_line(
-            coords,
-            fill=self.plot_color, width=self.plot_thick,
-            tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_plot')
+            coords1.append((X, Y))
+        Biplot.page.create_line(
+            coords1,
+            fill=self.plot_color1, width=self.plot_thick,
+            tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_plot')
+        )
+
+        ## plot 2
+        coords2 = []
+        for x, y in self.points2:
+            X = self.tl_x + (x - XMIN)*(self.plot_width/LEN_X)
+            Y = self.tl_y + self.height - (y - YMIN)*(self.plot_height/LEN_Y)
+            coords2.append((X, Y))
+        Biplot.page.create_line(
+            coords2,
+            fill=self.plot_color2, width=self.plot_thick,
+            tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_plot')
         )
 
         if self.show_points:
-            for x, y in coords:
-                Graph2D.page.create_oval(
+            for x, y in (coords1 + coords2):
+                Biplot.page.create_oval(
                     x-self.points_rad/2, y-self.points_rad/2,
                     x+self.points_rad/2, y+self.points_rad/2,
-                    fill=self.points_color, outline=self.points_border, width=1, tags=f'Graph2D_{self.id}'
+                    fill=self.points_color, outline=self.points_border, width=1, tags=f'Biplot_{self.id}'
                 )
-    
-    def redraw_plot(self, points: list[tuple[float, float]], /) -> None:
+        
+
+        ## legends
+        if self.legend1 is not None:
+            Biplot.page.create_rectangle(
+                self.tl_x+self.legends_shift_x, self.tl_y+self.legends_shift_y,
+                self.tl_x+self.legends_shift_x+self.legends_bar_width, self.tl_y+self.legends_shift_y+self.legends_bar_height,
+                fill=self.plot_color1, width=0, tags=f'Biplot_{self.id}'
+            )
+            Biplot.page.create_text(
+                self.tl_x+self.legends_shift_x+self.legends_bar_width+self.legends_pad_x,
+                self.tl_y+self.legends_shift_y+self.legends_bar_height/2,
+                text=self.legend1, font=self.legends_font, justify='left', anchor='w', fill=self.legends_color,
+                tags=f'Biplot_{self.id}'
+            )
+        if self.legend2 is not None:
+            Biplot.page.create_rectangle(
+                self.tl_x+self.legends_shift_x,
+                self.tl_y+self.legends_shift_y+self.legends_pad_y,
+                self.tl_x+self.legends_shift_x+self.legends_bar_width,
+                self.tl_y+self.legends_shift_y+self.legends_pad_y+self.legends_bar_height,
+                fill=self.plot_color2, width=0, tags=f'Biplot_{self.id}'
+            )
+            Biplot.page.create_text(
+                self.tl_x+self.legends_shift_x+self.legends_bar_width+self.legends_pad_x,
+                self.tl_y+self.legends_shift_y+self.legends_pad_y+self.legends_bar_height/2,
+                text=self.legend2, font=self.legends_font, justify='left', anchor='w', fill=self.legends_color,
+                tags=f'Biplot_{self.id}'
+            )
+
+    def redraw_plot(self, points1: list[tuple[float, float]], points2: list[tuple[float, float]], /) -> None:
         """
-        Redraws the plot and updates the tick labels with a new set of given `points`.
+        Redraws the plot and updates the tick labels with a new set of given points.
         """
 
-        self.points = points
+        self.points1 = points1
+        self.points2 = points2
 
         ## The code below is duplicated from `_redraw`. While it may seem redundant,
         ## it's currently the easiest way to achieve the desired functionality.
 
-        x_values = [p[0] for p in self.points]
+        x_values = [p[0] for p in self.points1]
         if self.xmin is None:
             XMIN = min(x_values)
         else:
@@ -365,7 +432,7 @@ class Biplot:
         else:
             XMAX = self.xmax
 
-        y_values = [p[1] for p in self.points]
+        y_values = [p[1] for p in (self.points1 + self.points2)]
         if self.ymin is None:
             YMIN = min(y_values)
         else:
@@ -382,7 +449,7 @@ class Biplot:
 
         ## redraw the ticks
 
-        Graph2D.page.delete(f'Graph2D_{self.id}_ticks')
+        Biplot.page.delete(f'Biplot_{self.id}_ticks')
 
         if self.show_tick:
 
@@ -397,10 +464,10 @@ class Biplot:
                 else:
                     _num = round(_num, self.tick_x_prec)
                 text = self.tick_x_prefix + str(_num) + self.tick_x_suffix
-                Graph2D.page.create_text(
+                Biplot.page.create_text(
                     X, self.tl_y+self.height+self.tick_len+self.tick_x_shift,
                     text=text, anchor='n', font=self.tick_x_font, fill=self.axes_label_color,
-                    tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_ticks')
+                    tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_ticks')
                 )
 
             ## y-axis ticks
@@ -414,29 +481,42 @@ class Biplot:
                 else:
                     _num = round(_num, self.tick_y_prec)
                 text = self.tick_y_prefix + str(_num) + self.tick_y_suffix
-                Graph2D.page.create_text(
+                Biplot.page.create_text(
                     self.tl_x-self.tick_len-self.tick_y_shift, Y,
                     text=text, anchor='e', font=self.tick_y_font, fill=self.axes_label_color,
-                    tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_ticks')
+                    tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_ticks')
                 )
 
 
         ## redraw the plot
 
-        Graph2D.page.delete(f'Graph2D_{self.id}_plot')
+        Biplot.page.delete(f'Biplot_{self.id}_plot')
 
-        coords = []
-        for x, y in self.points:
+        ## plot 1
+        coords1 = []
+        for x, y in self.points1:
             X = self.tl_x + (x - XMIN)*(self.plot_width/LEN_X)
             Y = self.tl_y + self.height - (y - YMIN)*(self.plot_height/LEN_Y)
-            coords.append((X, Y))
-        Graph2D.page.create_line(
-            coords,
-            fill=self.plot_color, width=self.plot_thick,
-            tags=(f'Graph2D_{self.id}', f'Graph2D_{self.id}_plot')
+            coords1.append((X, Y))
+        Biplot.page.create_line(
+            coords1,
+            fill=self.plot_color1, width=self.plot_thick,
+            tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_plot')
         )
 
-    def shift_plot(self, new_points: list[tuple[float, float]], /) -> None:
+        ## plot 2
+        coords2 = []
+        for x, y in self.points2:
+            X = self.tl_x + (x - XMIN)*(self.plot_width/LEN_X)
+            Y = self.tl_y + self.height - (y - YMIN)*(self.plot_height/LEN_Y)
+            coords2.append((X, Y))
+        Biplot.page.create_line(
+            coords2,
+            fill=self.plot_color2, width=self.plot_thick,
+            tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_plot')
+        )
+
+    def shift_plot(self, new_points1: list[tuple[float, float]], new_points2: list[tuple[float, float]], /) -> None:
         """
         Shifts the plot by inserting `new_points` and removing the leftmost points.
         For example, if 2 pairs are inserted, 2 leftmost pairs will be removed.
@@ -444,11 +524,15 @@ class Biplot:
         For instance, if the current rightmost x is 100, the new x values
         should follow a sequence like 100, 101, 102.
         """
-        n_new = len(new_points)
-        points = self.points[n_new:] + new_points
-        self.redraw_plot(points)
+        
+        n_new = len(new_points1)
+        
+        points1 = self.points1[n_new:] + new_points1
+        points2 = self.points2[n_new:] + new_points2
+        
+        self.redraw_plot(points1, points2)
 
-    def add_point(self, point: tuple[float, float], max: int | None = None):
+    def add_point(self, point1: tuple[float, float], point2: tuple[float, float], max: int | None = None):
         """
         Adding the new point to the current plot.
         If a max value is specified (e.g., max=100), and the total number of points
@@ -456,14 +540,17 @@ class Biplot:
         the leftmost point. If max is not specified, the point will simply be added.
         """
 
-        points = self.points
+        points1 = self.points1
+        points2 = self.points2
 
         if max is None:
-            points.append(point)
-            self.redraw_plot(points)
+            points1.append(point1)
+            points2.append(point2)
+            self.redraw_plot(points1, points2)
         else:
-            if len(points) < max:
-                points.append(point)
-                self.redraw_plot(points)
+            if len(points1) < max:
+                points1.append(point1)
+                points2.append(point2)
+                self.redraw_plot(points1, points2)
             else:
-                self.shift_plot([point])
+                self.shift_plot([point1], [point2])
