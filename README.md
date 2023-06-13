@@ -41,7 +41,7 @@ print(x)  # 2.79 PiB
         - Moved: `/kit/graph/graph2d.py` -> `/app/complex/plot.py`
         - transform: `/kit/quick_visual/plot2d.py` -> `/kit/fast_visualizations/static/plot.py`
     - Bugfixed:
-        - folder `mykit/tests/` should be excluded during build
+        - folder `mykit/tests/` should also be excluded during build (rc version)
     - New: `/app/complex/biplot.py`
 - 1.0.0 (June 12, 2023):
     - changed arg name: `/kit/quick_visual/plot2d.py`: `graph2d_cfg` -> `cfg`

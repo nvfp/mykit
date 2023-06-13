@@ -49,12 +49,17 @@ class App(_Rt):
         self._teardown = None
         ## </runtime>
 
-    def listen(self, to: str, do: _typing.Callable[[_tk.Event[_tk.Misc]], None]):
+    def listen(self, to: str, do: _typing.Callable[[_tk.Event], None]):
         """
         Add event listener.
 
         ---
+
+        ## Params
         - `to`: `Literal["left-mouse-press", "left-mouse-hold", "left-mouse-release"]`
+
+        ## Docs
+        - `do` function takes 1 positional parameter, which is a tkinter event object
         """
         
         if to == 'left-mouse-press':
