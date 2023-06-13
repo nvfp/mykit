@@ -26,18 +26,8 @@ jobs:
 
     - name: Install dependencies
       run: |
-        echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
-        
-        echo "cwd before: $(pwd)"
-        cd $GITHUB_WORKSPACE
-        echo "cwd after: $(pwd)"
-        echo "LS:"
-        ls
-        
-        echo "cd .."
-        cd ..
-        echo "cwd after2: $(pwd)"
-
+        echo "PATH"
+        export PATH="$GITHUB_WORKSPACE:$PATH"
         echo "RUNNING TEST"
         python -m unittest
       # python -m pip install --upgrade pip
