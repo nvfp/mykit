@@ -26,8 +26,6 @@ jobs:
 
     - name: Install dependencies
       run: |
-        echo "PATH"
-        export PATH="$GITHUB_WORKSPACE:$PATH"
         echo "RUNNING TEST"
         python -m unittest
       # python -m pip install --upgrade pip
