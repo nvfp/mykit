@@ -37,36 +37,38 @@ print(x)  # 2.79 PiB
 
 - 2.0.0 (June 13, 2023):
     - Breaking changes:
-        - New mechanism for app: `app/__init__.py`
-        - Moved: `kit/graph/graph2d.py` -> `app/complex/plot.py`
-        - transform: `kit/quick_visual/plot2d.py` -> `kit/fast_visualizations/static/plot.py`
-    - New: `app/complex/biplot.py`
+        - New mechanism for app: `/app/__init__.py`
+        - Moved: `/kit/graph/graph2d.py` -> `/app/complex/plot.py`
+        - transform: `/kit/quick_visual/plot2d.py` -> `/kit/fast_visualizations/static/plot.py`
+    - Bugfixed:
+        - folder `mykit/tests/` should be excluded during build
+    - New: `/app/complex/biplot.py`
 - 1.0.0 (June 12, 2023):
-    - changed arg name: `kit/quick_visual/plot2d.py`: `graph2d_cfg` -> `cfg`
+    - changed arg name: `/kit/quick_visual/plot2d.py`: `graph2d_cfg` -> `cfg`
 - 0.1.3 (June 12, 2023):
-    - removed `get_gray` from `kit/color.py`
-    - transform `kit/gui/button/` -> `app/button.py`
-    - transform `kit/gui/label/` -> `app/label.py`
-    - transform `kit/gui/slider/` -> `app/slider.py`
-    - transform `kit/gui/shape/` -> `app/arrow.py`
-    - transform `kit/neuralnet/dense/` -> `kit/neuralnet/dense.py`
-    - transform `kit/neuralnet/genetic/` -> `kit/neuralnet/genetic.py`
+    - removed `get_gray` from `/kit/color.py`
+    - transform `/kit/gui/button/` -> `/app/button.py`
+    - transform `/kit/gui/label/` -> `/app/label.py`
+    - transform `/kit/gui/slider/` -> `/app/slider.py`
+    - transform `/kit/gui/shape/` -> `/app/arrow.py`
+    - transform `/kit/neuralnet/dense/` -> `/kit/neuralnet/dense.py`
+    - transform `/kit/neuralnet/genetic/` -> `/kit/neuralnet/genetic.py`
 - 0.1.0 (June 12, 2023):
-    - migrated all modules from [carbon](https://github.com/nvfp/carbon) into `kit/`
-    - deleted `kit/math/`
-    - added `rec/` and `app/`
-    - transform `kit/color/` -> `kit/color.py`
-    - moved `kit/color/test_color.py` to `mykit/tests/test_kit/test_color.py`
-    - transform `kit/ffmpeg/` -> `kit/ffmpeg.py`
-    - deleted `kit/graph/graph2d/`
-    - transform `kit/graph/graph2d/v2.py` -> `kit/graph/graph2d.py`
-    - transform `kit/maths/` -> `kit/math.py`
-    - moved `kit/maths/test_maths.py` -> `mykit/tests/test_math.py`
-    - transform `kit/noise/` -> `kit/noise.py`
-    - transform `kit/path/` -> `kit/path.py`
-    - transform `kit/text/` -> `kit/text.py`
-    - transform `kit/time/` -> `kit/time.py`
-    - transform `kit/utils/` -> `kit/utils.py`
+    - migrated all modules from [carbon](https://github.com/nvfp/carbon) into `/kit/`
+    - deleted `/kit/math/`
+    - added `/rec/` and `/app/`
+    - transform `/kit/color/` -> `/kit/color.py`
+    - moved `/kit/color/test_color.py` to `mykit/tests/test_kit/test_color.py`
+    - transform `/kit/ffmpeg/` -> `/kit/ffmpeg.py`
+    - deleted `/kit/graph/graph2d/`
+    - transform `/kit/graph/graph2d/v2.py` -> `/kit/graph/graph2d.py`
+    - transform `/kit/maths/` -> `/kit/math.py`
+    - moved `/kit/maths/test_maths.py` -> `mykit/tests/test_math.py`
+    - transform `/kit/noise/` -> `/kit/noise.py`
+    - transform `/kit/path/` -> `/kit/path.py`
+    - transform `/kit/text/` -> `/kit/text.py`
+    - transform `/kit/time/` -> `/kit/time.py`
+    - transform `/kit/utils/` -> `/kit/utils.py`
 
 
 ## Troubleshoot
