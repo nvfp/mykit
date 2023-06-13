@@ -27,7 +27,7 @@ jobs:
     - name: Debugging
       run: |
         echo "ran mykit -v"
-        mykit -v
+        python mykit -v
 
     - name: Install dependencies
       run: |
