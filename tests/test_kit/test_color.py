@@ -1,7 +1,3 @@
-from .. import add_path
-add_path()
-
-
 import unittest
 
 from mykit.kit.color import (

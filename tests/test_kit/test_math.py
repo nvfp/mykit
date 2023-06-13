@@ -1,7 +1,3 @@
-from .. import add_path
-add_path()
-
-
 import math
 import numpy as np
 import unittest
