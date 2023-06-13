@@ -34,6 +34,12 @@ class App(_Rt):
         App.page = page
 
 
+        ## <constants>
+        self.MON_WIDTH = self.root.winfo_screenwidth()
+        self.MON_HEIGHT = self.root.winfo_screenheight()
+        ## </constants>
+
+
         ## <runtime>
         self._left_mouse_press = []
         self._left_mouse_hold = []
@@ -43,9 +49,22 @@ class App(_Rt):
         self._teardown = None
         ## </runtime>
 
-    def listen(self, to: str, do: _typing.Callable[[], None]):
-        """add event listener"""
-        pass
+    def listen(self, to: str, do: _typing.Callable[[_tk.Event[_tk.Misc]], None]):
+        """
+        Add event listener.
+
+        ---
+        - `to`: `Literal["left-mouse-press", "left-mouse-hold", "left-mouse-release"]`
+        """
+        
+        if to == 'left-mouse-press':
+            self._left_mouse_press.append(do)
+        elif to == 'left-mouse-hold':
+            self._left_mouse_hold.append(do)
+        elif to == 'left-mouse-release':
+            self._left_mouse_release.append(do)
+        else:
+            ValueError(f'Invalid event: {repr(to)}.')
 
     def setup(self, funcs: list[_typing.Callable[[], None]]):
         self._setup = funcs
@@ -58,32 +77,66 @@ class App(_Rt):
         ## <listeners>
 
         def left_mouse_press(e):
+            
+            ## internal
             _Button.press_listener()
+            _Slider.press_listener()
+            
+            ## external
+            for fn in self._left_mouse_press:
+                fn(e)
+
         self.root.bind('<ButtonPress-1>', left_mouse_press)
 
         def left_mouse_hold(e):
-            pass
+            
+            ## internal
+            _Slider.hold_listener()
+
+            ## external
+            for fn in self._left_mouse_hold:
+                fn(e)
+
         self.root.bind('<B1-Motion>', left_mouse_hold)
 
         def left_mouse_release(e):
-            _Button.release_listener()
-        self.root.bind('<ButtonRelease-1>', left_mouse_release)
 
-        def repeat50():
-            _Button.hover_listener()
-            self.root.after(50, repeat50)
+            ## internal
+            _Button.release_listener()
+            _Slider.release_listener()
+
+            ## external
+            for fn in self._left_mouse_release:
+                fn(e)
+        self.root.bind('<ButtonRelease-1>', left_mouse_release)
 
         self.root.bind('<Escape>', lambda e: self.root.destroy())
 
         ## </listeners>
 
+
+        ## <background processes>
+        
+        def repeat50():
+            _Button.hover_listener()
+            _Slider.hover_listener()
+            self.root.after(50, repeat50)
+        repeat50()
+        
+        ## </background processes>
+
+
         ## setup
-        for fn in self._setup:
-            fn()
+        if self._setup is not None:
+            for fn in self._setup:
+                fn()
+
 
         ## run
         self.root.mainloop()
 
+
         ## teardown
-        for fn in self._teardown:
-            fn()
+        if self._teardown is not None:
+            for fn in self._teardown:
+                fn()
