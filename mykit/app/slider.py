@@ -2,15 +2,11 @@ import random as _random
 import tkinter as _tk
 import typing as _typing
 
+from mykit.app._runtime import Runtime as _Rt
 from mykit.kit.utils import minmax_normalization as _norm
 
 
-class _Slider:
-
-    page: _tk.Canvas = None
-    @staticmethod
-    def set_page(page: _tk.Canvas, /):
-        _Slider.page = page
+class _Slider(_Rt):
 
     sliders: dict[str, '_Slider'] = {}
     slider_tags: dict[str, list['_Slider']] = {}  # note that the horizontal and vertical sliders store the tags together
@@ -74,9 +70,8 @@ class _Slider:
         - box color, width, and height should be provided if the box shown
         """
 
-        ## make sure the page has already been set
         if _Slider.page is None:
-            raise AssertionError('It seems you forgot to do `Slider.set_page(page)`.')
+            raise AssertionError('App has not been initialized.')
 
         self.min = min
         self.max = max

@@ -47,11 +47,6 @@ class App(_Rt):
         """add event listener"""
         pass
 
-    # def stop_listening_to(self, fn: _typing.Callable[[], None]):
-        
-    #     if fn in self._left_mouse_press:
-    #         pass
-
     def setup(self, funcs: list[_typing.Callable[[], None]]):
         self._setup = funcs
 
