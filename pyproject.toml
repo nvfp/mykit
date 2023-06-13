@@ -33,6 +33,10 @@ dependencies = [
 ]
 
 
+[tool.setuptools.packages.find]
+exclude = ["assets*"]
+
+
 [project.urls]
 documentation = "https://nvfp.github.io/mykit/docs"
 "report bugs" = "https://github.com/nvfp/mykit/issues"
