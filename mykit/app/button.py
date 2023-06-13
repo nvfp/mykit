@@ -1,7 +1,7 @@
 import random as _random
 import typing as _typing
 
-from mykit.app import _Rt
+from mykit.app._runtime import Runtime as _Rt
 
 
 class Button(_Rt):

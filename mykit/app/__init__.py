@@ -1,6 +1,10 @@
 import tkinter as _tk
+import typing as _typing
 
 from mykit.app._runtime import Runtime as _Rt
+from mykit.app.button import Button as _Button
+from mykit.app.label import Label as _Label
+from mykit.app.slider import _Slider
 
 
 class App(_Rt):
@@ -30,41 +34,61 @@ class App(_Rt):
         App.page = page
 
 
-        ## runtime
+        ## <runtime>
+        self._left_mouse_press = []
+        self._left_mouse_hold = []
+        self._left_mouse_release = []
 
-    def add_listener():
+        self._setup = None
+        self._teardown = None
+        ## </runtime>
+
+    def listen(self, to: str, do: _typing.Callable[[], None]):
+        """add event listener"""
         pass
 
-    ## this function can't exist because once listeners are added, they might be complicated to remove
-    # def remove_listener():
-    #     pass
+    # def stop_listening_to(self, fn: _typing.Callable[[], None]):
+        
+    #     if fn in self._left_mouse_press:
+    #         pass
+
+    def setup(self, funcs: list[_typing.Callable[[], None]]):
+        self._setup = funcs
+
+    def teardown(self, funcs: list[_typing.Callable[[], None]]):
+        self._teardown = funcs
 
     def run(self):
         
-        ## listeners
+        ## <listeners>
 
         def left_mouse_press(e):
-            Button.press_listener()
-            if draw_pad.paint() and Runtime.realtime:
-                show_result()
-        root.bind('<ButtonPress-1>', left_mouse_press)
+            _Button.press_listener()
+        self.root.bind('<ButtonPress-1>', left_mouse_press)
 
         def left_mouse_hold(e):
-            if draw_pad.paint() and Runtime.realtime:
-                show_result()
-        root.bind('<B1-Motion>', left_mouse_hold)
+            pass
+        self.root.bind('<B1-Motion>', left_mouse_hold)
 
         def left_mouse_release(e):
-            Button.release_listener()
-        root.bind('<ButtonRelease-1>', left_mouse_release)
+            _Button.release_listener()
+        self.root.bind('<ButtonRelease-1>', left_mouse_release)
 
-        def background_fast():
-            Button.hover_listener()
-            root.after(50, background_fast)
+        def repeat50():
+            _Button.hover_listener()
+            self.root.after(50, repeat50)
 
-        def exit(e):
-            root.destroy()
-            printer('INFO: Exited.')
-        root.bind('<Escape>', exit)
+        self.root.bind('<Escape>', lambda e: self.root.destroy())
 
+        ## </listeners>
+
+        ## setup
+        for fn in self._setup:
+            fn()
+
+        ## run
         self.root.mainloop()
+
+        ## teardown
+        for fn in self._teardown:
+            fn()

@@ -1,19 +1,14 @@
 import math as _math
 import random as _random
-import tkinter as _tk
 
+from mykit.app._runtime import Runtime as _Rt
 from mykit.kit.math import (
     get_angle as _get_angle,
     rotate as _rotate
 )
 
 
-class Arrow:
-
-    page: _tk.Canvas = None
-    @staticmethod
-    def set_page(page: _tk.Canvas, /) -> None:
-        Arrow.page = page
+class Arrow(_Rt):
 
     arrows: dict[str, 'Arrow'] = {}
     arrow_tags: dict[str, list['Arrow']] = {}
@@ -32,6 +27,9 @@ class Arrow:
         id: str | None = None,
         tags: str | list[str] | None = None,
     ) -> None:
+
+        if Arrow.page is None:
+            raise AssertionError('App has not been initialized.')
         
         self.from_x = from_x
         self.from_y = from_y
