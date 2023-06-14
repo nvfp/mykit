@@ -1,23 +1,29 @@
 import random as _random
-import typing as _typing
+from typing import (
+    Dict as _Dict,
+    List as _List,
+    Optional as _Optional,
+    Tuple as _Tuple,
+    Union as _Union
+)
 
 from mykit.app._runtime import Runtime as _Rt
 
 
 class Biplot(_Rt):
 
-    biplots: dict[str, 'Biplot'] = {}
-    biplot_tags: dict[str, list['Biplot']] = {}
+    biplots: _Dict[str, 'Biplot'] = {}
+    biplot_tags: _Dict[str, _List['Biplot']] = {}
 
     def __init__(
         self,
-        points1: list[tuple[float, float]],
-        points2: list[tuple[float, float]],
+        points1: _List[_Tuple[float, float]],
+        points2: _List[_Tuple[float, float]],
         /,
-        xmin: _typing.Optional[float] = None,
-        xmax: _typing.Optional[float] = None,
-        ymin: _typing.Optional[float] = None,
-        ymax: _typing.Optional[float] = None,
+        xmin: _Optional[float] = None,
+        xmax: _Optional[float] = None,
+        ymin: _Optional[float] = None,
+        ymax: _Optional[float] = None,
 
         width: int = 300,
         height: int = 200,
@@ -40,24 +46,24 @@ class Biplot(_Rt):
 
         title: str = '',
         title_color: str = '#fff',
-        title_font: str | tuple = ('Arial Bold', 15),
+        title_font: _Union[str, tuple] = ('Arial Bold', 15),
 
         x_axis_label: str = '',
         x_axis_label_shift: int = 15,
-        x_axis_label_font: str | tuple = ('Arial Bold', 12),
+        x_axis_label_font: _Union[str, tuple] = ('Arial Bold', 12),
         y_axis_label: str = '',
         y_axis_label_shift: int = 15,
-        y_axis_label_font: str | tuple = ('Arial Bold', 12),
+        y_axis_label_font: _Union[str, tuple] = ('Arial Bold', 12),
 
         tick_x_prefix: str = '',
         tick_x_suffix: str = '',
         tick_x_shift: int = 0,
-        tick_x_font: str | tuple = 'Consolas 9',
+        tick_x_font: _Union[str, tuple] = 'Consolas 9',
         tick_x_prec: int = 1,
         tick_y_prefix: str = '',
         tick_y_suffix: str = '',
         tick_y_shift: int = 0,
-        tick_y_font: str | tuple = 'Consolas 9',
+        tick_y_font: _Union[str, tuple] = 'Consolas 9',
         tick_y_prec: int = 1,
         tick_color: str = '#ccc',
 
@@ -70,19 +76,19 @@ class Biplot(_Rt):
         points_color: str = '#a77',
         points_border: str = '#eee',
 
-        legend1: str | None = None,
-        legend2: str | None = None,
+        legend1: _Optional[str] = None,
+        legend2: _Optional[str] = None,
         legends_bar_width: int = 30,
         legends_bar_height: int = 6,
         legends_pad_x: int = 7,
         legends_pad_y: int = 20,
-        legends_font: str | tuple = ('Arial Bold', 13),
+        legends_font: _Union[str, tuple] = ('Arial Bold', 13),
         legends_color: str = '#f5f5f5',
         legends_shift_x: int = 30,
         legends_shift_y: int = 10,
 
-        id: str | None = None,
-        tags: str | list[str] | None = None,
+        id: _Optional[str] = None,
+        tags: _Optional[_Union[str, _List[str]]] = None,
     ):
         """
         To display this graph, there should be a minimum of 2 pairs of points in `points`.
@@ -411,7 +417,7 @@ class Biplot(_Rt):
                 tags=f'Biplot_{self.id}'
             )
 
-    def redraw_plot(self, points1: list[tuple[float, float]], points2: list[tuple[float, float]], /) -> None:
+    def redraw_plot(self, points1: _List[_Tuple[float, float]], points2: _List[_Tuple[float, float]], /) -> None:
         """
         Redraws the plot and updates the tick labels with a new set of given points.
         """
@@ -516,7 +522,7 @@ class Biplot(_Rt):
             tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_plot')
         )
 
-    def shift_plot(self, new_points1: list[tuple[float, float]], new_points2: list[tuple[float, float]], /) -> None:
+    def shift_plot(self, new_points1: _List[_Tuple[float, float]], new_points2: _List[_Tuple[float, float]], /) -> None:
         """
         Shifts the plot by inserting `new_points` and removing the leftmost points.
         For example, if 2 pairs are inserted, 2 leftmost pairs will be removed.
@@ -532,7 +538,7 @@ class Biplot(_Rt):
         
         self.redraw_plot(points1, points2)
 
-    def add_point(self, point1: tuple[float, float], point2: tuple[float, float], max: int | None = None):
+    def add_point(self, point1: _Tuple[float, float], point2: _Tuple[float, float], max: _Optional[int] = None):
         """
         Adding the new point to the current plot.
         If a max value is specified (e.g., max=100), and the total number of points

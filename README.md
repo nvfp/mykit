@@ -35,6 +35,8 @@ print(x)  # 2.79 PiB
 
 ## Changelog
 
+- 2.0.1 (June 14, 2023):
+    - Updated all type hints to make them work on Python 3.8 and 3.9
 - 2.0.0 (June 13, 2023):
     - Breaking changes:
         - New mechanism for app: `/app/__init__.py`
