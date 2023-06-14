@@ -1,9 +1,18 @@
+import typing as _typing
+
 from mykit.app import App as _App
 from mykit.app.complex.plot import Plot as _Plot
 
 
+if _typing.TYPE_CHECKING:
+    from typing import (
+        List as _List,
+        Tuple as _Tuple,
+    )
+
+
 def plot(
-    points: list[tuple[float, float]],
+    points: _List[_Tuple[float, float]],
     xspan = 0.80,
     yspan = 0.65,
     cfg: dict = {}
