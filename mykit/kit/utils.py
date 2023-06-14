@@ -1,6 +1,9 @@
 import datetime as _datetime
 import keyword as _keyword
 import random as _random
+from typing import (
+    Tuple as _Tuple
+)
 
 
 def randfloat(__low: float, __high: float, __prec: int = 2, /) -> float:
@@ -17,7 +20,7 @@ def randfloat(__low: float, __high: float, __prec: int = 2, /) -> float:
     return _random.randint(round(__low*k), round(__high*k)) / k
 
 
-def randrange(low: float, high: float, len: float, /, pad: float = 0.1, prec: int = 3) -> tuple[float, float]:
+def randrange(low: float, high: float, len: float, /, pad: float = 0.1, prec: int = 3) -> _Tuple[float, float]:
     """
     if `low = 0, high = 1` -> include both `0` and `1`.
     if `low = 0, high = 1, pad = 0.1` -> include both `0.1` and `0.9`.
