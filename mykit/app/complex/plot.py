@@ -1,22 +1,28 @@
 import random as _random
-import typing as _typing
+from typing import (
+    Dict as _Dict,
+    List as _List,
+    Optional as _Optional,
+    Tuple as _Tuple,
+    Union as _Union
+)
 
 from mykit.app._runtime import Runtime as _Rt
 
 
 class Plot(_Rt):
 
-    plots: dict[str, 'Plot'] = {}
-    plot_tags: dict[str, list['Plot']] = {}
+    plots: _Dict[str, 'Plot'] = {}
+    plot_tags: _Dict[str, _List['Plot']] = {}
 
     def __init__(
         self,
-        points: list[tuple[float, float]],
+        points: _List[_Tuple[float, float]],
         /,
-        xmin: _typing.Optional[float] = None,
-        xmax: _typing.Optional[float] = None,
-        ymin: _typing.Optional[float] = None,
-        ymax: _typing.Optional[float] = None,
+        xmin: _Optional[float] = None,
+        xmax: _Optional[float] = None,
+        ymin: _Optional[float] = None,
+        ymax: _Optional[float] = None,
 
         width: int = 300,
         height: int = 200,
@@ -39,24 +45,24 @@ class Plot(_Rt):
 
         title: str = '',
         title_color: str = '#fff',
-        title_font: str | tuple = ('Arial Bold', 15),
+        title_font: _Union[str, tuple] = ('Arial Bold', 15),
 
         x_axis_label: str = '',
         x_axis_label_shift: int = 15,
-        x_axis_label_font: str | tuple = ('Arial Bold', 12),
+        x_axis_label_font: _Union[str, tuple] = ('Arial Bold', 12),
         y_axis_label: str = '',
         y_axis_label_shift: int = 15,
-        y_axis_label_font: str | tuple = ('Arial Bold', 12),
+        y_axis_label_font: _Union[str, tuple] = ('Arial Bold', 12),
 
         tick_x_prefix: str = '',
         tick_x_suffix: str = '',
         tick_x_shift: int = 0,
-        tick_x_font: str | tuple = 'Consolas 9',
+        tick_x_font: _Union[str, tuple] = 'Consolas 9',
         tick_x_prec: int = 1,
         tick_y_prefix: str = '',
         tick_y_suffix: str = '',
         tick_y_shift: int = 0,
-        tick_y_font: str | tuple = 'Consolas 9',
+        tick_y_font: _Union[str, tuple] = 'Consolas 9',
         tick_y_prec: int = 1,
         tick_color: str = '#ccc',
 
@@ -68,8 +74,10 @@ class Plot(_Rt):
         points_color: str = '#a77',
         points_border: str = '#eee',
 
-        id: str | None = None,
-        tags: str | list[str] | None = None,
+        visible: bool = True,
+
+        id: _Optional[str] = None,
+        tags: _Optional[_Union[str, _List[str]]] = None,
     ):
         """
         To display this graph, there should be a minimum of 2 pairs of points in `points`.
@@ -140,6 +148,8 @@ class Plot(_Rt):
         self.points_rad = points_rad
         self.points_color = points_color
         self.points_border = points_border
+
+        self.visibile = visible
 
         ## `self.id`: to make sure that we can modify a specific instance without affecting the others
         if id is None:
@@ -344,7 +354,7 @@ class Plot(_Rt):
                     fill=self.points_color, outline=self.points_border, width=1, tags=f'Plot_{self.id}'
                 )
     
-    def redraw_plot(self, points: list[tuple[float, float]], /) -> None:
+    def redraw_plot(self, points: _List[_Tuple[float, float]], /) -> None:
         """
         Redraws the plot and updates the tick labels with a new set of given `points`.
         """
@@ -435,7 +445,7 @@ class Plot(_Rt):
             tags=(f'Plot_{self.id}', f'Plot_{self.id}_plot')
         )
 
-    def shift_plot(self, new_points: list[tuple[float, float]], /) -> None:
+    def shift_plot(self, new_points: _List[_Tuple[float, float]], /) -> None:
         """
         Shifts the plot by inserting `new_points` and removing the leftmost points.
         For example, if 2 pairs are inserted, 2 leftmost pairs will be removed.
@@ -447,7 +457,7 @@ class Plot(_Rt):
         points = self.points[n_new:] + new_points
         self.redraw_plot(points)
 
-    def add_point(self, point: tuple[float, float], max: int | None = None):
+    def add_point(self, point: _Tuple[float, float], max: _Optional[int] = None):
         """
         Adding the new point to the current plot.
         If a max value is specified (e.g., max=100), and the total number of points
@@ -466,3 +476,23 @@ class Plot(_Rt):
                 self.redraw_plot(points)
             else:
                 self.shift_plot([point])
+
+    
+    def set_visibility(self, visible: bool, /):
+        if self.visible is not visible:
+            self.visible = visible
+            self._redraw()
+
+    @staticmethod
+    def set_visibility_by_id(id: str, visible: bool, /):
+        Plot.plots[id].set_visibility(visible)
+
+    @staticmethod
+    def set_visibility_by_tag(tag: str, visible: bool, /):
+        for plot in Plot.plot_tags[tag]:
+            plot.set_visibility(visible)
+
+    @staticmethod
+    def set_visibility_all(visible: bool, /):
+        for plot in Plot.plots.values():
+            plot.set_visibility(visible)

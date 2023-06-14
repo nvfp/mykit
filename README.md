@@ -35,6 +35,9 @@ print(x)  # 2.79 PiB
 
 ## Changelog
 
+- 2.0.2 (June 14, 2023):
+    - finished updating all type hints
+    - Added visibility functionality to `/app/complex/plot.py`
 - 2.0.1 (June 14, 2023):
     - Updated all type hints to make them work on Python 3.8 and 3.9
     - Added visibility functionality to `/app/complex/biplot.py`
