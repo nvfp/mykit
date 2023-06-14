@@ -1,21 +1,29 @@
 import random as _random
 import tkinter as _tk
-import typing as _typing
+from typing import (
+    Callable as _Callable,
+    Dict as _Dict,
+    List as _List,
+    Literal as _Literal,
+    Optional as _Optional,
+    Tuple as _Tuple,
+    Union as _Union
+)
 
 
 class Label:
 
-    labels: dict[str, 'Label'] = {}
-    label_tags: dict[str, list['Label']] = {}
+    labels: _Dict[str, 'Label'] = {}
+    label_tags: _Dict[str, _List['Label']] = {}
 
     def __init__(
         self,
         x: int = 0,
         y: int = 0,
         text: str = '',
-        font: str | tuple[str, int] = 'Verdana 10',
+        font: _Union[str, _Tuple[str, int]] = 'Verdana 10',
         justify: str = 'left',
-        anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'] = 'nw',
+        anchor: _Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'] = 'nw',
         fg: str = '#ccc',
         bg: str = '#111',
         bd: str = '#555',
@@ -25,8 +33,8 @@ class Label:
         pady: int = 0,
         visible: bool = True,
 
-        id: str | None = None,
-        tags: str | list[str] | None = None,
+        id: _Optional[str] = None,
+        tags: _Optional[_Union[str, _List[str]]] = None,
     ):
         """
         `x`: the x-position for the `anchor` argument, not the center of the label
@@ -80,7 +88,7 @@ class Label:
         ## <tags>
 
 
-    def set_text(self, text: str | None, /):
+    def set_text(self, text: _Optional[str], /):
         """if None -> set default text."""
 
         if text is None:
@@ -91,17 +99,17 @@ class Label:
             self.label.configure(text=text)
 
     @staticmethod
-    def set_text_by_id(id: str, text: str | None, /):
+    def set_text_by_id(id: str, text: _Optional[str], /):
         Label.labels[id].set_text(text)
 
 
-    def set_font(self, font: str | tuple[str, int], /):
+    def set_font(self, font: _Union[str, _Tuple[str, int]], /):
         if font != self.font:
             self.font = font
             self.label.configure(font=font)
 
     @staticmethod
-    def set_font_by_id(id: str, font: str | tuple[str, int], /):
+    def set_font_by_id(id: str, font: _Union[str, _Tuple[str, int]], /):
         Label.labels[id].set_font(font)
 
 
@@ -153,7 +161,7 @@ class Label:
         return Label.labels[id].get_height()
 
 
-    def get_anchor_loc(self, anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'], /) -> tuple[int, int]:
+    def get_anchor_loc(self, anchor: _Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'], /) -> tuple[int, int]:
         """To get the center of the label coordinates, use `anchor='center'`"""
 
         W = self.get_width()
@@ -211,11 +219,17 @@ class Label:
             raise ValueError(f'Invalid anchor value: {repr(anchor)}')
 
     @staticmethod
-    def get_anchor_loc_by_id(id: str, anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'], /) -> tuple[int, int]:
+    def get_anchor_loc_by_id(id: str, anchor: _Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'], /) -> tuple[int, int]:
         return Label.labels[id].get_anchor_loc(anchor)
 
     
-    def move(self, x: int, y: int, /, anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'] | None = None) -> None:
+    def move(
+            self,
+            x: int,
+            y: int,
+            /,
+            anchor: _Optional[_Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
+    ) -> None:
         """If `anchor = None`, the current anchor will be used."""
         self.x = x
         self.y = y
@@ -230,7 +244,7 @@ class Label:
         x: int,
         y: int,
         /,
-        anchor: _typing.Optional[_typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
+        anchor: _Optional[_Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
     ) -> None:
         Label.labels[id].move(x, y, anchor)
 
