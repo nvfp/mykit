@@ -1,6 +1,11 @@
 import numpy as _np
 import random as _random
-import typing as _typing
+from typing import (
+    Callable as _Callable,
+    List as _List,
+    Optional as _Optional,
+    Tuple as _Tuple
+)
 
 from mykit.kit.math import relu as _ReLU
 
@@ -10,10 +15,10 @@ class DenseNN:
 
     def __init__(
         self,
-        sizes: list[int],
-        hidden_act_fn: _typing.Callable[[_np.ndarray, bool], _np.ndarray] = _ReLU,
-        output_act_fn: _typing.Callable[[_np.ndarray, bool], _np.ndarray] = _ReLU,
-        load_weights_and_biases: tuple[list[_np.ndarray], list[_np.ndarray]] | None = None,
+        sizes: _List[int],
+        hidden_act_fn: _Callable[[_np.ndarray, bool], _np.ndarray] = _ReLU,
+        output_act_fn: _Callable[[_np.ndarray, bool], _np.ndarray] = _ReLU,
+        load_weights_and_biases: _Optional[_Tuple[_List[_np.ndarray], _List[_np.ndarray]]] = None,
     ) -> None:
         """
         The network uses normalized Xavier weight initialization and cross-entropy loss function.
@@ -98,7 +103,7 @@ class DenseNN:
             Example: `np.array([[o1], [o2], [o3], ...])`
 
         ## Returns
-        `tuple[dgw, dgb]`: Gradients of weights and biases as lists.
+        `Tuple[dgw, dgb]`: Gradients of weights and biases as lists.
         """
 
         self.feedforward(inputs)
@@ -120,7 +125,7 @@ class DenseNN:
 
         return (dgw, dgb)
 
-    def _tuning(self, samples: list[tuple[_np.ndarray, _np.ndarray]], k1: float, k2: float) -> None:
+    def _tuning(self, samples: _List[_Tuple[_np.ndarray, _np.ndarray]], k1: float, k2: float) -> None:
         """
         Update weights and biases.
 
@@ -156,7 +161,7 @@ class DenseNN:
 
     def train(
         self,
-        training_data: list[tuple[_np.ndarray, _np.ndarray]],
+        training_data: _List[_Tuple[_np.ndarray, _np.ndarray]],
         sample_size: int,
         n_epoch: int,
         learning_rate: float = 0.005,
@@ -203,7 +208,7 @@ class DenseNN:
         return encoded_data
 
     @staticmethod
-    def decode(encoded_data: dict) -> tuple[list[_np.ndarray], list[_np.ndarray]]:
+    def decode(encoded_data: dict) -> _Tuple[_List[_np.ndarray], _List[_np.ndarray]]:
         """Decode the weights and biases from what is encoded by the `encode` method."""
         weights = [_np.array(w) for w in encoded_data['weights']]
         biases = [_np.array(b) for b in encoded_data['biases']]
