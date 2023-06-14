@@ -1,6 +1,11 @@
 import random as _random
 import numpy as _np
-import typing as _typing
+from typing import (
+    Callable as _Callable,
+    List as _List,
+    Optional as _Optional,
+    Tuple as _Tuple
+)
 
 from mykit.kit.neuralnet.dense import DenseNN as _DenseNN
 
@@ -9,19 +14,19 @@ class GeneticNN:
 
     def __init__(
         self,
-        layer_sizes: list[int],
-        hidden_act: _typing.Callable[[_np.ndarray, bool], _np.ndarray],
-        output_act: _typing.Callable[[_np.ndarray, bool], _np.ndarray],
+        layer_sizes: _List[int],
+        hidden_act: _Callable[[_np.ndarray, bool], _np.ndarray],
+        output_act: _Callable[[_np.ndarray, bool], _np.ndarray],
 
         population_size: int,
         crossover_threshold: float = 0.001,
         mutation1_rate: float = 0.85,
         mutation2_rate: float = 0.99,
-        mutation2_range: tuple[float, float] = (0.1, 2.5),
+        mutation2_range: _Tuple[float, float] = (0.1, 2.5),
         n_new: int = 0,
         init_score: float = 0,
         
-        load_wnb: tuple[list[_np.ndarray], list[_np.ndarray]] | None = None,
+        load_wnb: _Optional[_Tuple[_List[_np.ndarray], _List[_np.ndarray]]] = None,
     ) -> None:
         """
         Genetic neural network using dense neural network.
@@ -76,7 +81,7 @@ class GeneticNN:
 
         ## runtime
 
-        self.the_parent: tuple[_DenseNN, _DenseNN] = None  # to store the parent that produced the current generation (after executing `keep_elites()`)
+        self.the_parent: _Tuple[_DenseNN, _DenseNN] = None  # to store the parent that produced the current generation (after executing `keep_elites()`)
         self.prev: dict[_DenseNN, float] = {}  # to store the previous generation
 
 
