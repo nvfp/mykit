@@ -1,5 +1,6 @@
 import numpy as _np
 from typing import (
+    Tuple as _Tuple,
     Union as _Union
 )
 
@@ -81,7 +82,7 @@ def get_angle(origin_x: float, origin_y: float, x: float, y: float, in_radians: 
     return angle
 
 
-def rotate(x: float, y: float, ctrx: float, ctry: float, a: float) -> tuple[float, float]:
+def rotate(x: float, y: float, ctrx: float, ctry: float, a: float) -> _Tuple[float, float]:
     """
     Rotate points `(x, y)` around a center point `(ctrx, ctry)` by a given angle `a` in radians (CCW).
     The x-axis is positive to the right, and the y-axis is positive upwards.
