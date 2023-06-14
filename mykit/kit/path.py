@@ -2,14 +2,16 @@ import json as _json
 import os as _os
 import subprocess as _sp
 import sys as _sys
-import typing as _typing
+from typing import (
+    Any as _Any
+)
 
 
 class SafeJSON:
     """Secure JSON read/write operations, ensuring data integrity during writing and rewriting."""
 
     @staticmethod
-    def write(__pth: str, __obj: _typing.Any, /, do_log: bool = True) -> None:
+    def write(__pth: str, __obj: _Any, /, do_log: bool = True) -> None:
 
         ## normalize the path and perform some validations
         pth_norm = _os.path.normpath(__pth)
@@ -27,7 +29,7 @@ class SafeJSON:
             print(f'INFO: Json written: {repr(__pth)}.')
 
     @staticmethod
-    def read(__pth: str, /) -> _typing.Any:
+    def read(__pth: str, /) -> _Any:
 
         ## normalize the path and perform some validations
         pth_norm = _os.path.normpath(__pth)
@@ -41,7 +43,7 @@ class SafeJSON:
         return out
 
     @staticmethod
-    def rewrite(__pth: str, __obj: _typing.Any, /, do_log: bool = True) -> None:
+    def rewrite(__pth: str, __obj: _Any, /, do_log: bool = True) -> None:
 
         ## normalize the path and perform some validations
         pth_norm = _os.path.normpath(__pth)
