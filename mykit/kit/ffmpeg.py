@@ -1,8 +1,13 @@
 import re as _re
 import subprocess as _sp
+from typing import (
+    List as _List,
+    Tuple as _Tuple,
+    Union as _Union
+)
 
 
-def get_resolution(input_path: str, ffprobe_path: str) -> tuple[int, int]:
+def get_resolution(input_path: str, ffprobe_path: str) -> _Tuple[int, int]:
     """
     image/video resolution.
 
@@ -81,7 +86,7 @@ def get_audio_dur(file: str, ffprobe: str, /) -> float:
     return float(res.group('dur'))
 
 
-def get_vid_fps(file: str, ffprobe: str, /, *, do_round: bool = False) -> int | float:
+def get_vid_fps(file: str, ffprobe: str, /, *, do_round: bool = False) -> _Union[int, float]:
     """
     Video fps (average frame rate).
 
@@ -107,7 +112,7 @@ def get_vid_fps(file: str, ffprobe: str, /, *, do_round: bool = False) -> int | 
         return fps
 
 
-def gen_dyn_vol(__timestamp: list[tuple[float, float]], /, precision: float = 0.0001, vol_round: int = 2) -> str:
+def gen_dyn_vol(__timestamp: _List[_Tuple[float, float]], /, precision: float = 0.0001, vol_round: int = 2) -> str:
     """
     Generate a dynamic volume (with linear interpolation) filter.
 
