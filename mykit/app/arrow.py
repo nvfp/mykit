@@ -1,5 +1,12 @@
 import math as _math
 import random as _random
+from typing import (
+    Dict as _Dict,
+    List as _List,
+    Optional as _Optional,
+    Tuple as _Tuple,
+    Union as _Union
+)
 
 from mykit.app._runtime import Runtime as _Rt
 from mykit.kit.math import (
@@ -10,8 +17,8 @@ from mykit.kit.math import (
 
 class Arrow(_Rt):
 
-    arrows: dict[str, 'Arrow'] = {}
-    arrow_tags: dict[str, list['Arrow']] = {}
+    arrows: _Dict[str, 'Arrow'] = {}
+    arrow_tags: _Dict[str, list['Arrow']] = {}
 
     def __init__(
         self,
@@ -24,8 +31,9 @@ class Arrow(_Rt):
         tip_len: float = 20,
         tip_angle: float = 35,
         visible: bool = True,
-        id: str | None = None,
-        tags: str | list[str] | None = None,
+        
+        id: _Optional[str] = None,
+        tags: _Optional[_Union[str, _List[str]]] = None,
     ) -> None:
 
         if Arrow.page is None:
