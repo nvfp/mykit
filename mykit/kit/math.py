@@ -1,7 +1,13 @@
 import numpy as _np
+import typing as _typing
+
+if _typing.TYPE_CHECKING:
+    from typing import (
+        Union as _Union
+    )
 
 
-def tanh(x: float | _np.ndarray, /, derivative: bool = False) -> float | _np.ndarray:
+def tanh(x: _Union[float, _np.ndarray], /, derivative: bool = False) -> _Union[float, _np.ndarray]:
 
     z = _np.tanh(x)
 
@@ -10,7 +16,7 @@ def tanh(x: float | _np.ndarray, /, derivative: bool = False) -> float | _np.nda
     else:
         return z
 
-def sigmoid(x: float | _np.ndarray, /, derivative: bool = False) -> float | _np.ndarray:
+def sigmoid(x: _Union[float, _np.ndarray], /, derivative: bool = False) -> _Union[float, _np.ndarray]:
 
     z = 1 / (1 + _np.exp(-x))
 
@@ -19,7 +25,7 @@ def sigmoid(x: float | _np.ndarray, /, derivative: bool = False) -> float | _np.
     else:
         return z
 
-def relu(x: float | _np.ndarray, /, derivative: bool = False) -> float | _np.ndarray:
+def relu(x: _Union[float, _np.ndarray], /, derivative: bool = False) -> _Union[float, _np.ndarray]:
 
     if derivative:
         return _np.where(x > 0, 1, 0)
