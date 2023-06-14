@@ -1,22 +1,30 @@
 import random as _random
-import typing as _typing
+from typing import (
+    Callable as _Callable,
+    Dict as _Dict,
+    List as _List,
+    Literal as _Literal,
+    Optional as _Optional,
+    Tuple as _Tuple,
+    Union as _Union
+)
 
 from mykit.app._runtime import Runtime as _Rt
 
 
 class Button(_Rt):
 
-    buttons: dict[str, 'Button'] = {}
-    button_tags: dict[str, list['Button']] = {}
+    buttons: _Dict[str, 'Button'] = {}
+    button_tags: _Dict[str, _List['Button']] = {}
 
     def __init__(
         self,
         x: int = 0,
         y: int = 0,
-        fn: _typing.Callable[[], None] | None = None,
+        fn: _Optional[_Callable[[], None]] = None,
         label: str = '',
-        label_font: str | tuple[str, int] = 'Verdana 8',
-        anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'] = 'nw',
+        label_font: _Union[str, _Tuple[str, int]] = 'Verdana 8',
+        anchor: _Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'] = 'nw',
         width: int = 100,
         height: int = 18,
         locked: bool = False,
@@ -31,8 +39,8 @@ class Button(_Rt):
         color_lbl_normal: str = '#fafbfa',
         color_lbl_locked: str = '#050505',
 
-        id: str | None = None,
-        tags: str | list[str] | None = None,
+        id: _Optional[str] = None,
+        tags: _Optional[_Union[str, _List[str]]] = None,
     ) -> None:
         """
         ## Params
@@ -247,7 +255,7 @@ class Button(_Rt):
             button.set_visibility(visible)
 
 
-    def set_label(self, label: str | None, /):
+    def set_label(self, label: _Optional[str], /):
         """
         If `label = None`, the default label (the one assigned
         when the instance was created) will be used.
@@ -261,24 +269,24 @@ class Button(_Rt):
             self._redraw()
 
     @staticmethod
-    def set_label_by_id(id: str, label: str | None, /):
+    def set_label_by_id(id: str, label: _Optional[str], /):
         Button.buttons[id].set_label(label)
 
 
-    def set_fn(self, fn: _typing.Callable[[], None], /):
+    def set_fn(self, fn: _Callable[[], None], /):
         if self.fn is not fn:
             self.fn = fn
 
     @staticmethod
-    def set_fn_by_id(id: str, fn: _typing.Callable[[], None], /):
+    def set_fn_by_id(id: str, fn: _Callable[[], None], /):
         Button.buttons[id].set_fn(fn)
 
 
     def get_anchor_loc(
         self,
-        anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'],
+        anchor: _Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'],
         /
-    ) -> tuple[int, int]:
+    ) -> _Tuple[int, int]:
         """To get the button's center coordinate, use `anchor='center'`"""
 
         W = self.width
@@ -338,9 +346,9 @@ class Button(_Rt):
     @staticmethod
     def get_anchor_loc_by_id(
         id: str,
-        anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'],
+        anchor: _Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'],
         /
-    ) -> tuple[int, int]:
+    ) -> _Tuple[int, int]:
         return Button.buttons[id].get_anchor_loc(anchor)
 
 
@@ -349,7 +357,7 @@ class Button(_Rt):
         x: int,
         y: int,
         /,
-        anchor: _typing.Optional[_typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
+        anchor: _Optional[_Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
     ) -> None:
         """If `anchor = None`, the current anchor will be used."""
         self.x = x
@@ -364,7 +372,7 @@ class Button(_Rt):
         x: int,
         y: int,
         /,
-        anchor: _typing.Optional[_typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
+        anchor: _Optional[_Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
     ) -> None:
         Button.buttons[id].move(x, y, anchor)
 
