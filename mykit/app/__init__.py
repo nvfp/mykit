@@ -1,5 +1,7 @@
 import tkinter as _tk
-import typing as _typing
+from typing import (
+    Callable as _Callable
+)
 
 from mykit.app._runtime import Runtime as _Rt
 from mykit.app.button import Button as _Button
@@ -49,7 +51,7 @@ class App(_Rt):
         self._teardown = None
         ## </runtime>
 
-    def listen(self, to: str, do: _typing.Callable[[_tk.Event], None]):
+    def listen(self, to: str, do: _Callable[[_tk.Event], None]):
         """
         Add event listener.
 
@@ -71,10 +73,10 @@ class App(_Rt):
         else:
             ValueError(f'Invalid event: {repr(to)}.')
 
-    def setup(self, funcs: list[_typing.Callable[[], None]]):
+    def setup(self, funcs: list[_Callable[[], None]]):
         self._setup = funcs
 
-    def teardown(self, funcs: list[_typing.Callable[[], None]]):
+    def teardown(self, funcs: list[_Callable[[], None]]):
         self._teardown = funcs
 
     def run(self):
