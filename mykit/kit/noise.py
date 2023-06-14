@@ -1,6 +1,10 @@
 import math as _math
 import random as _random
 import time as _time
+from typing import (
+    List as _List,
+    Tuple as _Tuple
+)
 
 
 def _non_periodic_fn(__x: float, /, a: float = 1, b: float = 1, c: float = 1, d: float = 1, e: float = 1, f: float = 1, g: float = 1):
@@ -19,8 +23,8 @@ def random_sine_noise(
     nsample: int,
     ymin: int,
     ymax: int,
-    params: tuple = (1, 1, 1, 1, 1, 1, 1)
-) -> list[tuple[float, float]]:
+    params: _Tuple = (1, 1, 1, 1, 1, 1, 1)
+) -> _List[_Tuple[float, float]]:
 
     _random.seed(seed)
     shift = _random.randint(-1000000000, 1000000000)
