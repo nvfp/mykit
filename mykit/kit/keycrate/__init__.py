@@ -1,5 +1,10 @@
 import re as _re
-import typing as _typing
+from typing import (
+    Any as _Any,
+    List as _List,
+    NoReturn as _NoReturn,
+    Optional as _Optional
+)
 
 from mykit.kit.path import open_file as _open_file
 from mykit.kit.utils import is_valid_var_name as _is_valid_var_name
@@ -17,8 +22,8 @@ class KeyCrate:
         /,
         key_is_var: bool = False,
         eval_value: bool = False,
-        only_keys: _typing.Optional[list[str]] = None,
-        need_keys: _typing.Optional[list[str]] = None
+        only_keys: _Optional[_List[str]] = None,
+        need_keys: _Optional[_List[str]] = None
     ) -> None:
         """
         Storing key-value pairs (key: value) in the .txt file `file_pth`.
@@ -59,11 +64,11 @@ class KeyCrate:
         ## init
         self.parse()
 
-    def __getattr__(self, __name: str, __default: _typing.Any = None, /) -> _typing.NoReturn:
+    def __getattr__(self, __name: str, __default: _Any = None, /) -> _NoReturn:
         """This method is called when attribute `__name` is not found"""
         raise AttributeError(f'KeyCrate file {repr(self._kc__file_pth)} does not have key {repr(__name)}.')
 
-    def __getitem__(self, __key: str, /) -> _typing.Any:
+    def __getitem__(self, __key: str, /) -> _Any:
         """
         To access the keys in a dictionary-like way (e.g., `kc['key1']`),
         it is commonly used for keys that are not variable names (e.g., `kc['full name']`).
