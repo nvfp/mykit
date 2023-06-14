@@ -87,6 +87,8 @@ class Biplot(_Rt):
         legends_shift_x: int = 30,
         legends_shift_y: int = 10,
 
+        visible: bool = True,
+
         id: _Optional[str] = None,
         tags: _Optional[_Union[str, _List[str]]] = None,
     ):
@@ -172,6 +174,8 @@ class Biplot(_Rt):
         self.legends_color = legends_color
         self.legends_shift_x = legends_shift_x
         self.legends_shift_y = legends_shift_y
+
+        self.visible = visible
 
         ## `self.id`: to make sure that we can modify a specific instance without affecting the others
         if id is None:
@@ -560,3 +564,23 @@ class Biplot(_Rt):
                 self.redraw_plot(points1, points2)
             else:
                 self.shift_plot([point1], [point2])
+
+
+    def set_visibility(self, visible: bool, /):
+        if self.visible is not visible:
+            self.visible = visible
+            self._redraw()
+
+    @staticmethod
+    def set_visibility_by_id(id: str, visible: bool, /):
+        Biplot.biplots[id].set_visibility(visible)
+
+    @staticmethod
+    def set_visibility_by_tag(tag: str, visible: bool, /):
+        for bp in Biplot.biplot_tags[tag]:
+            bp.set_visibility(visible)
+
+    @staticmethod
+    def set_visibility_all(visible: bool, /):
+        for bp in Biplot.biplots.values():
+            bp.set_visibility(visible)
