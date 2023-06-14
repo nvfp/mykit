@@ -1,10 +1,7 @@
 import numpy as _np
-import typing as _typing
-
-if _typing.TYPE_CHECKING:
-    from typing import (
-        Union as _Union
-    )
+from typing import (
+    Union as _Union
+)
 
 
 def tanh(x: _Union[float, _np.ndarray], /, derivative: bool = False) -> _Union[float, _np.ndarray]:

@@ -1,14 +1,10 @@
-import typing as _typing
+from typing import (
+    List as _List,
+    Tuple as _Tuple,
+)
 
 from mykit.app import App as _App
 from mykit.app.complex.plot import Plot as _Plot
-
-
-if _typing.TYPE_CHECKING:
-    from typing import (
-        List as _List,
-        Tuple as _Tuple,
-    )
 
 
 def plot(
