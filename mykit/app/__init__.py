@@ -1,6 +1,7 @@
 import tkinter as _tk
 from typing import (
-    Callable as _Callable
+    Callable as _Callable,
+    List as _List
 )
 
 from mykit.app._runtime import Runtime as _Rt
@@ -73,10 +74,10 @@ class App(_Rt):
         else:
             ValueError(f'Invalid event: {repr(to)}.')
 
-    def setup(self, funcs: list[_Callable[[], None]]):
+    def setup(self, funcs: _List[_Callable[[], None]]):
         self._setup = funcs
 
-    def teardown(self, funcs: list[_Callable[[], None]]):
+    def teardown(self, funcs: _List[_Callable[[], None]]):
         self._teardown = funcs
 
     def run(self):

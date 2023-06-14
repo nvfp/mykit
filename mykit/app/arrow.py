@@ -18,7 +18,7 @@ from mykit.kit.math import (
 class Arrow(_Rt):
 
     arrows: _Dict[str, 'Arrow'] = {}
-    arrow_tags: _Dict[str, list['Arrow']] = {}
+    arrow_tags: _Dict[str, _List['Arrow']] = {}
 
     def __init__(
         self,

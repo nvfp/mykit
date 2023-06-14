@@ -161,7 +161,7 @@ class Label:
         return Label.labels[id].get_height()
 
 
-    def get_anchor_loc(self, anchor: _Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'], /) -> tuple[int, int]:
+    def get_anchor_loc(self, anchor: _Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'], /) -> _Tuple[int, int]:
         """To get the center of the label coordinates, use `anchor='center'`"""
 
         W = self.get_width()
@@ -219,7 +219,7 @@ class Label:
             raise ValueError(f'Invalid anchor value: {repr(anchor)}')
 
     @staticmethod
-    def get_anchor_loc_by_id(id: str, anchor: _Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'], /) -> tuple[int, int]:
+    def get_anchor_loc_by_id(id: str, anchor: _Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'], /) -> _Tuple[int, int]:
         return Label.labels[id].get_anchor_loc(anchor)
 
     

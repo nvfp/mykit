@@ -2,6 +2,7 @@ import random as _random
 import numpy as _np
 from typing import (
     Callable as _Callable,
+    Dict as _Dict,
     List as _List,
     Optional as _Optional,
     Tuple as _Tuple
@@ -65,7 +66,7 @@ class GeneticNN:
         self.n_new = n_new
         self.init_score = init_score
 
-        self.population: dict[_DenseNN, float] = {}
+        self.population: _Dict[_DenseNN, float] = {}
         for _ in range(population_size):
 
             if load_wnb is None:
@@ -82,7 +83,7 @@ class GeneticNN:
         ## runtime
 
         self.the_parent: _Tuple[_DenseNN, _DenseNN] = None  # to store the parent that produced the current generation (after executing `keep_elites()`)
-        self.prev: dict[_DenseNN, float] = {}  # to store the previous generation
+        self.prev: _Dict[_DenseNN, float] = {}  # to store the previous generation
 
 
     def set_score(self, individual: _DenseNN, score: float, /) -> None:
