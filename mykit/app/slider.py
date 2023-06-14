@@ -1,6 +1,13 @@
 import random as _random
-import tkinter as _tk
-import typing as _typing
+from typing import (
+    Callable as _Callable,
+    Dict as _Dict,
+    List as _List,
+    Literal as _Literal,
+    Optional as _Optional,
+    Tuple as _Tuple,
+    Union as _Union
+)
 
 from mykit.app._runtime import Runtime as _Rt
 from mykit.kit.utils import minmax_normalization as _norm
@@ -8,40 +15,40 @@ from mykit.kit.utils import minmax_normalization as _norm
 
 class _Slider(_Rt):
 
-    sliders: dict[str, '_Slider'] = {}
-    slider_tags: dict[str, list['_Slider']] = {}  # note that the horizontal and vertical sliders store the tags together
+    sliders: _Dict[str, '_Slider'] = {}
+    slider_tags: _Dict[str, _List['_Slider']] = {}  # note that the horizontal and vertical sliders store the tags together
 
     def __init__(
         self,
         min: float = 0,
         max: float = 1,
-        step: _typing.Optional[float] = None,
-        init: _typing.Optional[float] = None,
-        fn: _typing.Optional[_typing.Callable[[], None]] = None,
+        step: _Optional[float] = None,
+        init: _Optional[float] = None,
+        fn: _Optional[_Callable[[], None]] = None,
 
         x: int = 0,
         y: int = 0,
-        anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'] = 'nw',
+        anchor: _Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'] = 'nw',
         tolerance: float = 0.25,
         
-        label: _typing.Optional[str] = None,
+        label: _Optional[str] = None,
         label_fg: str = '#ccc',
-        label_font: str | tuple[str, int] = 'Verdana 9',
+        label_font: _Union[str, _Tuple[str, int]] = 'Verdana 9',
         show_label_box: bool = False,
-        label_box_color: _typing.Optional[str] = None,
-        label_box_width: _typing.Optional[int] = None,
-        label_box_height: _typing.Optional[int] = None,
+        label_box_color: _Optional[str] = None,
+        label_box_width: _Optional[int] = None,
+        label_box_height: _Optional[int] = None,
         label_y_shift: int = -15,
 
         show_value: bool = True,
         value_fg: str = '#ccc',
-        value_font: str | tuple[str, int] = 'Consolas 9',
+        value_font: _Union[str, _Tuple[str, int]] = 'Consolas 9',
         value_prefix: str = '',
         value_suffix: str = '',
         show_value_box: bool = False,
-        value_box_color: _typing.Optional[str] = None,
-        value_box_width: _typing.Optional[int] = None,
-        value_box_height: _typing.Optional[int] = None,
+        value_box_color: _Optional[str] = None,
+        value_box_width: _Optional[int] = None,
+        value_box_height: _Optional[int] = None,
 
         rod_len: int = 200,
         rod_thick: int = 3,
@@ -58,8 +65,8 @@ class _Slider(_Rt):
         locked: bool = False,
         visible: bool = True,
 
-        id: str | None = None,
-        tags: str | list[str] | None = None,
+        id: _Optional[str] = None,
+        tags: _Optional[_Union[str, _List[str]]] = None,
     ) -> None:
         """
         ## Params
@@ -219,7 +226,7 @@ class _Slider(_Rt):
             slider.set_visibility(visible)
 
 
-    def set_value(self, value: int | None, /) -> None:
+    def set_value(self, value: _Optional[int], /) -> None:
         """if `None` -> default value."""
 
         if value is None:
@@ -235,16 +242,16 @@ class _Slider(_Rt):
             self._redraw()
     
     @staticmethod
-    def set_value_by_id(id: str, value: int | None, /) -> None:
+    def set_value_by_id(id: str, value: _Optional[int], /) -> None:
         _Slider.sliders[id].set_value(value)
 
     @staticmethod
-    def set_value_by_tag(tag: str, value: int | None, /) -> None:
+    def set_value_by_tag(tag: str, value: _Optional[int], /) -> None:
         for slider in _Slider.slider_tags[tag]:
             slider.set_value(value)
 
     @staticmethod
-    def set_value_all(value: int | None, /) -> None:
+    def set_value_all(value: _Optional[int], /) -> None:
         """To reset the value of all sliders, use `value = None`."""
         for slider in _Slider.sliders.values():
             slider.set_value(value)
@@ -257,9 +264,9 @@ class _Slider(_Rt):
 
     def get_anchor_loc(
         self,
-        anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'],
+        anchor: _Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'],
         /
-    ) -> tuple[int, int]:
+    ) -> _Tuple[int, int]:
         """To get the slider-rod's center coordinate, use `anchor='center'`"""
 
         W = self.width
@@ -319,9 +326,9 @@ class _Slider(_Rt):
     @staticmethod
     def get_anchor_loc_by_id(
         id: str,
-        anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'],
+        anchor: _Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'],
         /
-    ) -> tuple[int, int]:
+    ) -> _Tuple[int, int]:
         return _Slider.sliders[id].get_anchor_loc(anchor)
 
 
@@ -330,7 +337,7 @@ class _Slider(_Rt):
         x: int,
         y: int,
         /,
-        anchor: _typing.Optional[_typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
+        anchor: _Optional[_Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
     ) -> None:
         """If `anchor = None`, the current anchor will be used."""
         self.x = x
@@ -345,7 +352,7 @@ class _Slider(_Rt):
         x: int,
         y: int,
         /,
-        anchor: _typing.Optional[_typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
+        anchor: _Optional[_Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
     ) -> None:
         _Slider.sliders[id].move(x, y, anchor)
 
@@ -409,33 +416,33 @@ class Slider(_Slider):
         self,
         min: float = 0,
         max: float = 1,
-        step: _typing.Optional[float] = None,
-        init: _typing.Optional[float] = None,
-        fn: _typing.Optional[_typing.Callable[[], None]] = None,
+        step: _Optional[float] = None,
+        init: _Optional[float] = None,
+        fn: _Optional[_Callable[[], None]] = None,
 
         x: int = 0,
         y: int = 0,
-        anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'] = 'nw',
+        anchor: _Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'] = 'nw',
         tolerance: float = 0.25,
         
-        label: _typing.Optional[str] = None,
+        label: _Optional[str] = None,
         label_fg: str = '#ccc',
-        label_font: str | tuple[str, int] = 'Verdana 9',
+        label_font: _Union[str, _Tuple[str, int]] = 'Verdana 9',
         show_label_box: bool = False,
-        label_box_color: _typing.Optional[str] = None,
-        label_box_width: _typing.Optional[int] = None,
-        label_box_height: _typing.Optional[int] = None,
+        label_box_color: _Optional[str] = None,
+        label_box_width: _Optional[int] = None,
+        label_box_height: _Optional[int] = None,
         label_y_shift: int = -15,
 
         show_value: bool = True,
         value_fg: str = '#ccc',
-        value_font: str | tuple[str, int] = 'Consolas 9',
+        value_font: _Union[str, _Tuple[str, int]] = 'Consolas 9',
         value_prefix: str = '',
         value_suffix: str = '',
         show_value_box: bool = False,
-        value_box_color: _typing.Optional[str] = None,
-        value_box_width: _typing.Optional[int] = None,
-        value_box_height: _typing.Optional[int] = None,
+        value_box_color: _Optional[str] = None,
+        value_box_width: _Optional[int] = None,
+        value_box_height: _Optional[int] = None,
         value_box_x_shift: int = 25,  # extra arg. reminder: this parameter has a different argument name for horizontal and vertical sliders
 
         rod_len: int = 200,
@@ -453,8 +460,8 @@ class Slider(_Slider):
         locked: bool = False,
         visible: bool = True,
 
-        id: str | None = None,
-        tags: str | list[str] | None = None,
+        id: _Optional[str] = None,
+        tags: _Optional[_Union[str, _List[str]]] = None,
     ) -> None:
 
         super().__init__(
@@ -617,33 +624,33 @@ class VSlider(_Slider):
         self,
         min: float = 0,
         max: float = 1,
-        step: _typing.Optional[float] = None,
-        init: _typing.Optional[float] = None,
-        fn: _typing.Optional[_typing.Callable[[], None]] = None,
+        step: _Optional[float] = None,
+        init: _Optional[float] = None,
+        fn: _Optional[_Callable[[], None]] = None,
 
         x: int = 0,
         y: int = 0,
-        anchor: _typing.Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'] = 'nw',
+        anchor: _Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'] = 'nw',
         tolerance: float = 0.25,
         
-        label: _typing.Optional[str] = None,
+        label: _Optional[str] = None,
         label_fg: str = '#ccc',
-        label_font: str | tuple[str, int] = 'Verdana 9',
+        label_font: _Union[str, _Tuple[str, int]] = 'Verdana 9',
         show_label_box: bool = False,
-        label_box_color: _typing.Optional[str] = None,
-        label_box_width: _typing.Optional[int] = None,
-        label_box_height: _typing.Optional[int] = None,
+        label_box_color: _Optional[str] = None,
+        label_box_width: _Optional[int] = None,
+        label_box_height: _Optional[int] = None,
         label_y_shift: int = -15,
 
         show_value: bool = True,
         value_fg: str = '#ccc',
-        value_font: str | tuple[str, int] = 'Consolas 9',
+        value_font: _Union[str, _Tuple[str, int]] = 'Consolas 9',
         value_prefix: str = '',
         value_suffix: str = '',
         show_value_box: bool = False,
-        value_box_color: _typing.Optional[str] = None,
-        value_box_width: _typing.Optional[int] = None,
-        value_box_height: _typing.Optional[int] = None,
+        value_box_color: _Optional[str] = None,
+        value_box_width: _Optional[int] = None,
+        value_box_height: _Optional[int] = None,
         value_box_y_shift: int = 15,  # extra arg. reminder: this parameter has a different argument name for horizontal and vertical sliders
 
         rod_len: int = 200,
@@ -661,8 +668,8 @@ class VSlider(_Slider):
         locked: bool = False,
         visible: bool = True,
 
-        id: str | None = None,
-        tags: str | list[str] | None = None,
+        id: _Optional[str] = None,
+        tags: _Optional[_Union[str, _List[str]]] = None,
     ) -> None:
 
         super().__init__(
