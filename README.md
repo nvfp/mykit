@@ -39,7 +39,7 @@ print(x)  # 2.79 PiB
 ## Changelog
 
 - 2.0.4 (June 16, 2023):
-    - Now `move` method of `Button`, `Label`, `_Slider` and will return self
+    - Now `move` method of `Button`, `Label`, and `_Slider` will return self
 - 2.0.3 (June 16, 2023):
     - Now `.app.complex.plot.Plot` and `.app.complex.plot.Biplot` can be used even if no points is specified
     - Added `add_background_processes` to `.app.App`
