@@ -76,15 +76,15 @@ class App(_Rt):
         else:
             ValueError(f'Invalid event: {repr(to)}.')
     
-    def add_background_processes(self, duration: int, function: _Callable[[], None]) -> None:
+    def add_background_processes(self, every: int, do: _Callable[[], None]) -> None:
         """
-        Execute `function` every `duration` milliseconds.
+        Execute `do` every `every` milliseconds.
         The first execution occurs immediately after the app runs.
         """
-        if duration in self._background_processes:
-            self._background_processes[duration].append(function)
+        if every in self._background_processes:
+            self._background_processes[every].append(do)
         else:
-            self._background_processes[duration] = [function]
+            self._background_processes[every] = [do]
 
     def setup(self, funcs: _List[_Callable[[], None]]):
         self._setup = funcs
