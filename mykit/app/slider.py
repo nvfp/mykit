@@ -338,13 +338,14 @@ class _Slider(_Rt):
         y: int,
         /,
         anchor: _Optional[_Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
-    ) -> None:
+    ) -> '_Slider':
         """If `anchor = None`, the current anchor will be used."""
         self.x = x
         self.y = y
         if anchor is not None:
             self.anchor = anchor
         self._redraw()
+        return self
 
     @staticmethod
     def move_by_id(

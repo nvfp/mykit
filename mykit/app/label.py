@@ -224,12 +224,12 @@ class Label:
 
     
     def move(
-            self,
-            x: int,
-            y: int,
-            /,
-            anchor: _Optional[_Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
-    ) -> None:
+        self,
+        x: int,
+        y: int,
+        /,
+        anchor: _Optional[_Literal['center', 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']] = None
+    ) -> 'Label':
         """If `anchor = None`, the current anchor will be used."""
         self.x = x
         self.y = y
@@ -237,6 +237,7 @@ class Label:
             self.anchor = anchor
         # self.label.place(x=x, y=y, anchor=anchor)  # reminder: don't do this because `anchor` could be `None`
         self.label.place(x=x, y=y, anchor=self.anchor)
+        return self
 
     @staticmethod
     def move_by_id(
