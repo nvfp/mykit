@@ -48,8 +48,10 @@ class App(_Rt):
         self._left_mouse_hold = []
         self._left_mouse_release = []
 
-        self._setup = None
-        self._teardown = None
+        self._background_processes = {}
+
+        self._setup = []
+        self._teardown = []
         ## </runtime>
 
     def listen(self, to: str, do: _Callable[[_tk.Event], None]):
@@ -73,6 +75,16 @@ class App(_Rt):
             self._left_mouse_release.append(do)
         else:
             ValueError(f'Invalid event: {repr(to)}.')
+    
+    def add_background_processes(self, duration: int, function: _Callable[[], None]) -> None:
+        """
+        Execute `function` every `duration` milliseconds.
+        The first execution occurs immediately after the app runs.
+        """
+        if duration in self._background_processes:
+            self._background_processes[duration].append(function)
+        else:
+            self._background_processes[duration] = [function]
 
     def setup(self, funcs: _List[_Callable[[], None]]):
         self._setup = funcs
@@ -124,27 +136,35 @@ class App(_Rt):
 
 
         ## <background processes>
-        
+
+        ## internal
         def repeat50():
             _Button.hover_listener()
             _Slider.hover_listener()
             self.root.after(50, repeat50)
-        repeat50()
+        # self.root.after(50, repeat50)  # start after 50ms
+        repeat50()  # start immediately
+
+        ## users
+        def setup_background_processes():
+            def wrapper(dur, funcs):
+                def inner():
+                    for fn in funcs: fn()
+                    self.root.after(dur, inner)
+                return inner
+            for dur, funcs in self._background_processes.items():
+                fn = wrapper(dur, funcs)
+                fn()  # start immediately
+        setup_background_processes()
         
         ## </background processes>
 
 
         ## setup
-        if self._setup is not None:
-            for fn in self._setup:
-                fn()
-
+        for fn in self._setup: fn()
 
         ## run
         self.root.mainloop()
 
-
         ## teardown
-        if self._teardown is not None:
-            for fn in self._teardown:
-                fn()
+        for fn in self._teardown: fn()

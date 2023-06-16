@@ -17,8 +17,8 @@ class Plot(_Rt):
 
     def __init__(
         self,
-        points: _List[_Tuple[float, float]],
-        /,
+        points: _List[_Tuple[float, float]] = [],
+
         xmin: _Optional[float] = None,
         xmax: _Optional[float] = None,
         ymin: _Optional[float] = None,
@@ -80,7 +80,8 @@ class Plot(_Rt):
         tags: _Optional[_Union[str, _List[str]]] = None,
     ):
         """
-        To display this graph, there should be a minimum of 2 pairs of points in `points`.
+        The graph can be displayed without any given points,
+        but in order to show the plot, two points need to be specified.
 
         ---
 
@@ -188,6 +189,10 @@ class Plot(_Rt):
 
     def _redraw(self):
         """redraw the entire graph"""
+
+        ## 2 points need to be specified in order to draw the graph
+        if len(self.points) < 3:
+            self.points = [(0, 0), (1, 0)]
 
         x_values = [p[0] for p in self.points]
         if self.xmin is None:
@@ -359,10 +364,16 @@ class Plot(_Rt):
         Redraws the plot and updates the tick labels with a new set of given `points`.
         """
 
+        ## reminder: to optimize things, only redraw the necessary part
+        ##           so the code below is duplicated from `_redraw`.
+        ##           it's redundant, but currently the easiest way to
+        ##           achieve the desired functionality
+
         self.points = points
 
-        ## The code below is duplicated from `_redraw`. While it may seem redundant,
-        ## it's currently the easiest way to achieve the desired functionality.
+        ## 2 points need to be specified in order to draw the graph
+        if len(self.points) < 3:
+            self.points = [(0, 0), (1, 0)]
 
         x_values = [p[0] for p in self.points]
         if self.xmin is None:
