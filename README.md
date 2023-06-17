@@ -43,6 +43,7 @@ print(x)  # 2.79 PiB
         - Changed `title` arg to `name` in `.app.App`
         - Now `/kit/keycrate` must be a .txt file, and the file must exist
         - Added `export` method to `.kit.keycrate.KeyCrate`
+    - Added test suite for `.kit.keycrate.KeyCrate`
 - 2.0.4 (June 16, 2023):
     - Now `move` method of `Button`, `Label`, and `_Slider` will return self
 - 2.0.3 (June 16, 2023):

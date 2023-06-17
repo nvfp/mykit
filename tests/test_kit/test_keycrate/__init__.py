@@ -257,7 +257,7 @@ class TestKeyCrate(unittest.TestCase):
             KeyCrate(pth, need_keys=['k1', 'k2', 'k3', 'k4', 'name, age and job'])
         self.assertIsNotNone(ctx.exception)
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} is missing keys: 'k3', 'k4', 'name, age and job'")
-    
+
 
     def test_only_keys_and_need_keys(self):
         
