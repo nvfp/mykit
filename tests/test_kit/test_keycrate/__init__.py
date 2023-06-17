@@ -109,5 +109,14 @@ class TestKeyCrate(unittest.TestCase):
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has invalid syntax at line 2: ': '")
 
 
+    def test_invalid_syntax_that_missing_value(self):
+
+        pth = os.path.join(dir, 'invalid-syntax-that-missing-value.txt')
+        with self.assertRaises(SyntaxError) as ctx:
+            KeyCrate(pth)
+        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has invalid syntax at line 2: ' :'")  # key without value
+
+
 if __name__ == '__main__':
     unittest.main()
