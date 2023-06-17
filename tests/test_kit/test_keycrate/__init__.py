@@ -257,6 +257,45 @@ class TestKeyCrate(unittest.TestCase):
             KeyCrate(pth, need_keys=['k1', 'k2', 'k3', 'k4', 'name, age and job'])
         self.assertIsNotNone(ctx.exception)
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} is missing keys: 'k3', 'k4', 'name, age and job'")
+    
+
+    def test_only_keys_and_need_keys(self):
+        
+        ## test I: pass
+        pth = os.path.join(dir, 'only_keys-need_keys.txt')
+        kc = KeyCrate(pth,
+            only_keys=['k1', 'k2'],
+            need_keys=['k1', 'k2']
+        )
+        self.assertIsInstance(kc, KeyCrate)
+        
+        ## test II: pass
+        pth = os.path.join(dir, 'only_keys-need_keys.txt')
+        kc = KeyCrate(pth,
+            only_keys=['k1', 'k2', 'k3'],
+            need_keys=['k1']
+        )
+        self.assertIsInstance(kc, KeyCrate)
+
+        ## test III: fail
+        pth = os.path.join(dir, 'only_keys-need_keys.txt')
+        with self.assertRaises(AssertionError) as ctx:
+            KeyCrate(pth,
+                only_keys=['k1', 'k2', 'k3'],
+                need_keys=['k1', 'k2', 'k3']
+            )
+        self.assertIsNotNone(ctx.exception)
+        self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} is missing keys: 'k3'")
+
+        ## test IV: fail
+        pth = os.path.join(dir, 'only_keys-need_keys.txt')
+        with self.assertRaises(AssertionError) as ctx:
+            KeyCrate(pth,
+                only_keys=['k1'],
+                need_keys=['k1', 'k2']
+            )
+        self.assertIsNotNone(ctx.exception)
+        self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has an unexpected key 'k2' found at line 2.")
 
 
 if __name__ == '__main__':
