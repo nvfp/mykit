@@ -1,4 +1,5 @@
 import re as _re
+import os as _os
 from typing import (
     Any as _Any,
     List as _List,
@@ -41,6 +42,7 @@ class KeyCrate:
 
         ## Exceptions
         - `ValueError`: if `file_pth` is not a .txt file
+        - `FileNotFoundError`: if `file_pth` is not a file
         - `AttributeError`: if trying to access a nonexistent key
         - see `self.parse` exceptions
 
@@ -58,6 +60,10 @@ class KeyCrate:
         ## keycrate file should be a .txt file
         if not file_pth.endswith('.txt'):
             raise ValueError(f'KeyCrate file {repr(file_pth)} should be a .txt file.')
+
+        ## keycrate file must be exist
+        if not _os.path.isfile(file_pth):
+            raise FileNotFoundError(f'KeyCrate file {repr(file_pth)} is not found.')
 
         ## added the prefix "_kc__" to prevent conflicts with the keys
         self._kc__file_pth = file_pth
