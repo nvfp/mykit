@@ -44,7 +44,7 @@ class TestKeyCrate(unittest.TestCase):
         pth = os.path.join(dir, 'foo.txt')
         with self.assertRaises(FileNotFoundError) as ctx:
             KeyCrate(pth)
-        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertIsNotNone(ctx.exception)
         self.assertEqual(str(ctx.exception), f'KeyCrate file {repr(pth)} is not found.')
 
 
@@ -54,7 +54,7 @@ class TestKeyCrate(unittest.TestCase):
         with self.assertRaises(AttributeError) as ctx:
             kc = KeyCrate(pth)
             kc.notexist  # will raise an exception
-        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertIsNotNone(ctx.exception)
         self.assertEqual(str(ctx.exception), f'KeyCrate file {repr(pth)} does not have key \'notexist\'.')
 
 
@@ -96,7 +96,7 @@ class TestKeyCrate(unittest.TestCase):
         pth = os.path.join(dir, 'invalid-syntax-that-missing-colon.txt')
         with self.assertRaises(SyntaxError) as ctx:
             KeyCrate(pth)
-        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertIsNotNone(ctx.exception)
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has invalid syntax at line 5: 'k v'")
 
 
@@ -105,7 +105,7 @@ class TestKeyCrate(unittest.TestCase):
         pth = os.path.join(dir, 'invalid-syntax-that-missing-key.txt')
         with self.assertRaises(SyntaxError) as ctx:
             KeyCrate(pth)
-        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertIsNotNone(ctx.exception)
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has invalid syntax at line 2: ': '")
 
 
@@ -114,7 +114,7 @@ class TestKeyCrate(unittest.TestCase):
         pth = os.path.join(dir, 'invalid-syntax-that-missing-value.txt')
         with self.assertRaises(SyntaxError) as ctx:
             KeyCrate(pth)
-        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertIsNotNone(ctx.exception)
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has invalid syntax at line 2: ' :'")  # key without value
 
 
@@ -123,7 +123,7 @@ class TestKeyCrate(unittest.TestCase):
         pth = os.path.join(dir, 'duplicated-key.txt')
         with self.assertRaises(ValueError) as ctx:
             KeyCrate(pth)
-        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertIsNotNone(ctx.exception)
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a duplicated key 'k1' found at line 2.")
 
 
@@ -133,7 +133,7 @@ class TestKeyCrate(unittest.TestCase):
         pth = os.path.join(dir, 'duplicated-key-2.txt')
         with self.assertRaises(ValueError) as ctx:
             KeyCrate(pth)
-        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertIsNotNone(ctx.exception)
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a duplicated key ' ' found at line 4.")
 
 
@@ -143,21 +143,21 @@ class TestKeyCrate(unittest.TestCase):
         pth = os.path.join(dir, 'key_is_var-fail-1.txt')
         with self.assertRaises(AssertionError) as ctx:
             KeyCrate(pth, key_is_var=True)
-        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertIsNotNone(ctx.exception)
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a key 'k-' that is invalid for a variable name, found at line 1.")
 
         ## test II
         pth = os.path.join(dir, 'key_is_var-fail-2.txt')
         with self.assertRaises(AssertionError) as ctx:
             KeyCrate(pth, key_is_var=True)
-        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertIsNotNone(ctx.exception)
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a key '-k' that is invalid for a variable name, found at line 1.")
 
         ## test III
         pth = os.path.join(dir, 'key_is_var-fail-3.txt')
         with self.assertRaises(AssertionError) as ctx:
             KeyCrate(pth, key_is_var=True)
-        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertIsNotNone(ctx.exception)
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a key '1k' that is invalid for a variable name, found at line 1.")
     
 
@@ -183,26 +183,53 @@ class TestKeyCrate(unittest.TestCase):
         }
         self.assertEqual(a, b)
 
-        ## test II: users forgot to put quotes around the string, resulting in a NameError exception
+        ## test II: users forgot to put quotes around the string, resulting NameError
         pth = os.path.join(dir, 'eval_value-fail-1.txt')
         with self.assertRaises(AssertionError) as ctx:
             KeyCrate(pth, key_is_var=False, eval_value=True)
-        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertIsNotNone(ctx.exception)
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a value 'b' that cannot be evaluated, found at line 3.")
 
-        ## test III: users forgot to put quotes around the string, resulting in a SyntaxError exception
+        ## test III: users forgot to put quotes around the string, resulting SyntaxError
         pth = os.path.join(dir, 'eval_value-fail-2.txt')
         with self.assertRaises(AssertionError) as ctx:
             KeyCrate(pth, key_is_var=False, eval_value=True)
-        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertIsNotNone(ctx.exception)
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a value 'a b c' that cannot be evaluated, found at line 1.")
 
         ## test IV: undefined object
         pth = os.path.join(dir, 'eval_value-fail-3.txt')
         with self.assertRaises(AssertionError) as ctx:
             KeyCrate(pth, key_is_var=False, eval_value=True)
-        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertIsNotNone(ctx.exception)
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a value 'func(0)' that cannot be evaluated, found at line 1.")
+    
+
+    def test_only_keys(self):
+        
+        ## test I: pass
+        pth = os.path.join(dir, 'only_keys-need_keys.txt')
+        kc = KeyCrate(pth, only_keys=['k1', 'k2'])
+        self.assertIsInstance(kc, KeyCrate)
+        
+        ## test II: pass: k3 is needed, but it's fine if it doesn't exist
+        pth = os.path.join(dir, 'only_keys-need_keys.txt')
+        kc = KeyCrate(pth, only_keys=['k1', 'k2', 'k3'])
+        self.assertIsInstance(kc, KeyCrate)
+
+        ## test III: fail: only k1 is allowed in the file
+        pth = os.path.join(dir, 'only_keys-need_keys.txt')
+        with self.assertRaises(AssertionError) as ctx:
+            KeyCrate(pth, only_keys=['k1'])
+        self.assertIsNotNone(ctx.exception)
+        self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has an unexpected key 'k2' found at line 2.")
+
+        ## test IV: fail: only k3 is allowed in the file
+        pth = os.path.join(dir, 'only_keys-need_keys.txt')
+        with self.assertRaises(AssertionError) as ctx:
+            KeyCrate(pth, only_keys=['k3'])
+        self.assertIsNotNone(ctx.exception)
+        self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has an unexpected key 'k1' found at line 1.")
 
 
 
