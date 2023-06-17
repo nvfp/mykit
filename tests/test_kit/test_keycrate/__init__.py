@@ -159,6 +159,51 @@ class TestKeyCrate(unittest.TestCase):
             KeyCrate(pth, key_is_var=True)
         self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a key '1k' that is invalid for a variable name, found at line 1.")
+    
+
+    def test_eval_value(self):
+
+        ## test I: success
+        pth = os.path.join(dir, 'eval_value-pass.txt')
+        kc = KeyCrate(pth, key_is_var=False, eval_value=True)  # NOTE: key_is_var is set to False
+        a = kc.export()
+        b = {  # reminder: when evaluating, `1 == 1.0` is True
+            'a': 'a',
+            'b': 'a\nb\nc',
+            'c': 1,
+            'd': 1.0,
+            'e': [1, 2],
+            'f': (1, 2),
+            'g': {1: 1},
+            'h': {1, 2},
+            'i': (1, 2),
+            'j': [1, 2],
+            'k': 9,
+            'l': 9
+        }
+        self.assertEqual(a, b)
+
+        ## test II: users forgot to put quotes around the string, resulting in a NameError exception
+        pth = os.path.join(dir, 'eval_value-fail-1.txt')
+        with self.assertRaises(AssertionError) as ctx:
+            KeyCrate(pth, key_is_var=False, eval_value=True)
+        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a value 'b' that cannot be evaluated, found at line 3.")
+
+        ## test III: users forgot to put quotes around the string, resulting in a SyntaxError exception
+        pth = os.path.join(dir, 'eval_value-fail-2.txt')
+        with self.assertRaises(AssertionError) as ctx:
+            KeyCrate(pth, key_is_var=False, eval_value=True)
+        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a value 'a b c' that cannot be evaluated, found at line 1.")
+
+        ## test IV: undefined object
+        pth = os.path.join(dir, 'eval_value-fail-3.txt')
+        with self.assertRaises(AssertionError) as ctx:
+            KeyCrate(pth, key_is_var=False, eval_value=True)
+        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a value 'func(0)' that cannot be evaluated, found at line 1.")
+
 
 
 if __name__ == '__main__':
