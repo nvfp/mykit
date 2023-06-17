@@ -118,5 +118,24 @@ class TestKeyCrate(unittest.TestCase):
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has invalid syntax at line 2: ' :'")  # key without value
 
 
+    def test_duplicated_key(self):
+
+        pth = os.path.join(dir, 'duplicated-key.txt')
+        with self.assertRaises(ValueError) as ctx:
+            KeyCrate(pth)
+        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a duplicated key 'k1' found at line 2.")
+
+
+    def test_duplicated_key_2(self):
+        ## space-key can only be created once
+
+        pth = os.path.join(dir, 'duplicated-key-2.txt')
+        with self.assertRaises(ValueError) as ctx:
+            KeyCrate(pth)
+        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a duplicated key ' ' found at line 4.")
+
+
 if __name__ == '__main__':
     unittest.main()
