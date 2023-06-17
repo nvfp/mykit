@@ -62,7 +62,7 @@ class KeyCrate:
         if not file_pth.endswith('.txt'):
             raise ValueError(f'KeyCrate file {repr(file_pth)} should be a .txt file.')
 
-        ## keycrate file must be exist
+        ## keycrate file must exist
         if not _os.path.isfile(file_pth):
             raise FileNotFoundError(f'KeyCrate file {repr(file_pth)} is not found.')
 

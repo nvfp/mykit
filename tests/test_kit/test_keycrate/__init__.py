@@ -58,5 +58,43 @@ class TestKeyCrate(unittest.TestCase):
         self.assertEqual(str(ctx.exception), f'KeyCrate file {repr(pth)} does not have key \'notexist\'.')
 
 
+    def test_normal_syntax_works_fine(self):
+        ## this test also checks if the `export` method works correctly
+
+        pth = os.path.join(dir, 'normal-syntax.txt')
+        kc = KeyCrate(pth, key_is_var=True, eval_value=True)
+        a = kc.export()
+        b = {
+            'key1': 1,
+            'key2': (1, 2),
+            'key3000': [1, 2],
+            'key4': {1: {1, 2}}
+        }
+        self.assertEqual(a, b)
+
+
+    def test_extreme_syntax_works_fine(self):
+
+        pth = os.path.join(dir, 'extreme-syntax.txt')
+        kc = KeyCrate(pth, key_is_var=False, eval_value=False)  # note that key_is_var and eval_value are set to False
+        a = kc.export()
+        b = {
+            ':a': ':b:',
+            ' ': ' ',  # space-key and space-value
+            'abc': 'xyz',
+            'abc2': 'pqr!',
+            'abc3-4-': '- 1 3 4',
+            'abc4-[1, 2, 3]': '[1, 2, 3]',
+            'abc5 with spaces': '-abc xyz 123-',
+            '-abcd+': '#-- this is a value, not a comment'
+        }
+        self.assertEqual(a, b)
+
+
+    def test_invalid_syntax_that_missing_colon(self):
+
+        pass
+
+
 if __name__ == '__main__':
     unittest.main()

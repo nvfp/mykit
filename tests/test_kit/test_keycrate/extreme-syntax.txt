@@ -1,0 +1,20 @@
+
+
+#-- extreme cases
+#----------------
+
+
+:a::b:  #-- key is :a, value is :b:
+
+#-- below are space-key and space-value (both are single space ' ')
+ :   
+
+    abc         :  xyz
+abc2            :    pqr!  #-- some comment  #-- double comment
+abc3-4-         : - 1 3 4 #--#--  #-- triple comment
+abc4-[1, 2, 3]  : [1, 2, 3]
+abc5 with spaces:     -abc xyz 123-
+  #-- key       :  this is a comment-header that looks like a key-value pair
+
+  #-- this comment-header is preceded by spaces
+-abcd+ : #-- this is a value, not a comment  #-- and this is the comment
