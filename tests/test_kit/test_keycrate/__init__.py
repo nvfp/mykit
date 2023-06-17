@@ -93,7 +93,20 @@ class TestKeyCrate(unittest.TestCase):
 
     def test_invalid_syntax_that_missing_colon(self):
 
-        pass
+        pth = os.path.join(dir, 'invalid-syntax-that-missing-colon.txt')
+        with self.assertRaises(SyntaxError) as ctx:
+            KeyCrate(pth)
+        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has invalid syntax at line 5: 'k v'")
+
+
+    def test_invalid_syntax_that_missing_key(self):
+
+        pth = os.path.join(dir, 'invalid-syntax-that-missing-key.txt')
+        with self.assertRaises(SyntaxError) as ctx:
+            KeyCrate(pth)
+        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has invalid syntax at line 2: ': '")
 
 
 if __name__ == '__main__':
