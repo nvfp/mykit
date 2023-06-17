@@ -40,6 +40,7 @@ class KeyCrate:
         - `need_keys`: keys that specified by `need_keys` must exist in `file_pth`
 
         ## Exceptions
+        - `ValueError`: if `file_pth` is not a .txt file
         - `AttributeError`: if trying to access a nonexistent key
         - see `self.parse` exceptions
 
@@ -53,6 +54,10 @@ class KeyCrate:
         >>> fps = settings.fps
         >>> dur = settings.dur
         """
+
+        ## keycrate file should be a .txt file
+        if not file_pth.endswith('.txt'):
+            raise ValueError(f'KeyCrate file {repr(file_pth)} should be a .txt file.')
 
         ## added the prefix "_kc__" to prevent conflicts with the keys
         self._kc__file_pth = file_pth

@@ -20,11 +20,15 @@ class App(_Rt):
     - currently available only in fullscreen mode
     """
 
-    def __init__(self, title: str = 'app', bg: str = '#111111') -> None:
-        
+    def __init__(
+        self,
+        name: str = 'app',
+        bg: str = '#111111'
+    ) -> None:
+
         self.root = _tk.Tk()
         self.root.attributes('-fullscreen', True)
-        self.root.title(title)
+        self.root.title(name)
 
         page = _tk.Canvas(
             master=self.root,

@@ -38,6 +38,10 @@ print(x)  # 2.79 PiB
 
 ## Changelog
 
+- 3.0.0 (June 17, 2023):
+    - Breaking changes:
+        - Changed `title` arg to `name` in `.app.App`
+        - Now `/kit/keycrate` must be a .txt file
 - 2.0.4 (June 16, 2023):
     - Now `move` method of `Button`, `Label`, and `_Slider` will return self
 - 2.0.3 (June 16, 2023):
