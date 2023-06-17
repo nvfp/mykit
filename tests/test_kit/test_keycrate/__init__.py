@@ -137,5 +137,29 @@ class TestKeyCrate(unittest.TestCase):
         self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a duplicated key ' ' found at line 4.")
 
 
+    def test_key_is_var(self):
+
+        ## test I
+        pth = os.path.join(dir, 'key_is_var-fail-1.txt')
+        with self.assertRaises(AssertionError) as ctx:
+            KeyCrate(pth, key_is_var=True)
+        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a key 'k-' that is invalid for a variable name, found at line 1.")
+
+        ## test II
+        pth = os.path.join(dir, 'key_is_var-fail-2.txt')
+        with self.assertRaises(AssertionError) as ctx:
+            KeyCrate(pth, key_is_var=True)
+        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a key '-k' that is invalid for a variable name, found at line 1.")
+
+        ## test III
+        pth = os.path.join(dir, 'key_is_var-fail-3.txt')
+        with self.assertRaises(AssertionError) as ctx:
+            KeyCrate(pth, key_is_var=True)
+        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertEqual(str(ctx.exception), f"KeyCrate file {repr(pth)} has a key '1k' that is invalid for a variable name, found at line 1.")
+
+
 if __name__ == '__main__':
     unittest.main()
