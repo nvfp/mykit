@@ -2,6 +2,7 @@ import re as _re
 import os as _os
 from typing import (
     Any as _Any,
+    Dict as _Dict,
     List as _List,
     NoReturn as _NoReturn,
     Optional as _Optional
@@ -184,3 +185,14 @@ class KeyCrate:
     def open(self) -> None:
         """open the .txt file"""
         _open_file(self._kc__file_pth)
+    
+    def export(self) -> _Dict[str, _Any]:
+        """Return all the key-value pairs as dictionary."""
+
+        force_copy = eval(str(self.__dict__), {})  # not sure gonna copy all the things deeply
+
+        out = {
+            key: force_copy[key]
+            for key in filter(lambda key: not key.startswith('_kc__'), force_copy.keys())
+        }
+        return out
