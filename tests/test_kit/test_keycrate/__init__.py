@@ -12,10 +12,11 @@ dir = os.path.dirname(os.path.abspath(__file__))
 class TestKeyCrate(unittest.TestCase):
 
     def test_must_a_txt_file(self):
-        
-        pth = os.path.join(dir, 'foo.txt')
 
-        self.assertIsNone(KeyCrate(pth))
+        ## test I: success
+        pth = os.path.join(dir, 'normal-syntax.txt')
+        kc = KeyCrate(pth)
+        self.assertIsInstance(kc, KeyCrate)
 
 
 if __name__ == '__main__':
