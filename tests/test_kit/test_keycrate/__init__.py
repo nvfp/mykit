@@ -18,6 +18,45 @@ class TestKeyCrate(unittest.TestCase):
         kc = KeyCrate(pth)
         self.assertIsInstance(kc, KeyCrate)
 
+        ## test II: not a txt file
+        pth = os.path.join(dir, 'foo.json')
+        with self.assertRaises(ValueError) as context:
+            KeyCrate(pth)
+        self.assertIsNotNone(context.exception)  # ensure an exception was raised
+        self.assertEqual(str(context.exception), f'KeyCrate file {repr(pth)} should be a .txt file.')
+
+        ## test III: not a txt file
+        pth = dir
+        with self.assertRaises(ValueError) as context:
+            KeyCrate(pth)
+        self.assertIsNotNone(context.exception)  # ensure an exception was raised
+        self.assertEqual(str(context.exception), f'KeyCrate file {repr(pth)} should be a .txt file.')
+    
+
+    def test_the_file_must_exist(self):
+
+        ## test I: success
+        pth = os.path.join(dir, 'normal-syntax.txt')
+        kc = KeyCrate(pth)
+        self.assertIsInstance(kc, KeyCrate)
+
+        ## test II: the file doesn't exist
+        pth = os.path.join(dir, 'foo.txt')
+        with self.assertRaises(FileNotFoundError) as ctx:
+            KeyCrate(pth)
+        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertEqual(str(ctx.exception), f'KeyCrate file {repr(pth)} is not found.')
+
+
+    def test_trying_access_nonexistent_key(self):
+
+        pth = os.path.join(dir, 'normal-syntax.txt')
+        with self.assertRaises(AttributeError) as ctx:
+            kc = KeyCrate(pth)
+            kc.notexist  # will raise an exception
+        self.assertIsNotNone(ctx.exception)  # ensure an exception was raised
+        self.assertEqual(str(ctx.exception), f'KeyCrate file {repr(pth)} does not have key \'notexist\'.')
+
 
 if __name__ == '__main__':
     unittest.main()
