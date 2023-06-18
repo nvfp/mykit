@@ -11,6 +11,9 @@ from typing import (
 )
 
 
+## reminder: Label is different because it uses tkinter.Label
+##           instead of tkinter.Canvas. Not sure if it'll be okay,
+##           but for now, let's go with it.  @June 18, 2023 - Nicholas
 class Label:
 
     labels: _Dict[str, 'Label'] = {}
@@ -62,6 +65,9 @@ class Label:
         if visible:
             self.label.place(x=x, y=y, anchor=anchor)
 
+
+        ## <id>
+
         ## self.id ensures that we can modify a specific instance without affecting the others
         if id is None:
             self.id = str(_random.randint(0, 100_000))
@@ -71,9 +77,14 @@ class Label:
             self.id = id
             if self.id in Label.labels:
                 raise ValueError(f'The id {repr(id)} is duplicated.')
+        
         Label.labels[self.id] = self
 
+        ## </id>
+
+
         ## <tags>
+        
         if type(tags) is str:
             self.tags = [tags]
         elif (type(tags) is list) or (type(tags) is tuple) or (tags is None):
@@ -85,6 +96,7 @@ class Label:
                     Label.label_tags[tag].append(self)
                 else:
                     Label.label_tags[tag] = [self]
+        
         ## <tags>
 
 
