@@ -1,4 +1,5 @@
 import random as _random
+import tkinter as _tk
 from typing import (
     Dict as _Dict,
     List as _List,
@@ -7,13 +8,20 @@ from typing import (
     Union as _Union
 )
 
-from mykit.app._runtime import Runtime as _Rt
 
+class Plot:
 
-class Plot(_Rt):
+    ## <runtime>
+
+    _page: _tk.Canvas = None
+    @staticmethod
+    def _set_page(page):
+        Plot._page = page
 
     plots: _Dict[str, 'Plot'] = {}
     plot_tags: _Dict[str, _List['Plot']] = {}
+
+    ## </runtime>
 
     def __init__(
         self,
@@ -90,8 +98,14 @@ class Plot(_Rt):
         - `yrange`: if `None` -> using the y-range from `points`
         """
 
-        if Plot.page is None:
-            raise AssertionError('App has not been initialized.')
+        ## <dependencies check>
+
+        ## reminder: Plot isn't actually a widget. it can be used as a utility
+        ##           outside App's purposes. so just use Plot._set_page to achieve it.
+        if Plot._page is None:
+            raise AssertionError('Can\'t use widgets before App initialized.')
+        
+        ## </dependencies check>
 
         self.points = points
 
@@ -152,6 +166,8 @@ class Plot(_Rt):
 
         self.visibile = visible
 
+        ## <id>
+
         ## `self.id`: to make sure that we can modify a specific instance without affecting the others
         if id is None:
             self.id = _random.randint(-10000, 10000)
@@ -161,9 +177,13 @@ class Plot(_Rt):
             self.id = id
             if self.id in Plot.plots:
                 raise ValueError(f'The id {repr(id)} is duplicated.')
+        
         Plot.plots[self.id] = self
 
+        ## </id>
+
         ## <tags>
+        
         if type(tags) is str:
             self.tags = [tags]
         elif (type(tags) is list) or (type(tags) is tuple) or (tags is None):
@@ -175,6 +195,7 @@ class Plot(_Rt):
                     Plot.plot_tags[tag].append(self)
                 else:
                     Plot.plot_tags[tag] = [self]
+        
         ## </tags>
 
 
@@ -219,7 +240,7 @@ class Plot(_Rt):
 
 
         ## title
-        Plot.page.create_text(
+        Plot._page.create_text(
             self.tl_x+self.width/2, self.tl_y,
             text=self.title, font=self.title_font, fill=self.title_color,
             tags=f'Plot_{self.id}'
@@ -232,7 +253,7 @@ class Plot(_Rt):
             ## vertical grids
             for x in range(self.ntick_x):
                 X = self.tl_x + ((x+1)/self.ntick_x)*self.plot_width
-                Plot.page.create_line(
+                Plot._page.create_line(
                     X, self.tl_y+(self.height-self.plot_height),
                     X, self.tl_y+self.height,
                     fill=self.grid_color, width=1, tags=f'Plot_{self.id}'
@@ -241,7 +262,7 @@ class Plot(_Rt):
             ## horizontal grids
             for y in range(self.ntick_y):
                 Y = self.tl_y+self.height - ((y+1)/self.ntick_y)*self.plot_height
-                Plot.page.create_line(
+                Plot._page.create_line(
                     self.tl_x                , Y,
                     self.tl_x+self.plot_width, Y,
                     fill=self.grid_color, width=1, tags=f'Plot_{self.id}'
@@ -249,39 +270,39 @@ class Plot(_Rt):
 
 
         ## x-axis
-        Plot.page.create_line(
+        Plot._page.create_line(
             self.tl_x           , self.tl_y+self.height,
             self.tl_x+self.width, self.tl_y+self.height,
             fill=self.axes_color, width=1, tags=f'Plot_{self.id}'
         )
         ## x-axis arrow
-        Plot.page.create_line(
+        Plot._page.create_line(
             self.tl_x+self.width-self.arrow_size, self.tl_y+self.height-self.arrow_size,
             self.tl_x+self.width                , self.tl_y+self.height,
             self.tl_x+self.width-self.arrow_size, self.tl_y+self.height+self.arrow_size,
             fill=self.axes_color, width=self.arrow_width, tags=f'Plot_{self.id}'
         )
         ## x-axis label
-        Plot.page.create_text(
+        Plot._page.create_text(
             self.tl_x+self.width+self.x_axis_label_shift, self.tl_y+self.height,
             text=self.x_axis_label, anchor='w', fill=self.axes_label_color, font=self.x_axis_label_font, tags=f'Plot_{self.id}'
         )
 
         ## y-axis
-        Plot.page.create_line(
+        Plot._page.create_line(
             self.tl_x, self.tl_y,
             self.tl_x, self.tl_y+self.height,
             fill=self.axes_color, width=1, tags=f'Plot_{self.id}'
         )
         ## y-axis arrow
-        Plot.page.create_line(
+        Plot._page.create_line(
             self.tl_x-self.arrow_size, self.tl_y+self.arrow_size,
             self.tl_x, self.tl_y,
             self.tl_x+self.arrow_size, self.tl_y+self.arrow_size,
             fill=self.axes_color, width=self.arrow_width, tags=f'Plot_{self.id}'
         )
         ## y-axis label
-        Plot.page.create_text(
+        Plot._page.create_text(
             self.tl_x, self.tl_y-self.y_axis_label_shift,
             text=self.y_axis_label, anchor='s', fill=self.axes_label_color, font=self.y_axis_label_font, tags=f'Plot_{self.id}'
         )
@@ -295,7 +316,7 @@ class Plot(_Rt):
                 X = self.tl_x + (x/self.ntick_x)*self.plot_width
 
                 ## tick
-                Plot.page.create_line(
+                Plot._page.create_line(
                     X, self.tl_y+self.height-self.tick_len/2,
                     X, self.tl_y+self.height+self.tick_len/2,
                     fill=self.tick_color, width=1, tags=f'Plot_{self.id}'
@@ -308,7 +329,7 @@ class Plot(_Rt):
                 else:
                     _num = round(_num, self.tick_x_prec)
                 text = self.tick_x_prefix + str(_num) + self.tick_x_suffix
-                Plot.page.create_text(
+                Plot._page.create_text(
                     X, self.tl_y+self.height+self.tick_len+self.tick_x_shift,
                     text=text, anchor='n', font=self.tick_x_font, fill=self.axes_label_color,
                     tags=(f'Plot_{self.id}', f'Plot_{self.id}_ticks')
@@ -319,7 +340,7 @@ class Plot(_Rt):
                 Y = self.tl_y+self.height - (y/self.ntick_y)*self.plot_height
 
                 ## tick
-                Plot.page.create_line(
+                Plot._page.create_line(
                     self.tl_x-self.tick_len/2, Y,
                     self.tl_x+self.tick_len/2, Y,
                     fill=self.tick_color, width=1, tags=f'Plot_{self.id}'
@@ -332,7 +353,7 @@ class Plot(_Rt):
                 else:
                     _num = round(_num, self.tick_y_prec)
                 text = self.tick_y_prefix + str(_num) + self.tick_y_suffix
-                Plot.page.create_text(
+                Plot._page.create_text(
                     self.tl_x-self.tick_len-self.tick_y_shift, Y,
                     text=text, anchor='e', font=self.tick_y_font, fill=self.axes_label_color,
                     tags=(f'Plot_{self.id}', f'Plot_{self.id}_ticks')
@@ -345,7 +366,7 @@ class Plot(_Rt):
             X = self.tl_x + (x - XMIN)*(self.plot_width/LEN_X)
             Y = self.tl_y + self.height - (y - YMIN)*(self.plot_height/LEN_Y)
             coords.append((X, Y))
-        Plot.page.create_line(
+        Plot._page.create_line(
             coords,
             fill=self.plot_color, width=self.plot_thick,
             tags=(f'Plot_{self.id}', f'Plot_{self.id}_plot')
@@ -353,7 +374,7 @@ class Plot(_Rt):
 
         if self.show_points:
             for x, y in coords:
-                Plot.page.create_oval(
+                Plot._page.create_oval(
                     x-self.points_rad/2, y-self.points_rad/2,
                     x+self.points_rad/2, y+self.points_rad/2,
                     fill=self.points_color, outline=self.points_border, width=1, tags=f'Plot_{self.id}'
@@ -402,7 +423,7 @@ class Plot(_Rt):
 
         ## redraw the ticks
 
-        Plot.page.delete(f'Plot_{self.id}_ticks')
+        Plot._page.delete(f'Plot_{self.id}_ticks')
 
         if self.show_tick:
 
@@ -417,7 +438,7 @@ class Plot(_Rt):
                 else:
                     _num = round(_num, self.tick_x_prec)
                 text = self.tick_x_prefix + str(_num) + self.tick_x_suffix
-                Plot.page.create_text(
+                Plot._page.create_text(
                     X, self.tl_y+self.height+self.tick_len+self.tick_x_shift,
                     text=text, anchor='n', font=self.tick_x_font, fill=self.axes_label_color,
                     tags=(f'Plot_{self.id}', f'Plot_{self.id}_ticks')
@@ -434,7 +455,7 @@ class Plot(_Rt):
                 else:
                     _num = round(_num, self.tick_y_prec)
                 text = self.tick_y_prefix + str(_num) + self.tick_y_suffix
-                Plot.page.create_text(
+                Plot._page.create_text(
                     self.tl_x-self.tick_len-self.tick_y_shift, Y,
                     text=text, anchor='e', font=self.tick_y_font, fill=self.axes_label_color,
                     tags=(f'Plot_{self.id}', f'Plot_{self.id}_ticks')
@@ -443,14 +464,14 @@ class Plot(_Rt):
 
         ## redraw the plot
 
-        Plot.page.delete(f'Plot_{self.id}_plot')
+        Plot._page.delete(f'Plot_{self.id}_plot')
 
         coords = []
         for x, y in self.points:
             X = self.tl_x + (x - XMIN)*(self.plot_width/LEN_X)
             Y = self.tl_y + self.height - (y - YMIN)*(self.plot_height/LEN_Y)
             coords.append((X, Y))
-        Plot.page.create_line(
+        Plot._page.create_line(
             coords,
             fill=self.plot_color, width=self.plot_thick,
             tags=(f'Plot_{self.id}', f'Plot_{self.id}_plot')

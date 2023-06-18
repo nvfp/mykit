@@ -4,10 +4,12 @@ from typing import (
     List as _List
 )
 
-from mykit.app.arrow import Arrow as _Arrow
 from mykit.app.button import Button as _Button
 from mykit.app.label import Label as _Label
 from mykit.app.slider import _Slider
+
+from mykit.app.arrow import Arrow as _Arrow
+from mykit.app.complex.plot import Plot as _Plot
 
 
 class App:
@@ -48,7 +50,8 @@ class App:
 
         ## others
         _Arrow._set_page(self.page)
-        
+        _Plot._set_page(self.page)
+
         ## </register the page>
 
 
