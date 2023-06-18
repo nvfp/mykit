@@ -44,6 +44,7 @@ print(x)  # 2.79 PiB
         - Changed `/app/` mechanism:
             - removed `/app/_runtime.py`
     - `.app.App.listen`: Added aliases for event listener types
+    - New: `/app/architecture`
 - 3.0.0 (June 17, 2023):
     - Breaking changes:
         - Changed `title` arg to `name` in `.app.App`
