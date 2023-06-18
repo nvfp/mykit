@@ -130,37 +130,20 @@ class App:
 
         self._left_mouse_press.append(_Button._press_listener)
         self._left_mouse_press.append(_Slider._press_listener)
+        
+        self._left_mouse_hold.append(_Slider._hold_listener)
+
+        self._left_mouse_release.append(_Button._release_listener)
+        self._left_mouse_release.append(_Slider._release_listener)
 
         ## </internal>
 
 
         ## <listeners>
 
-        def left_mouse_press(e):
-            for fn in self._left_mouse_press: fn(e)
-        self.root.bind('<ButtonPress-1>', left_mouse_press)
-
-        def left_mouse_hold(e):
-            
-            ## internal
-            _Slider.hold_listener()
-
-            ## external
-            for fn in self._left_mouse_hold:
-                fn(e)
-
-        self.root.bind('<B1-Motion>', left_mouse_hold)
-
-        def left_mouse_release(e):
-
-            ## internal
-            _Button.release_listener()
-            _Slider.release_listener()
-
-            ## external
-            for fn in self._left_mouse_release:
-                fn(e)
-        self.root.bind('<ButtonRelease-1>', left_mouse_release)
+        self.root.bind('<ButtonPress-1>',   lambda e: [f(e) for f in self._left_mouse_press])
+        self.root.bind('<B1-Motion>',       lambda e: [f(e) for f in self._left_mouse_hold])
+        self.root.bind('<ButtonRelease-1>', lambda e: [f(e) for f in self._left_mouse_release])
 
         self.root.bind('<Escape>', lambda e: self.root.destroy())
 
