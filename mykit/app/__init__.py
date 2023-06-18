@@ -12,7 +12,8 @@ from mykit.app.slider import _Slider
 
 class App(_Rt):
     """
-    Single-page app (currently in beta).
+    A minimum-dependency single-page app framework.
+    (currently in beta)
 
     ---
 
@@ -90,12 +91,15 @@ class App(_Rt):
     def add_background_processes(self, every: int, do: _Callable[[], None]) -> None:
         """
         Execute `do` every `every` milliseconds.
-        The first execution occurs immediately after the app runs.
+        
+        ---
+
+        ## Docs
+        - the first execution occurs immediately after the app runs
         """
-        if every in self._background_processes:
-            self._background_processes[every].append(do)
-        else:
-            self._background_processes[every] = [do]
+        if every not in self._background_processes:
+            self._background_processes[every] = []
+        self._background_processes[every].append(do)
 
     def setup(self, funcs: _List[_Callable[[], None]]):
         self._setup = funcs
