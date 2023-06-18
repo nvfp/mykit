@@ -38,6 +38,9 @@ print(x)  # 2.79 PiB
 
 ## Changelog
 
+- 4.0.0 (June 18, 2023):
+    - Breaking changes:
+        - `LIB_DIR_PTH` in `mykit` replaced by `DIST_DIR_PTH`
 - 3.0.0 (June 17, 2023):
     - Breaking changes:
         - Changed `title` arg to `name` in `.app.App`

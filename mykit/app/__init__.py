@@ -12,7 +12,7 @@ from mykit.app.slider import _Slider
 
 class App(_Rt):
     """
-    Single-page app.
+    Single-page app (currently in beta).
 
     ---
 
