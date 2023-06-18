@@ -1,5 +1,6 @@
 import math as _math
 import random as _random
+import tkinter as _tk
 from typing import (
     Dict as _Dict,
     List as _List,
@@ -8,17 +9,25 @@ from typing import (
     Union as _Union
 )
 
-from mykit.app._runtime import Runtime as _Rt
 from mykit.kit.math import (
     get_angle as _get_angle,
     rotate as _rotate
 )
 
 
-class Arrow(_Rt):
+class Arrow:
+
+    ## <runtime>
+
+    _page: _tk.Canvas = None
+    @staticmethod
+    def _set_page(page):
+        Arrow._page = page
 
     arrows: _Dict[str, 'Arrow'] = {}
     arrow_tags: _Dict[str, _List['Arrow']] = {}
+
+    ## </runtime>
 
     def __init__(
         self,
@@ -36,8 +45,14 @@ class Arrow(_Rt):
         tags: _Optional[_Union[str, _List[str]]] = None,
     ) -> None:
 
-        if Arrow.page is None:
-            raise AssertionError('App has not been initialized.')
+        ## <dependencies check>
+
+        ## reminder: Arrow isn't actually a widget. it can be used as a utility
+        ##           outside App's purposes. so just use Arrow._set_page to achieve it.
+        if Arrow._page is None:
+            raise AssertionError('Can\'t use widgets before App initialized.')
+        
+        ## </dependencies check>
         
         self.from_x = from_x
         self.from_y = from_y
@@ -52,6 +67,8 @@ class Arrow(_Rt):
 
         self.visible = visible
 
+        ## <id>
+
         ## to make sure that we can modify a specific arrow without affecting the others
         if id is None:
             self.id = _random.randint(-10000, 10000)
@@ -61,9 +78,13 @@ class Arrow(_Rt):
             self.id = id
             if self.id in Arrow.arrows:
                 raise ValueError(f'The Arrow\'s id {repr(id)} is duplicated.')
+        
         Arrow.arrows[self.id] = self
 
+        ## </id>
+
         ## <tags>
+
         if type(tags) is str:
             self.tags = [tags]
         elif (type(tags) is list) or (type(tags) is tuple) or (tags is None):
@@ -75,6 +96,7 @@ class Arrow(_Rt):
                     Arrow.arrow_tags[tag].append(self)
                 else:
                     Arrow.arrow_tags[tag] = [self]
+        
         ## </tags>
 
         ## init
@@ -82,10 +104,10 @@ class Arrow(_Rt):
 
     def _redraw(self):
 
-        Arrow.page.delete(f'Arrow_{self.id}')
+        Arrow._page.delete(f'Arrow_{self.id}')
 
         if self.visible:
-            Arrow.page.create_line(
+            Arrow._page.create_line(
                 self.from_x, self.from_y,
                 self.to_x, self.to_y,
                 fill=self.color, width=self.width_rod, tags=f'Arrow_{self.id}'
@@ -108,7 +130,7 @@ class Arrow(_Rt):
             tip_right = (self.to_x+tip_right[0], self.to_y-tip_right[1])
 
             tip_points = [tip_left, (self.to_x, self.to_y), tip_right]
-            Arrow.page.create_line(tip_points, fill=self.color, width=self.width_tip, tags=f'Arrow_{self.id}')
+            Arrow._page.create_line(tip_points, fill=self.color, width=self.width_tip, tags=f'Arrow_{self.id}')
             ## </creating the tip>
 
 

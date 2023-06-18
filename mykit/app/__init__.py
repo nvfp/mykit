@@ -4,6 +4,7 @@ from typing import (
     List as _List
 )
 
+from mykit.app.arrow import Arrow as _Arrow
 from mykit.app.button import Button as _Button
 from mykit.app.label import Label as _Label
 from mykit.app.slider import _Slider
@@ -40,8 +41,15 @@ class App:
         )
         self.page.place(x=0, y=0)
 
-        ## attach to widgets
+        ## <register the page>
+        
+        ## widgets
         _Button._set_page(self.page)
+
+        ## others
+        _Arrow._set_page(self.page)
+        
+        ## </register the page>
 
 
         ## <constants>
