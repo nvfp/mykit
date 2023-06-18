@@ -42,12 +42,15 @@ class App(_Rt):
 
 
         ## <constants>
+
         self.MON_WIDTH = self.root.winfo_screenwidth()
         self.MON_HEIGHT = self.root.winfo_screenheight()
+        
         ## </constants>
 
 
         ## <runtime>
+
         self._left_mouse_press = []
         self._left_mouse_hold = []
         self._left_mouse_release = []
@@ -56,6 +59,7 @@ class App(_Rt):
 
         self._setup = []
         self._teardown = []
+
         ## </runtime>
 
     def listen(self, to: str, do: _Callable[[_tk.Event], None]):
@@ -65,17 +69,20 @@ class App(_Rt):
         ---
 
         ## Params
-        - `to`: `Literal["left-mouse-press", "left-mouse-hold", "left-mouse-release"]`
+        - `to`: event type:
+            - `"left-mouse-press"` or `"lmp"`
+            - `"left-mouse-hold"` or `"lmh"`
+            - `"left-mouse-release"` or `"lmr"`
 
         ## Docs
         - `do` function takes 1 positional parameter, which is a tkinter event object
         """
         
-        if to == 'left-mouse-press':
+        if to in {'left-mouse-press', 'lmp'}:
             self._left_mouse_press.append(do)
-        elif to == 'left-mouse-hold':
+        elif to in {'left-mouse-hold', 'lmh'}:
             self._left_mouse_hold.append(do)
-        elif to == 'left-mouse-release':
+        elif to in {'left-mouse-release', 'lmr'}:
             self._left_mouse_release.append(do)
         else:
             ValueError(f'Invalid event: {repr(to)}.')
@@ -97,19 +104,19 @@ class App(_Rt):
         self._teardown = funcs
 
     def run(self):
-        
+
+        ## <internal>
+
+        self._left_mouse_press.append(_Button.press_listener)
+        self._left_mouse_press.append(_Slider.press_listener)
+
+        ## </internal>
+
+
         ## <listeners>
 
         def left_mouse_press(e):
-            
-            ## internal
-            _Button.press_listener()
-            _Slider.press_listener()
-            
-            ## external
-            for fn in self._left_mouse_press:
-                fn(e)
-
+            for fn in self._left_mouse_press: fn(e)
         self.root.bind('<ButtonPress-1>', left_mouse_press)
 
         def left_mouse_hold(e):

@@ -41,6 +41,7 @@ print(x)  # 2.79 PiB
 - 4.0.0 (June 18, 2023):
     - Breaking changes:
         - `LIB_DIR_PTH` in `mykit` replaced by `DIST_DIR_PTH`
+    - `.app.App.listen`: Added aliases for event listener types
 - 3.0.0 (June 17, 2023):
     - Breaking changes:
         - Changed `title` arg to `name` in `.app.App`
