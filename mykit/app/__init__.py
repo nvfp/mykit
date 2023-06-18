@@ -128,13 +128,16 @@ class App:
 
         ## <internal>
 
-        self._left_mouse_press.append(_Button._press_listener)
-        self._left_mouse_press.append(_Slider._press_listener)
-        
-        self._left_mouse_hold.append(_Slider._hold_listener)
+        self.listen(to='left-mouse-press', do=_Button._press_listener)
+        self.listen(to='left-mouse-press', do=_Slider._press_listener)
 
-        self._left_mouse_release.append(_Button._release_listener)
-        self._left_mouse_release.append(_Slider._release_listener)
+        self.listen(to='left-mouse-hold', do=_Slider._hold_listener)
+
+        self.listen(to='left-mouse-release', do=_Button._release_listener)
+        self.listen(to='left-mouse-release', do=_Slider._release_listener)
+
+        self.add_background_processes(every=50, do=_Button._hover_listener)
+        self.add_background_processes(every=50, do=_Slider._hover_listener)
 
         ## </internal>
 
@@ -150,18 +153,7 @@ class App:
         ## </listeners>
 
 
-        ## <background processes>
-
-        ## internal
-        def repeat50():
-            _Button.hover_listener()
-            _Slider.hover_listener()
-            self.root.after(50, repeat50)
-        # self.root.after(50, repeat50)  # start after 50ms
-        repeat50()  # start immediately
-
-        ## users
-        def setup_background_processes():
+        def run_background_processes():
             def wrapper(dur, funcs):
                 def inner():
                     for fn in funcs: fn()
@@ -170,9 +162,7 @@ class App:
             for dur, funcs in self._background_processes.items():
                 fn = wrapper(dur, funcs)
                 fn()  # start immediately
-        setup_background_processes()
-        
-        ## </background processes>
+        run_background_processes()
 
 
         ## setup

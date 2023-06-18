@@ -181,7 +181,7 @@ class _Slider:
 
 
     @staticmethod
-    def _hover_listener(e: _tk.Event):
+    def _hover_listener():  # reminder: hover listeners don't need `e: _tk.Event` arg
         for slider in _Slider.sliders.values():
             slider._hover()
 

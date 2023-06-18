@@ -196,7 +196,7 @@ class Button:
         # self._redraw()
 
     @staticmethod
-    def _hover_listener(e: _tk.Event):
+    def _hover_listener():  # reminder: hover listeners don't need `e: _tk.Event` arg
         for button in Button.buttons.values():
             button._hover()
 
