@@ -192,16 +192,16 @@ class Button:
             self.hovered = False
             self._redraw()  # just redraw once here
 
-        ## reminder: don't put it right here because it will redraw regardless of the hovered state
+        ## reminder: don't put self._redraw below here because it will redraw regardless of the "hovered" state
         # self._redraw()
 
     @staticmethod
-    def hover_listener():
+    def _hover_listener(e: _tk.Event):
         for button in Button.buttons.values():
             button._hover()
 
 
-    def press(self):
+    def _press(self):
         
         x = Button._page.winfo_pointerx()
         y = Button._page.winfo_pointery()
@@ -216,12 +216,12 @@ class Button:
             self._redraw()
 
     @staticmethod
-    def press_listener():
+    def _press_listener(e: _tk.Event):
         for button in Button.buttons.values():
-            button.press()
+            button._press()
 
 
-    def release(self):
+    def _release(self):
         if self.pressed:
             self.pressed = False
             self._redraw()            
@@ -229,9 +229,9 @@ class Button:
                 self.fn()
 
     @staticmethod
-    def release_listener():
+    def _release_listener(e: _tk.Event):
         for button in list(Button.buttons.values()):
-            button.release()
+            button._release()
 
 
     def set_lock(self, locked: bool, /):

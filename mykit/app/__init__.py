@@ -113,8 +113,8 @@ class App:
 
         ## <internal>
 
-        self._left_mouse_press.append(_Button.press_listener)
-        self._left_mouse_press.append(_Slider.press_listener)
+        self._left_mouse_press.append(_Button._press_listener)
+        self._left_mouse_press.append(_Slider._press_listener)
 
         ## </internal>
 
