@@ -10,6 +10,7 @@ from mykit.app.slider import _Slider
 
 from mykit.app.arrow import Arrow as _Arrow
 from mykit.app.complex.plot import Plot as _Plot
+from mykit.app.complex.biplot import Biplot as _Biplot
 
 
 class App:
@@ -43,6 +44,7 @@ class App:
         )
         self.page.place(x=0, y=0)
 
+
         ## <register the page>
         
         ## widgets
@@ -51,6 +53,7 @@ class App:
         ## others
         _Arrow._set_page(self.page)
         _Plot._set_page(self.page)
+        _Biplot._set_page(self.page)
 
         ## </register the page>
 

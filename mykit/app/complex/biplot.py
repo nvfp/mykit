@@ -1,4 +1,5 @@
 import random as _random
+import tkinter as _tk
 from typing import (
     Dict as _Dict,
     List as _List,
@@ -7,13 +8,20 @@ from typing import (
     Union as _Union
 )
 
-from mykit.app._runtime import Runtime as _Rt
 
+class Biplot:
 
-class Biplot(_Rt):
+    ## <runtime>
+
+    _page: _tk.Canvas = None
+    @staticmethod
+    def _set_page(page):
+        Biplot._page = page
 
     biplots: _Dict[str, 'Biplot'] = {}
     biplot_tags: _Dict[str, _List['Biplot']] = {}
+
+    ## </runtime>
 
     def __init__(
         self,
@@ -104,8 +112,14 @@ class Biplot(_Rt):
         - `yrange`: if `None` -> using the y-range from `points`
         """
 
-        if Biplot.page is None:
-            raise AssertionError('App has not been initialized.')
+        ## <dependencies check>
+
+        ## reminder: Biplot isn't actually a widget. it can be used as a utility
+        ##           outside App's purposes. so just use Biplot._set_page to achieve it.
+        if Biplot._page is None:
+            raise AssertionError('Can\'t use widgets before App initialized.')
+        
+        ## </dependencies check>
 
         self.points1 = points1
         self.points2 = points2
@@ -179,6 +193,8 @@ class Biplot(_Rt):
 
         self.visible = visible
 
+        ## <id>
+
         ## `self.id`: to make sure that we can modify a specific instance without affecting the others
         if id is None:
             self.id = _random.randint(-10000, 10000)
@@ -188,9 +204,13 @@ class Biplot(_Rt):
             self.id = id
             if self.id in Biplot.biplots:
                 raise ValueError(f'The id {repr(id)} is duplicated.')
+        
         Biplot.biplots[self.id] = self
 
+        ## </id>
+
         ## <tags>
+
         if type(tags) is str:
             self.tags = [tags]
         elif (type(tags) is list) or (type(tags) is tuple) or (tags is None):
@@ -202,6 +222,7 @@ class Biplot(_Rt):
                     Biplot.biplot_tags[tag].append(self)
                 else:
                     Biplot.biplot_tags[tag] = [self]
+        
         ## </tags>
 
 
@@ -247,7 +268,7 @@ class Biplot(_Rt):
 
 
         ## title
-        Biplot.page.create_text(
+        Biplot._page.create_text(
             self.tl_x+self.width/2, self.tl_y,
             text=self.title, font=self.title_font, fill=self.title_color,
             tags=f'Biplot_{self.id}'
@@ -260,7 +281,7 @@ class Biplot(_Rt):
             ## vertical grids
             for x in range(self.ntick_x):
                 X = self.tl_x + ((x+1)/self.ntick_x)*self.plot_width
-                Biplot.page.create_line(
+                Biplot._page.create_line(
                     X, self.tl_y+(self.height-self.plot_height),
                     X, self.tl_y+self.height,
                     fill=self.grid_color, width=1, tags=f'Biplot_{self.id}'
@@ -269,7 +290,7 @@ class Biplot(_Rt):
             ## horizontal grids
             for y in range(self.ntick_y):
                 Y = self.tl_y+self.height - ((y+1)/self.ntick_y)*self.plot_height
-                Biplot.page.create_line(
+                Biplot._page.create_line(
                     self.tl_x                , Y,
                     self.tl_x+self.plot_width, Y,
                     fill=self.grid_color, width=1, tags=f'Biplot_{self.id}'
@@ -277,39 +298,39 @@ class Biplot(_Rt):
 
 
         ## x-axis
-        Biplot.page.create_line(
+        Biplot._page.create_line(
             self.tl_x           , self.tl_y+self.height,
             self.tl_x+self.width, self.tl_y+self.height,
             fill=self.axes_color, width=1, tags=f'Biplot_{self.id}'
         )
         ## x-axis arrow
-        Biplot.page.create_line(
+        Biplot._page.create_line(
             self.tl_x+self.width-self.arrow_size, self.tl_y+self.height-self.arrow_size,
             self.tl_x+self.width                , self.tl_y+self.height,
             self.tl_x+self.width-self.arrow_size, self.tl_y+self.height+self.arrow_size,
             fill=self.axes_color, width=self.arrow_width, tags=f'Biplot_{self.id}'
         )
         ## x-axis label
-        Biplot.page.create_text(
+        Biplot._page.create_text(
             self.tl_x+self.width+self.x_axis_label_shift, self.tl_y+self.height,
             text=self.x_axis_label, anchor='w', fill=self.axes_label_color, font=self.x_axis_label_font, tags=f'Biplot_{self.id}'
         )
 
         ## y-axis
-        Biplot.page.create_line(
+        Biplot._page.create_line(
             self.tl_x, self.tl_y,
             self.tl_x, self.tl_y+self.height,
             fill=self.axes_color, width=1, tags=f'Biplot_{self.id}'
         )
         ## y-axis arrow
-        Biplot.page.create_line(
+        Biplot._page.create_line(
             self.tl_x-self.arrow_size, self.tl_y+self.arrow_size,
             self.tl_x, self.tl_y,
             self.tl_x+self.arrow_size, self.tl_y+self.arrow_size,
             fill=self.axes_color, width=self.arrow_width, tags=f'Biplot_{self.id}'
         )
         ## y-axis label
-        Biplot.page.create_text(
+        Biplot._page.create_text(
             self.tl_x, self.tl_y-self.y_axis_label_shift,
             text=self.y_axis_label, anchor='s', fill=self.axes_label_color, font=self.y_axis_label_font, tags=f'Biplot_{self.id}'
         )
@@ -323,7 +344,7 @@ class Biplot(_Rt):
                 X = self.tl_x + (x/self.ntick_x)*self.plot_width
 
                 ## tick
-                Biplot.page.create_line(
+                Biplot._page.create_line(
                     X, self.tl_y+self.height-self.tick_len/2,
                     X, self.tl_y+self.height+self.tick_len/2,
                     fill=self.tick_color, width=1, tags=f'Biplot_{self.id}'
@@ -336,7 +357,7 @@ class Biplot(_Rt):
                 else:
                     _num = round(_num, self.tick_x_prec)
                 text = self.tick_x_prefix + str(_num) + self.tick_x_suffix
-                Biplot.page.create_text(
+                Biplot._page.create_text(
                     X, self.tl_y+self.height+self.tick_len+self.tick_x_shift,
                     text=text, anchor='n', font=self.tick_x_font, fill=self.axes_label_color,
                     tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_ticks')
@@ -347,7 +368,7 @@ class Biplot(_Rt):
                 Y = self.tl_y+self.height - (y/self.ntick_y)*self.plot_height
 
                 ## tick
-                Biplot.page.create_line(
+                Biplot._page.create_line(
                     self.tl_x-self.tick_len/2, Y,
                     self.tl_x+self.tick_len/2, Y,
                     fill=self.tick_color, width=1, tags=f'Biplot_{self.id}'
@@ -360,7 +381,7 @@ class Biplot(_Rt):
                 else:
                     _num = round(_num, self.tick_y_prec)
                 text = self.tick_y_prefix + str(_num) + self.tick_y_suffix
-                Biplot.page.create_text(
+                Biplot._page.create_text(
                     self.tl_x-self.tick_len-self.tick_y_shift, Y,
                     text=text, anchor='e', font=self.tick_y_font, fill=self.axes_label_color,
                     tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_ticks')
@@ -373,7 +394,7 @@ class Biplot(_Rt):
             X = self.tl_x + (x - XMIN)*(self.plot_width/LEN_X)
             Y = self.tl_y + self.height - (y - YMIN)*(self.plot_height/LEN_Y)
             coords1.append((X, Y))
-        Biplot.page.create_line(
+        Biplot._page.create_line(
             coords1,
             fill=self.plot_color1, width=self.plot_thick,
             tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_plot')
@@ -385,7 +406,7 @@ class Biplot(_Rt):
             X = self.tl_x + (x - XMIN)*(self.plot_width/LEN_X)
             Y = self.tl_y + self.height - (y - YMIN)*(self.plot_height/LEN_Y)
             coords2.append((X, Y))
-        Biplot.page.create_line(
+        Biplot._page.create_line(
             coords2,
             fill=self.plot_color2, width=self.plot_thick,
             tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_plot')
@@ -393,7 +414,7 @@ class Biplot(_Rt):
 
         if self.show_points:
             for x, y in (coords1 + coords2):
-                Biplot.page.create_oval(
+                Biplot._page.create_oval(
                     x-self.points_rad/2, y-self.points_rad/2,
                     x+self.points_rad/2, y+self.points_rad/2,
                     fill=self.points_color, outline=self.points_border, width=1, tags=f'Biplot_{self.id}'
@@ -402,26 +423,26 @@ class Biplot(_Rt):
 
         ## legends
         if self.legend1 is not None:
-            Biplot.page.create_rectangle(
+            Biplot._page.create_rectangle(
                 self.tl_x+self.legends_shift_x, self.tl_y+self.legends_shift_y,
                 self.tl_x+self.legends_shift_x+self.legends_bar_width, self.tl_y+self.legends_shift_y+self.legends_bar_height,
                 fill=self.plot_color1, width=0, tags=f'Biplot_{self.id}'
             )
-            Biplot.page.create_text(
+            Biplot._page.create_text(
                 self.tl_x+self.legends_shift_x+self.legends_bar_width+self.legends_pad_x,
                 self.tl_y+self.legends_shift_y+self.legends_bar_height/2,
                 text=self.legend1, font=self.legends_font, justify='left', anchor='w', fill=self.legends_color,
                 tags=f'Biplot_{self.id}'
             )
         if self.legend2 is not None:
-            Biplot.page.create_rectangle(
+            Biplot._page.create_rectangle(
                 self.tl_x+self.legends_shift_x,
                 self.tl_y+self.legends_shift_y+self.legends_pad_y,
                 self.tl_x+self.legends_shift_x+self.legends_bar_width,
                 self.tl_y+self.legends_shift_y+self.legends_pad_y+self.legends_bar_height,
                 fill=self.plot_color2, width=0, tags=f'Biplot_{self.id}'
             )
-            Biplot.page.create_text(
+            Biplot._page.create_text(
                 self.tl_x+self.legends_shift_x+self.legends_bar_width+self.legends_pad_x,
                 self.tl_y+self.legends_shift_y+self.legends_pad_y+self.legends_bar_height/2,
                 text=self.legend2, font=self.legends_font, justify='left', anchor='w', fill=self.legends_color,
@@ -473,7 +494,7 @@ class Biplot(_Rt):
 
         ## redraw the ticks
 
-        Biplot.page.delete(f'Biplot_{self.id}_ticks')
+        Biplot._page.delete(f'Biplot_{self.id}_ticks')
 
         if self.show_tick:
 
@@ -488,7 +509,7 @@ class Biplot(_Rt):
                 else:
                     _num = round(_num, self.tick_x_prec)
                 text = self.tick_x_prefix + str(_num) + self.tick_x_suffix
-                Biplot.page.create_text(
+                Biplot._page.create_text(
                     X, self.tl_y+self.height+self.tick_len+self.tick_x_shift,
                     text=text, anchor='n', font=self.tick_x_font, fill=self.axes_label_color,
                     tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_ticks')
@@ -505,7 +526,7 @@ class Biplot(_Rt):
                 else:
                     _num = round(_num, self.tick_y_prec)
                 text = self.tick_y_prefix + str(_num) + self.tick_y_suffix
-                Biplot.page.create_text(
+                Biplot._page.create_text(
                     self.tl_x-self.tick_len-self.tick_y_shift, Y,
                     text=text, anchor='e', font=self.tick_y_font, fill=self.axes_label_color,
                     tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_ticks')
@@ -514,7 +535,7 @@ class Biplot(_Rt):
 
         ## redraw the plot
 
-        Biplot.page.delete(f'Biplot_{self.id}_plot')
+        Biplot._page.delete(f'Biplot_{self.id}_plot')
 
         ## plot 1
         coords1 = []
@@ -522,7 +543,7 @@ class Biplot(_Rt):
             X = self.tl_x + (x - XMIN)*(self.plot_width/LEN_X)
             Y = self.tl_y + self.height - (y - YMIN)*(self.plot_height/LEN_Y)
             coords1.append((X, Y))
-        Biplot.page.create_line(
+        Biplot._page.create_line(
             coords1,
             fill=self.plot_color1, width=self.plot_thick,
             tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_plot')
@@ -534,7 +555,7 @@ class Biplot(_Rt):
             X = self.tl_x + (x - XMIN)*(self.plot_width/LEN_X)
             Y = self.tl_y + self.height - (y - YMIN)*(self.plot_height/LEN_Y)
             coords2.append((X, Y))
-        Biplot.page.create_line(
+        Biplot._page.create_line(
             coords2,
             fill=self.plot_color2, width=self.plot_thick,
             tags=(f'Biplot_{self.id}', f'Biplot_{self.id}_plot')
