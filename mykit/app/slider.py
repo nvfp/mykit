@@ -1,4 +1,5 @@
 import random as _random
+import tkinter as _tk
 from typing import (
     Callable as _Callable,
     Dict as _Dict,
@@ -9,14 +10,22 @@ from typing import (
     Union as _Union
 )
 
-from mykit.app._runtime import Runtime as _Rt
 from mykit.kit.utils import minmax_normalization as _norm
 
 
-class _Slider(_Rt):
+class _Slider:
+
+    ## <runtime>
+
+    _page: _tk.Canvas = None
+    @staticmethod
+    def _set_page(page):
+        _Slider._page = page
 
     sliders: _Dict[str, '_Slider'] = {}
     slider_tags: _Dict[str, _List['_Slider']] = {}  # note that the horizontal and vertical sliders store the tags together
+
+    ## </runtime>
 
     def __init__(
         self,
@@ -77,8 +86,12 @@ class _Slider(_Rt):
         - box color, width, and height should be provided if the box shown
         """
 
-        if _Slider.page is None:
-            raise AssertionError('App has not been initialized.')
+        ## <dependencies check>
+
+        if _Slider._page is None:
+            raise AssertionError('Can\'t use widgets before App initialized.')
+        
+        ## </dependencies check>
 
         self.min = min
         self.max = max
@@ -125,6 +138,8 @@ class _Slider(_Rt):
         self.locked = locked
         self.visible = visible
 
+        ## <id>
+
         ## self.id ensures that we can modify a specific instance without affecting the others
         if id is None:
             self.id = str(_random.randint(0, 100_000))
@@ -134,9 +149,14 @@ class _Slider(_Rt):
             self.id = id
             if self.id in _Slider.sliders:
                 raise ValueError(f'The id {repr(id)} is duplicated.')
+        
         _Slider.sliders[self.id] = self
 
+        ## </id>
+
+
         ## <tags>
+
         if type(tags) is str:
             self.tags = [tags]
         elif (type(tags) is list) or (type(tags) is tuple) or (tags is None):
@@ -148,6 +168,7 @@ class _Slider(_Rt):
                     _Slider.slider_tags[tag].append(self)
                 else:
                     _Slider.slider_tags[tag] = [self]
+
         ## </tags>
 
 
@@ -160,17 +181,17 @@ class _Slider(_Rt):
 
 
     @staticmethod
-    def hover_listener():
+    def _hover_listener(e: _tk.Event):
         for slider in _Slider.sliders.values():
             slider._hover()
 
     @staticmethod
-    def press_listener():
+    def _press_listener(e: _tk.Event):
         for slider in _Slider.sliders.values():
             slider._press()
 
     @staticmethod
-    def hold_listener():
+    def _hold_listener(e: _tk.Event):
         for slider in list(_Slider.sliders.values()):
             slider._hold()
     
@@ -181,7 +202,7 @@ class _Slider(_Rt):
             self._redraw()
 
     @staticmethod
-    def release_listener():
+    def _release_listener(e: _tk.Event):
         for slider in list(_Slider.sliders.values()):
             slider._release()
 
@@ -394,7 +415,7 @@ class _Slider(_Rt):
                 if _Slider.slider_tags[tag] == []:
                     _Slider.slider_tags.pop(tag)
 
-        _Slider.page.delete(f'Slider_{self.id}')
+        _Slider._page.delete(f'Slider_{self.id}')
 
     @staticmethod
     def destroy_by_id(id: str, /) -> None:
@@ -505,7 +526,7 @@ class Slider(_Slider):
             color_btn = self.color_btn_normal
             color_btn_bd = self.color_btn_bd_normal
 
-        self.page.delete(f'Slider_{self.id}')
+        _Slider._page.delete(f'Slider_{self.id}')
 
         if self.visible:
 
@@ -513,37 +534,37 @@ class Slider(_Slider):
             w2 = self.width/2
             h2 = self.height/2
 
-            self.page.create_rectangle(
+            _Slider._page.create_rectangle(
                 X-w2, Y-h2,
                 X+w2, Y+h2,
                 fill=color_rod, width=0, tags=f'Slider_{self.id}'
             )
-            self.page.create_oval(
+            _Slider._page.create_oval(
                 X-w2+_norm(self.value, self.min, self.max)*self.width-self.btn_r, Y-self.btn_r,
                 X-w2+_norm(self.value, self.min, self.max)*self.width+self.btn_r, Y+self.btn_r,
                 fill=color_btn, width=1, outline=color_btn_bd, tags=f'Slider_{self.id}'
             )
 
             if self.show_label_box:
-                self.page.create_rectangle(
+                _Slider._page.create_rectangle(
                     X-self.label_box_width/2, Y-h2+self.label_y_shift-self.label_box_height/2,
                     X+self.label_box_width/2, Y-h2+self.label_y_shift+self.label_box_height/2,
                     fill=self.label_box_color, width=0, tags=f'Slider_{self.id}'
                 )
             if self.label is not None:
-                self.page.create_text(
+                _Slider._page.create_text(
                     X, Y-h2+self.label_y_shift,
                     text=self.label, font=self.label_font, fill=self.label_fg, tags=f'Slider_{self.id}'
                 )
 
             if self.show_value_box:
-                self.page.create_rectangle(
+                _Slider._page.create_rectangle(
                     X+w2+self.value_box_x_shift-self.value_box_width/2, Y-self.value_box_height/2,
                     X+w2+self.value_box_x_shift+self.value_box_width/2, Y+self.value_box_height/2,
                     fill=self.value_box_color, width=0, tags=f'Slider_{self.id}'
                 )
             if self.show_value:
-                self.page.create_text(
+                _Slider._page.create_text(
                     X+w2+self.value_box_x_shift, Y,
                     text=self.value_prefix + str(self.value) + self.value_suffix,
                     font=self.value_font, fill=self.value_fg, tags=f'Slider_{self.id}'
@@ -553,8 +574,8 @@ class Slider(_Slider):
 
         X, Y = self.get_anchor_loc('center')
 
-        x = self.page.winfo_pointerx()
-        y = self.page.winfo_pointery()
+        x = _Slider._page.winfo_pointerx()
+        y = _Slider._page.winfo_pointery()
 
         ## button coordinate
         bx = X - self.width/2 + _norm(self.value, self.min, self.max)*self.width
@@ -576,8 +597,8 @@ class Slider(_Slider):
 
         X, Y = self.get_anchor_loc('center')
 
-        x = self.page.winfo_pointerx()
-        y = self.page.winfo_pointery()
+        x = _Slider._page.winfo_pointerx()
+        y = _Slider._page.winfo_pointery()
 
         bx = X - self.width/2 + _norm(self.value, self.min, self.max)*self.width
         by = Y
@@ -595,7 +616,7 @@ class Slider(_Slider):
 
             X, _ = self.get_anchor_loc('center')
 
-            mousex = self.page.winfo_pointerx()
+            mousex = _Slider._page.winfo_pointerx()
             value = self.min + ((mousex - (X - self.width/2))/self.width)*(self.max - self.min)
 
             if self.prec == 0:
@@ -713,7 +734,7 @@ class VSlider(_Slider):
             color_btn = self.color_btn_normal
             color_btn_bd = self.color_btn_bd_normal
 
-        self.page.delete(f'Slider_{self.id}')
+        _Slider._page.delete(f'Slider_{self.id}')
 
         if self.visible:
 
@@ -721,37 +742,37 @@ class VSlider(_Slider):
             w2 = self.width/2
             h2 = self.height/2
 
-            self.page.create_rectangle(
+            _Slider._page.create_rectangle(
                 X-w2, Y-h2,
                 X+w2, Y+h2,
                 fill=color_rod, width=0, tags=f'Slider_{self.id}'
             )
-            self.page.create_oval(
+            _Slider._page.create_oval(
                 X-self.btn_r, Y+h2-_norm(self.value, self.min, self.max)*self.height-self.btn_r,
                 X+self.btn_r, Y+h2-_norm(self.value, self.min, self.max)*self.height+self.btn_r,
                 fill=color_btn, width=1, outline=color_btn_bd, tags=f'Slider_{self.id}'
             )
 
             if self.show_label_box:
-                self.page.create_rectangle(
+                _Slider._page.create_rectangle(
                     X-self.label_box_width/2, Y-h2+self.label_y_shift-self.label_box_height/2,
                     X+self.label_box_width/2, Y-h2+self.label_y_shift+self.label_box_height/2,
                     fill=self.label_box_color, width=0, tags=f'Slider_{self.id}'
                 )
             if self.label is not None:
-                self.page.create_text(
+                _Slider._page.create_text(
                     X, Y-h2+self.label_y_shift,
                     text=self.label, font=self.label_font, fill=self.label_fg, tags=f'Slider_{self.id}'
                 )
 
             if self.show_value_box:
-                self.page.create_rectangle(
+                _Slider._page.create_rectangle(
                     X-self.value_box_width/2, Y+h2+self.value_box_y_shift-self.value_box_height/2,
                     X+self.value_box_width/2, Y+h2+self.value_box_y_shift+self.value_box_height/2,
                     fill=self.value_box_color, width=0, tags=f'Slider_{self.id}'
                 )
             if self.show_value:
-                self.page.create_text(
+                _Slider._page.create_text(
                     X, Y+h2+self.value_box_y_shift,
                     text=self.value_prefix + str(self.value) + self.value_suffix,
                     font=self.value_font, fill=self.value_fg, tags=f'Slider_{self.id}'
@@ -761,8 +782,8 @@ class VSlider(_Slider):
 
         X, Y = self.get_anchor_loc('center')
 
-        x = self.page.winfo_pointerx()
-        y = self.page.winfo_pointery()
+        x = _Slider._page.winfo_pointerx()
+        y = _Slider._page.winfo_pointery()
 
         bx = X
         by = Y + self.height/2 - _norm(self.value, self.min, self.max)*self.height
@@ -782,8 +803,8 @@ class VSlider(_Slider):
 
         X, Y = self.get_anchor_loc('center')
 
-        x = self.page.winfo_pointerx()
-        y = self.page.winfo_pointery()
+        x = _Slider._page.winfo_pointerx()
+        y = _Slider._page.winfo_pointery()
 
         bx = X
         by = Y + self.height/2 - _norm(self.value, self.min, self.max)*self.height
@@ -801,7 +822,7 @@ class VSlider(_Slider):
 
             _, Y = self.get_anchor_loc('center')
 
-            mousey = self.page.winfo_pointery()
+            mousey = _Slider._page.winfo_pointery()
             value = self.max - ((mousey - (Y - self.height/2))/self.height)*(self.max - self.min)
     
             if self.prec == 0:

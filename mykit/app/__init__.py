@@ -49,6 +49,7 @@ class App:
         
         ## widgets
         _Button._set_page(self.page)
+        _Slider._set_page(self.page)
 
         ## others
         _Arrow._set_page(self.page)
