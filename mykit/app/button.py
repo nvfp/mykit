@@ -1,4 +1,5 @@
 import random as _random
+import tkinter as _tk
 from typing import (
     Callable as _Callable,
     Dict as _Dict,
@@ -9,13 +10,20 @@ from typing import (
     Union as _Union
 )
 
-from mykit.app._runtime import Runtime as _Rt
 
+class Button:
 
-class Button(_Rt):
+    ## <runtime>
+
+    _page: _tk.Canvas = None
+    @staticmethod
+    def _set_page(page):
+        Button._page = page
 
     buttons: _Dict[str, 'Button'] = {}
     button_tags: _Dict[str, _List['Button']] = {}
+
+    ## </runtime>
 
     def __init__(
         self,
@@ -50,8 +58,12 @@ class Button(_Rt):
         - `color_lbl_normal`: button's label color
         """
 
-        if Button.page is None:
-            raise AssertionError('App has not been initialized.')
+        ## <dependencies check>
+
+        if Button._page is None:
+            raise AssertionError('Can\'t use widgets before App initialized.')
+        
+        ## </dependencies check>
 
         self.x = x
         self.y = y
@@ -73,6 +85,8 @@ class Button(_Rt):
         self.color_lbl_normal = color_lbl_normal
         self.color_lbl_locked = color_lbl_locked
 
+        ## <id>
+
         ## self.id ensures that we can modify a specific instance without affecting the others
         if id is None:
             self.id = str(_random.randint(0, 100_000))
@@ -82,9 +96,13 @@ class Button(_Rt):
             self.id = id
             if self.id in Button.buttons:
                 raise ValueError(f'The id {repr(id)} is duplicated.')
+        
         Button.buttons[self.id] = self
 
+        ## </id>
+
         ## <tags>
+
         if type(tags) is str:
             self.tags = [tags]
         elif (type(tags) is list) or (type(tags) is tuple) or (tags is None):
@@ -96,6 +114,7 @@ class Button(_Rt):
                     Button.button_tags[tag].append(self)
                 else:
                     Button.button_tags[tag] = [self]
+
         ## </tags>
 
 
@@ -130,7 +149,7 @@ class Button(_Rt):
             color_bd = self.color_bd_normal
             color_lbl = self.color_lbl_normal
 
-        Button.page.delete(f'Button_{self.id}')
+        Button._page.delete(f'Button_{self.id}')
 
         if self.visible:
 
@@ -138,13 +157,13 @@ class Button(_Rt):
             ## It may be inefficient, but it makes the code cleaner.
             X, Y = self.get_anchor_loc('center')  # the center of the button
 
-            Button.page.create_rectangle(
+            Button._page.create_rectangle(
                 X - self.width/2, Y - self.height/2,
                 X + self.width/2, Y + self.height/2,
                 fill=color_btn, width=1, outline=color_bd,
                 tags=f'Button_{self.id}'
             )
-            Button.page.create_text(
+            Button._page.create_text(
                 X, Y,
                 text=self.label, font=self.label_font,
                 fill=color_lbl,
@@ -157,8 +176,8 @@ class Button(_Rt):
         w2 = self.width/2
         h2 = self.height/2
         
-        x = Button.page.winfo_pointerx()
-        y = Button.page.winfo_pointery()
+        x = Button._page.winfo_pointerx()
+        y = Button._page.winfo_pointery()
 
         X, Y = self.get_anchor_loc('center')
 
@@ -184,8 +203,8 @@ class Button(_Rt):
 
     def press(self):
         
-        x = Button.page.winfo_pointerx()
-        y = Button.page.winfo_pointery()
+        x = Button._page.winfo_pointerx()
+        y = Button._page.winfo_pointery()
 
         X, Y = self.get_anchor_loc('center')
         w2 = self.width/2
@@ -414,7 +433,7 @@ class Button(_Rt):
                 if Button.button_tags[tag] == []:
                     Button.button_tags.pop(tag)
 
-        Button.page.delete(f'Button_{self.id}')
+        Button._page.delete(f'Button_{self.id}')
     
     @staticmethod
     def destroy_by_id(id: str, /) -> None:

@@ -4,15 +4,14 @@ from typing import (
     List as _List
 )
 
-from mykit.app._runtime import Runtime as _Rt
 from mykit.app.button import Button as _Button
 from mykit.app.label import Label as _Label
 from mykit.app.slider import _Slider
 
 
-class App(_Rt):
+class App:
     """
-    A minimum-dependency single-page app framework.
+    A single-page app framework.
     (currently in beta)
 
     ---
@@ -31,15 +30,18 @@ class App(_Rt):
         self.root.attributes('-fullscreen', True)
         self.root.title(name)
 
-        page = _tk.Canvas(
+        ## app's page
+        self.page = _tk.Canvas(
             master=self.root,
             width=self.root.winfo_screenwidth(),
             height=self.root.winfo_screenheight(),
             background=bg,
             borderwidth=0, highlightthickness=0
         )
-        page.place(x=0, y=0)
-        App._set_page(page)
+        self.page.place(x=0, y=0)
+
+        ## attach to widgets
+        _Button._set_page(self.page)
 
 
         ## <constants>
