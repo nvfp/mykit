@@ -1,8 +1,11 @@
 import tkinter as _tk
 from typing import (
     Callable as _Callable,
-    List as _List
+    List as _List,
+    Optional as _Optional
 )
+
+from mykit.app.architecture import Architecture as _Architecture
 
 from mykit.app.button import Button as _Button
 from mykit.app.label import Label as _Label
@@ -27,7 +30,8 @@ class App:
     def __init__(
         self,
         name: str = 'app',
-        bg: str = '#111111'
+        bg: str = '#111111',
+        architecture: _Optional[_Architecture] = None
     ) -> None:
 
         self.root = _tk.Tk()
