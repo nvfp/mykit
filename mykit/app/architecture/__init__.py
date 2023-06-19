@@ -1,4 +1,0 @@
-
-
-class Architecture:
-    """typehint purposes"""
