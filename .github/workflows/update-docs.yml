@@ -1,4 +1,4 @@
-name: 🛠️ Rebuild the documentations webpage
+name: 🌟 Rebuild the documentations webpage
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
     paths:
-      - 'docs/**'  # only rebuild docs webpage if docs/ has changed
+      - 'docs/**'  # only rebuild docs webpage if docs/ folder is modified
 
 jobs:
   deploy:
@@ -28,6 +28,6 @@ jobs:
       #   run: |
       #     gem install bundler
       #     bundle install
-      
+
       - name: List repository files
         run: ls -R

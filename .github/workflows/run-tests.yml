@@ -1,9 +1,12 @@
-name: 🧪 Run tests
+name: 🧩Run tests
 
 on:
   push:
     branches:
       - main
+
+    paths:
+      - 'mykit/**'  # run tests only if distribution dir is modified
 
 jobs:
   test:
