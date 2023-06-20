@@ -1,4 +1,19 @@
-title: mykit
+
+
+# website
 baseurl: /mykit
 url: https://nvfp.github.io/mykit
-include: [_pages]
+
+
+# personal
+title: mykit
+author:
+  name: Nicholas Valentinus
+
+
+# internal
+include: [_pages, _sass, assets]
+
+sass:
+  style: compact # possible values: nested expanded compact compressed
+  sass_dir: _sass
