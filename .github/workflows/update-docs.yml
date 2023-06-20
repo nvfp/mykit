@@ -24,13 +24,13 @@ jobs:
       - name: list main
         run: ls -R
 
-      # - name: 📂 Checkout docs branch
-      #   uses: actions/checkout@v3
-      #   with:
-      #     ref: docs
+      - name: 📂 Checkout docs branch
+        uses: actions/checkout@v3
+        with:
+          ref: docs
       
-      # - name: list docs
-      #   run: ls -R
+      - name: list docs
+        run: ls -R
       
       - name: test create a file
         run: echo "This is a sample file" > newfile123123.txt
@@ -41,7 +41,7 @@ jobs:
           git config user.email "youremail@example.com"
           git add .
           git commit -m "testing Gaction: Add newfile.txt via workflow"
-          git push origin main
+          git push origin docs
 
       # - name: 🛒 Install Ruby
       #   uses: ruby/setup-ruby@v1
