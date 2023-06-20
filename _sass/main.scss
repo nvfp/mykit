@@ -1,7 +1,25 @@
 ---
-# Front matter comment to ensure Jekyll properly reads file.
+# not sure why, but Jekyll needs this front matter to convert this main.scss to main.css.
+# note: the "#" sign at the beginning is important to make the front matter work.
 ---
 
 
-// Imports
+// variables
+
+$foo: red;
+
+
+// Note that if variables are used in files imported below,
+// remember to place the variables above the imports.
+
+
+// imports
+
 @import "footer";
+
+
+// styles
+
+body {
+  margin: 0;
+}
