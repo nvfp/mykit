@@ -31,6 +31,17 @@ jobs:
       
       - name: list docs
         run: ls -R
+      
+      - name: test create a file
+        run: echo "This is a sample file" > newfile.txt
+      
+      - name: test commit and push changes
+        run: |
+          git config user.name "Testing commit from workflows"
+          git config user.email "youremail@example.com"
+          git add .
+          git commit -m "Add newfile.txt via workflow"
+          git push origin docs
 
       # - name: 🛒 Install Ruby
       #   uses: ruby/setup-ruby@v1
