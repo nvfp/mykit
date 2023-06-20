@@ -20,4 +20,4 @@ foo
 - xyz
 - xyz
 
-bar baz
+bar baz t
