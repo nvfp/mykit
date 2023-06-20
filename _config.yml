@@ -3,14 +3,9 @@
 
 
 title: mykit
-email: nvfastplease@gmail.com
-description: python utility toolkit
 
 baseurl: /mykit
 url: https://nvfp.github.io/mykit
 
-twitter_username: nvlts
-github_username:  nvfp
 
-
-include: ['_pages']
+include: _pages
