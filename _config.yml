@@ -1,11 +1,4 @@
-
-
-
-
 title: mykit
-
 baseurl: /mykit
 url: https://nvfp.github.io/mykit
-
-
-include: _pages
+include: [_pages]
