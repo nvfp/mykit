@@ -1,3 +1,4 @@
+<!-- make the status easily visible -->
 [![🧩Run tests](https://github.com/nvfp/mykit/actions/workflows/run-tests.yml/badge.svg)](https://github.com/nvfp/mykit/actions/workflows/run-tests.yml)
 
 
@@ -103,7 +104,7 @@ print(x)  # 2.79 PiB
 
 ## Troubleshoot
 
-- To report bugs, please open an issue/pull request, or you can reach me [here](https://nvfp.github.io/contact).
+- If you find any bugs, feel free to contribute by opening an issue or pull request. Thanks!
 
 
 ## License
