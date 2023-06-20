@@ -1,18 +1,7 @@
-// Import your partial SCSS files here
+---
+# Front matter comment to ensure Jekyll properly reads file.
+---
+
+
+// Imports
 @import "footer";
-
-// Your additional styles go here
-
-// Example additional styles:
-body {
-  font-family: Arial, sans-serif;
-  color: #333;
-  background-color: red;
-}
-
-h1 {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-// ... add more styles as needed

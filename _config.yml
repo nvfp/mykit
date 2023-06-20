@@ -14,6 +14,10 @@ author:
 # internal
 include: [_pages, _sass, assets]
 
+permalink: pretty
+# relative_permalinks: true
+
 sass:
-  style: compact # possible values: nested expanded compact compressed
+  # style: compact # possible values: nested expanded compact compressed
+  # style: compressed # possible values: nested expanded compact compressed
   sass_dir: _sass
