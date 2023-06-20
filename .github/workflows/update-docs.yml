@@ -7,6 +7,9 @@ on:
 
     paths:
       - 'docs/**'  # only rebuild docs webpage if docs/ folder is modified
+    
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -19,7 +22,9 @@ jobs:
           ref: main
 
       - name: 📂 Checkout docs branch
-        run: git checkout docs
+        uses: actions/checkout@v3
+        with:
+          ref: docs
 
       - name: 🛒 Install Ruby
         uses: ruby/setup-ruby@v1
@@ -34,6 +39,3 @@ jobs:
 
       - name: List repository files
         run: ls -R
-      
-      - name: List repository files in docs branch
-        run: git ls-files
