@@ -18,6 +18,9 @@ jobs:
         with:
           ref: main
 
+      - name: 📂 Checkout docs branch
+        run: git checkout docs
+
       - name: 🛒 Install Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -31,3 +34,6 @@ jobs:
 
       - name: List repository files
         run: ls -R
+      
+      - name: List repository files in docs branch
+        run: git ls-files
