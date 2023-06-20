@@ -11,3 +11,6 @@ url: https://nvfp.github.io/mykit
 
 twitter_username: nvlts
 github_username:  nvfp
+
+
+include: ['_pages']

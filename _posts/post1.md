@@ -1,23 +1,8 @@
 ---
 layout: main
-permalink: /foo/how/post/my-first-post
+permalink: /post
 title: Changelog
 ---
 
-# Changelog
+# post
 
-foo
-
-## Version 1.0.0
-
-- abc
-- abc
-- abc
-
-## Version 0.2.0
-
-- xyz
-- xyz
-- xyz
-
-bar baz t
