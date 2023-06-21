@@ -18,7 +18,6 @@ author:
 include: [_pages, _sass, scripts]
 
 permalink: pretty
-# relative_permalinks: true  # can't be used anymore
 
 sass:
   style: compact # possible values: nested expanded compact compressed
