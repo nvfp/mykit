@@ -101,8 +101,30 @@ jobs:
 
       - name: ✨ DEPLOY!
         run: |
+          echo "DEBUG: setup git info"
           git config user.name "NICS"
           git config user.email "youremail@example.com"
+          echo "-----------"
+
+          echo "DEBUG: run 'git status'"
+          git status
+          echo "-----------"
+
+          echo "DEBUG: run 'git add .'"
           git add .
+          echo "-----------"
+
+          echo "DEBUG: run 'git status'"
+          git status
+          echo "-----------"
+
+          echo "DEBUG: run 'git commit'"
           git commit -m "via workflows"
+          echo "-----------"
+          
+          echo "DEBUG: run 'git status'"
+          git status
+          echo "-----------"
+
+          echo "DEBUG: run 'git push origin docs'"
           git push origin docs
