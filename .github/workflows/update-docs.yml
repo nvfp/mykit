@@ -25,6 +25,19 @@ jobs:
           echo "Files in current directory:"
           ls
 
+          echo "Navigating to the parent directory..."
+          cd ..
+
+          echo "Files in parent directory:"
+          ls
+
+          echo "Navigating back to the original directory..."
+          cd -
+
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
+          ls
+
       - name: 📂 Checkout main branch
         uses: actions/checkout@v3
         with:
