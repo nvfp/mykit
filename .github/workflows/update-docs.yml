@@ -95,7 +95,7 @@ jobs:
           ls
           echo "-----------"
 
-          echo "DEBUG: run `nics _compile`"
+          echo "DEBUG: run 'nics _compile'"
           nics _compile "$(pwd)/docs" "$(pwd)/../mykit"
           echo "-----------"
           
