@@ -9,6 +9,67 @@
 <body>
     {% include header.html %}
 
+    <!-- attempt 1 (didnt work) -->
+    <!-- <nav>
+        <ul>
+            {% for page in site.pages %}
+                <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav> -->
+    
+    <!-- attempt 2 (didnt work) -->
+    <!-- <nav>
+        <ul>
+            {% assign root_pages = site.pages | where: 'dir', '_pages' %}
+            {% for root_page in root_pages %}
+                <li>
+                    <a href="{{ root_page.url }}">{{ root_page.title }}</a>
+                    <ul>
+                        {% assign sub_pages = site.pages | where: 'dir', root_page.url | append: '/' %}
+                        {% for sub_page in sub_pages %}
+                            <li><a href="{{ sub_page.url }}">{{ sub_page.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    </nav> -->
+
+    <!-- attempt 3 (didnt work) -->
+    <nav>
+        <ul>
+          {% for root_page in site.pages %}
+            {% if root_page.path contains '_pages' and root_page.path != '_pages/' %}
+              {% if root_page.path contains '/' %}
+                {% assign path_parts = root_page.path | split: '/' %}
+                {% assign num_parts = path_parts | size %}
+                {% assign current_path = '' %}
+                {% for i in (1..num_parts) %}
+                  {% assign current_path = current_path | append: path_parts[i-1] | append: '/' %}
+                  {% assign sub_pages = site.pages | where: 'dir', current_path %}
+                  {% if sub_pages.size > 0 %}
+                    <li>
+                      <a href="{{ root_page.url }}">{{ root_page.title }}</a>
+                      <ul>
+                        {% for sub_page in sub_pages %}
+                          <li><a href="{{ sub_page.url }}">{{ sub_page.title }}</a></li>
+                        {% endfor %}
+                      </ul>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              {% else %}
+                <li><a href="{{ root_page.url }}">{{ root_page.title }}</a></li>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </nav>
+      
+    
+
+
     <main>
         {{ content }}
     </main>

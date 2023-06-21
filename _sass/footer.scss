@@ -1,25 +1,22 @@
 footer {
-  // background-color: #000;
-  background-color: $foo;
-  color: #fff;
+
+  background-color: hsl($hue-signature, 75%, 5%);
+  color: hsl($hue-signature, 65%, 85%);
   text-align: center;
   padding: 20px;
 
   p {
-    font-family: 'Arial', sans-serif;
     font-size: 14px;
     margin: 5px 0;
   }
 
   p:first-child {
     font-size: 12px;
-    text-transform: uppercase;
   }
 
   p:last-child {
     font-size: 16px;
     font-weight: bold;
-    text-transform: uppercase;
     letter-spacing: 2px;
   }
 }
