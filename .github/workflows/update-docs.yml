@@ -51,7 +51,7 @@ jobs:
           ls
           echo "-----------"
 
-          echo "DEBUG: go inside _nics_work_dir"
+          echo "DEBUG: go inside __nics_work_dir__"
           cd __nics_work_dir__
           echo "DEBUG: files in this dir ($(pwd)):"
           ls
@@ -71,6 +71,18 @@ jobs:
         with:
           python-version: 3.8
       
+      - name: TESTING
+        run: |
+          echo "DEBUG: files in this dir ($(pwd)):"
+          ls
+          echo "-----------"
+
+          echo "DEBUG: moving up.."
+          cd ..
+          echo "DEBUG: files in this dir ($(pwd)):"
+          ls
+          echo "-----------"
+
       - name: TESTING
         run: |
           echo "DEBUG: files in this dir ($(pwd)):"
