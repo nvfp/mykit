@@ -39,15 +39,14 @@ jobs:
         run: |
           echo "DEBUG: moving up.."
           cd ..
-          echo "DEBUG: done. now at: $(pwd)"
-          echo "DEBUG: files in this dir:"
+          echo "DEBUG: done, files in this dir ($(pwd)):"
           ls
           echo "-----------"
 
           echo "INFO: creating NICS working directory.."
           mkdir __nics_work_dir__
           echo "DEBUG: dir '__nics_work_dir__' is created."
-          echo "DEBUG: files in this dir:"
+          echo "DEBUG: files in this dir ($(pwd)):"
           ls
           echo "-----------"
 
@@ -66,11 +65,6 @@ jobs:
           ls
           echo "-----------"
       
-      - name: Copying docs/
-        run: |
-          python -m pip install --upgrade pip
-          pip install -U nics
-      
       - name: Set up Python🐍
         uses: actions/setup-python@v2
         with:
@@ -78,7 +72,6 @@ jobs:
 
       - name: Installing NICS
         run: |
-          cd ..
           python -m pip install --upgrade pip
           pip install -U nics
 
@@ -89,14 +82,32 @@ jobs:
 
       - name: ⚙️ Compiling...
         run: |
-          echo "Current directory: $(pwd)"
-          echo "Files in current directory:"
+          echo "DEBUG: files in this dir ($(pwd)):"
           ls
+          echo "-----------"
 
-      - name: ✨ DEPLOY!
-        run: |
-          git config user.name "NICS"
-          git config user.email "youremail@example.com"
-          git add .
-          git commit -m "testing Gaction: Add newfile.txt via workflow"
-          git push
+          echo "moving to NICS working dir"
+          cd ..
+          cd __nics_work_dir__
+          echo "-----------"
+
+          echo "DEBUG: files in this dir ($(pwd)):"
+          ls
+          echo "-----------"
+
+          # echo "DEBUG: setup python venv"
+          # python -m venv venv
+          # echo "-----------"
+
+          echo "DEBUG: run `nics _compile`"
+          nics _compile "$(pwd)/docs" "$(pwd)/../mykit"
+          echo "-----------"
+          
+
+      # - name: ✨ DEPLOY!
+      #   run: |
+      #     git config user.name "NICS"
+      #     git config user.email "youremail@example.com"
+      #     git add .
+      #     git commit -m "testing Gaction: Add newfile.txt via workflow"
+      #     git push
