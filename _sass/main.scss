@@ -32,10 +32,23 @@ body {
   // remove the unwanted margin
   margin: 0;
 
+  // keep showing the scrollbar to prevent glitching
+  overflow-y: scroll;
+
   background-color: hsl($hue-signature, 15%, 85%);
 
   font-family: $font;
 
   // debugging
-  // background-color: hsl(28, 100%, 50%);
+  // background-color: red;
+}
+
+main {
+  min-height: 100vh;
+
+  width: 70%;
+  margin: 0 auto;
+
+  // debugging
+  // background-color: red;
 }
