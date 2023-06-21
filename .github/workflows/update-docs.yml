@@ -6,7 +6,7 @@ on:
       - main
 
     paths:
-      - '_NICS/**'  # only rebuild docs webpage if docs/ folder is modified
+      - 'docs/**'  # only rebuild docs webpage if docs/ folder is modified
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -19,42 +19,54 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: TESTING
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
+          ls
+
       - name: 📂 Checkout main branch
         uses: actions/checkout@v3
         with:
           ref: main
+      
+      - name: TESTING
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
+          ls
         
-      - name: list main
-        run: ls -R
+      # - name: list main
+      #   run: ls -R
 
-      - name: 📂 Checkout docs branch
-        uses: actions/checkout@v3
-        with:
-          ref: docs
+      # - name: 📂 Checkout docs branch
+      #   uses: actions/checkout@v3
+      #   with:
+      #     ref: docs
       
-      - name: list docs
-        run: ls -R
+      # - name: list docs
+      #   run: ls -R
       
-      - name: test create a file
-        run: echo "This is a sample file" > newfile123123.txt
+      # - name: test create a file
+      #   run: echo "This is a sample file" > newfile123123.txt
 
-      - name: test commit and push changes
-        run: |
-          git config user.name "Testing commit from workflows"
-          git config user.email "youremail@example.com"
-          git add .
-          git commit -m "testing Gaction: Add newfile.txt via workflow"
-          git push
+      # - name: test commit and push changes
+      #   run: |
+      #     git config user.name "Testing commit from workflows"
+      #     git config user.email "youremail@example.com"
+      #     git add .
+      #     git commit -m "testing Gaction: Add newfile.txt via workflow"
+      #     git push
       
-      - name: 🐍 Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
+      # - name: 🐍 Set up Python
+      #   uses: actions/setup-python@v2
+      #   with:
+      #     python-version: 3.8
 
-      - name: 🛒 Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -U nics
+      # - name: 🛒 Install dependencies
+      #   run: |
+      #     python -m pip install --upgrade pip
+      #     pip install -U nics
 
       # - name: 🛒 Install Ruby
       #   uses: ruby/setup-ruby@v1
