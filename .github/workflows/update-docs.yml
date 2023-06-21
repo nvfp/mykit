@@ -98,12 +98,11 @@ jobs:
           echo "DEBUG: run 'nics _compile'"
           nics _compile "$(pwd)/docs" "$(pwd)/../mykit"
           echo "-----------"
-          
 
-      # - name: ✨ DEPLOY!
-      #   run: |
-      #     git config user.name "NICS"
-      #     git config user.email "youremail@example.com"
-      #     git add .
-      #     git commit -m "testing Gaction: Add newfile.txt via workflow"
-      #     git push
+      - name: ✨ DEPLOY!
+        run: |
+          git config user.name "NICS"
+          git config user.email "youremail@example.com"
+          git add .
+          git commit -m "via workflows"
+          git push origin docs
