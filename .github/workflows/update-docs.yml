@@ -95,10 +95,6 @@ jobs:
           ls
           echo "-----------"
 
-          # echo "DEBUG: setup python venv"
-          # python -m venv venv
-          # echo "-----------"
-
           echo "DEBUG: run `nics _compile`"
           nics _compile "$(pwd)/docs" "$(pwd)/../mykit"
           echo "-----------"
