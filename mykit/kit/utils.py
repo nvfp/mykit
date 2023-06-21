@@ -1,6 +1,8 @@
 import datetime as _datetime
 import keyword as _keyword
+import os as _os
 import random as _random
+import time as _time
 from typing import (
     Tuple as _Tuple
 )
@@ -109,3 +111,35 @@ def printer(__msg: str, /) -> None:
     >>> printer('WARNING: bar')  # [06:15:09] WARNING: bar
     """
     print(f'[{_datetime.datetime.now().strftime("%H:%M:%S")}] {__msg}')
+
+def slowprint(__msg: str, /, delay: float = 0.15) -> None:
+    """
+    For simple logging needs.
+    Basically the same as `mykit.kit.utils.printer` but with delay.
+
+    ---
+
+    ## Params
+    - `delay`: in seconds
+
+    ## Demo
+    >>> for i in range(3):
+    >>>     slowprint(f'INFO: {i}')
+    >>> ## output:
+    >>> ## [06:38:32] INFO: 0
+    >>> ## [06:38:32] INFO: 1
+    >>> ## [06:38:33] INFO: 2
+    """
+    _time.sleep(delay)
+    print(f'[{_datetime.datetime.now().strftime("%H:%M:%S")}] {__msg}')
+
+def print_screen(__msg: str, /) -> None:
+    """prints message at the bottom of the terminal screen, adapting to terminal's height."""
+
+    ## the height of users' terminal
+    h = _os.get_terminal_size()[1]
+
+    ## message height
+    n = len( __msg.split('\n') )
+    
+    print( '\n'*(h-n) + __msg )

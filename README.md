@@ -42,6 +42,8 @@ print(x)  # 2.79 PiB
 
 ## Changelog
 
+- 4.1.0 (June 21, 2023):
+    - NEW: in `/kit/utils.py`: `slowprint` and `print_screen`
 - 4.0.0 (June 18, 2023):
     - Breaking changes:
         - `LIB_DIR_PTH` in `mykit` replaced by `DIST_DIR_PTH`
