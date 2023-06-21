@@ -4,20 +4,26 @@ from mykit.app import App  # be careful of circular imports. this is just used f
 
 
 class Eventdriven(_Architecture):
-    """simple event-driven architecture"""
+    """
+    Simple event-driven architecture.
+    (still in beta)
+    """
 
     bus = {}  # basically a container
     
-    def register(abstraction):
+    def register(name):
         
-        if fn in bus:
-            raise ValueError
-        bus[fn] = []
+        if name in Eventdriven.bus:
+            raise ValueError('Already exists')
+        Eventdriven.bus[name] = []
 
-    def call(event):
+    def call(name):
         
-        for fn in Eventdriven.bus[event]:
-            fn(app: App)
+        for fn in Eventdriven.bus[name]:
+            fn()
 
     def listen(to, do):
-        pass
+
+        if to not in Eventdriven.bus:
+            raise ValueError('Event not exist')
+        Eventdriven.bus[to].append(do)
