@@ -1,0 +1,10 @@
+
+
+This folder should only contain the following files:
+- home.md (required): the homepage
+- 404.md (optional): 404 page
+- favicon.png (optional): currently, only png format is supported
+- settings.txt (required): the main settings file
+
+
+If you find this help outdated, you can visit https://nvfp.github.io/now-i-can-sleep/guide to read the latest guidelines.
