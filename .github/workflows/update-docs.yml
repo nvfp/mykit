@@ -74,8 +74,8 @@ jobs:
           ls
           echo "-----------"
           
-          echo "copying"
-          cp -r mykit/docs/ .
+          echo "copying docs/ from main branch into _nics_work_dir"
+          cp -r ../mykit/docs/ .
           echo "-----------"
           
           echo "Current directory: $(pwd)"
