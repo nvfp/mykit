@@ -68,6 +68,29 @@ jobs:
           mkdir _nics_work_dir
           echo "Files in current directory:"
           ls
+          echo "go inside _nics_work_dir"
+          cd _nics_work_dir
+          echo "Files in current directory:"
+          ls
+          echo "-----------"
+          
+          echo "copying"
+          cp -r mykit/docs/ .
+          echo "-----------"
+          
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
+          ls
+          echo "-----------"
+          
+          echo "go inside copied docs/"
+          cd docs
+          echo "-----------"
+
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
+          ls
+          echo "-----------"
 
       - name: 📂 Checkout docs branch
         uses: actions/checkout@v3
