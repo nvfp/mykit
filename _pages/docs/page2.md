@@ -1,6 +1,6 @@
 ---
 layout: main
-permalink: /docs/page2
+permalink: /docs/page2/
 title: page2
 ---
 
