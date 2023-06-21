@@ -1,4 +1,4 @@
-name: 🌟NICS💤
+name: 🌟Rebuild docs
 
 on:
   push:
@@ -27,8 +27,10 @@ jobs:
           echo "------"
 
           echo "Navigating to the parent directory..."
-          echo "Current directory: $(pwd)"
           cd ..
+          echo "------"
+          
+          echo "Current directory: $(pwd)"
           echo "------"
 
           echo "Files in parent directory:"
