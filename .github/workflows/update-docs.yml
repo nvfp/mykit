@@ -36,13 +36,16 @@ jobs:
           echo "Files in current directory:"
           ls
         
-      # - name: list main
-      #   run: ls -R
+      - name: 📂 Checkout docs branch
+        uses: actions/checkout@v3
+        with:
+          ref: docs
 
-      # - name: 📂 Checkout docs branch
-      #   uses: actions/checkout@v3
-      #   with:
-      #     ref: docs
+      - name: TESTING
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
+          ls
       
       # - name: list docs
       #   run: ls -R
