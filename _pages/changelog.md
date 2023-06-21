@@ -1,6 +1,5 @@
 ---
 layout: main
-permalink: [/changelog, /changelog/]
 title: Changelog
 ---
 
