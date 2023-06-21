@@ -2,12 +2,43 @@
 
 <header>
 
-    <h1>{{ site.title }}</h1>
-    <hr>
-    <button>Navigation 🔽</button>
-    <div class="nav">
-        <a href="#">foo</a>
+    <h1>{{ page.title }}</h1>
+
+    <div class="wrap">
+
+        <button id="_root__nav">v Navigation</button>
+        <div class="main" id="_root__nav-div">
+
+            <button id="test">> Test</button>
+            <div class="child" id="test-div">
+                <a href="#">foo</a>
+                <a href="#">foo</a>
+                <a href="#">foo</a>
+                <button id="test3">> Test3</button>
+                <div class="child" id="test3-div">
+                    <a href="#">foo</a>
+                    <a href="#">foo</a>
+                    <a href="#">foo</a>
+                </div>
+                <button id="test4">> Test4</button>
+                <div class="child" id="test4-div">
+                    <a href="#">foo</a>
+                    <a href="#">foo</a>
+                    <a href="#">foo</a>
+                </div>
+            </div>
+            <button id="test2">> Test2</button>
+            <div class="child" id="test2-div">
+                <a href="#">foo</a>
+                <a href="#">foo</a>
+                <a href="#">foo</a>
+            </div>
+            <a href="#">foo</a>
+            <a href="#">foo</a>
+            <a href="#">foo</a>
+
+        </div>
+    
     </div>
-    <hr>
 
 </header>

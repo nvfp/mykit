@@ -15,7 +15,7 @@ author:
 
 # internal
 
-include: [_pages, _sass]
+include: [_pages, _sass, scripts]
 
 permalink: pretty
 # relative_permalinks: true  # can't be used anymore

@@ -1,0 +1,77 @@
+
+
+
+header {
+    margin: 0;
+    margin-bottom: 23px;
+}
+
+header h1 {
+    margin: 0;
+    margin-left: 33px;
+    // margin-bottom: 30px;
+}
+
+
+.wrap {
+
+    width: 97%;
+    margin: 0 auto;
+
+    background-color: hsl($hue-signature, 55%, 88%);
+    border: 1px solid hsl($hue-signature, 22%, 71%);
+    border-radius: 7px;
+
+    box-shadow: 0 2px 4px hsl($hue-signature, 22%, 71%);;
+
+    // debugging
+    // background-color: red;
+}
+.wrap #_root__nav {
+
+    width: 100%;
+    padding: 15px;
+    
+    background-color: hsl($hue-signature, 95%, 78%);
+    border: none;
+    border-radius: 7px;
+
+    font-family: $font2;
+    font-size: 23px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+
+    padding: 7px;
+    padding-left: 13px;
+    gap: 3px;
+}
+.main button {
+
+    padding: 6px;
+
+    background-color: hsl($hue-signature, 95%, 81%);
+    border: none;
+    border-radius: 7px;
+
+    font-family: $font2;
+    font-size: 17px;
+    text-align: left;
+    cursor: pointer;
+}
+.main a {
+    font-family: $font2;
+}
+
+.child {
+    display: none;
+    flex-direction: column;
+
+    padding: 7px;
+    padding-left: 21px;
+    gap: 3px;
+}

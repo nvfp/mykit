@@ -2,18 +2,30 @@
 <html lang="en">
 
 <head>
-    <title>{{ page.title }} | {{ site.title }}</title>
-    <link rel="icon" type="image/png" href="{{ site.baseurl }}/favicon.png">
-    <link rel="stylesheet" href="{{ site.baseurl }}/_sass/main.css">
+
+  <title>{{ page.title }} | {{ site.title }}</title>
+
+  <!-- favicon -->
+  <link rel="icon" type="image/png" href="{{ site.baseurl }}/favicon.png">
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="{{ site.baseurl }}/_sass/main.css">
+
 </head>
+
 <body>
-    {% include header.html %}
 
-    <main>
-        {{ content }}
-    </main>
+  {% include header.html %}
 
-    {% include footer.html %}
+  <main>
+    {{ content }}
+  </main>
+
+  {% include footer.html %}
+
+  <!-- JS files -->
+  <script src="{{ site.baseurl }}/scripts/header.js"></script>
+
 </body>
 
 </html>
