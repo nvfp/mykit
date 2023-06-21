@@ -56,7 +56,19 @@ jobs:
           echo "Current directory: $(pwd)"
           echo "Files in current directory:"
           ls
-        
+      
+      - name: creating environtment
+        run: |
+          echo "moving up.."
+          cd ..
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
+          ls
+          echo "making working dir.."
+          mkdir _nics_work_dir
+          echo "Files in current directory:"
+          ls
+
       - name: 📂 Checkout docs branch
         uses: actions/checkout@v3
         with:
