@@ -30,12 +30,22 @@ jobs:
 
     steps:
 
+      - name: Set up Python🐍
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      # - name: Installing NICS
+      #   run: |
+      #     python -m pip install --upgrade pip
+      #     pip install -U nics
+
       - name: 📂 Checkout main branch
         uses: actions/checkout@v3
         with:
           ref: main
 
-      - name: 📚 Preparing NICS working dir...
+      - name: Creating NICS working directory
         run: |
           echo "DEBUG: moving up.."
           cd ..
@@ -65,73 +75,27 @@ jobs:
           echo "DEBUG: files in this dir ($(pwd)):"
           ls
           echo "-----------"
-
-      - name: Set up Python🐍
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
       
-      - name: TESTING
+      - name: Copying docs/
         run: |
-          echo "DEBUG: files in this dir ($(pwd)):"
-          ls
-          echo "-----------"
-
-          echo "DEBUG: moving up.."
-          cd ..
-          echo "DEBUG: files in this dir ($(pwd)):"
-          ls
-          echo "-----------"
-
-      - name: TESTING
-        run: |
-          echo "DEBUG: files in this dir ($(pwd)):"
-          ls
-          echo "-----------"
-
-      # - name: 🛒 Install dependencies
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     pip install -U nics
-
-      # - name: 🌱 Install dependencies
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     pip install -U nics
+          python -m pip install --upgrade pip
+          pip install -U nics
 
       - name: 📂 Checkout docs branch
         uses: actions/checkout@v3
         with:
           ref: docs
-      
-      - name: TESTING
+
+      - name: ⚙️ Compiling...
         run: |
-          echo "DEBUG: files in this dir ($(pwd)):"
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
           ls
-          echo "-----------"
 
-      # - name: ⚙️ Compiling...
-      #   run: |
-      #     echo "Current directory: $(pwd)"
-      #     echo "Files in current directory:"
-      #     ls
-
-      # - name: ✨ DEPLOY!
-      #   run: |
-      #     echo "Current directory: $(pwd)"
-      #     echo "Files in current directory:"
-      #     ls
-
-      # - name: list docs
-      #   run: ls -R
-      
-      # - name: test create a file
-      #   run: echo "This is a sample file" > newfile123123.txt
-
-      # - name: test commit and push changes
-      #   run: |
-      #     git config user.name "NICS"
-      #     git config user.email "youremail@example.com"
-      #     git add .
-      #     git commit -m "testing Gaction: Add newfile.txt via workflow"
-      #     git push
+      - name: ✨ DEPLOY!
+        run: |
+          git config user.name "NICS"
+          git config user.email "youremail@example.com"
+          git add .
+          git commit -m "testing Gaction: Add newfile.txt via workflow"
+          git push
