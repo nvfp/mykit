@@ -1,10 +1,41 @@
 
 
-This folder should only contain the following files:
-- home.md (required): the homepage
-- 404.md (optional): 404 page
-- favicon.png (optional): currently, only png format is supported
-- settings.txt (required): the main settings file
+
+author: 'Nicholas Valentinus'
 
 
-If you find this help outdated, you can visit https://nvfp.github.io/now-i-can-sleep/guide to read the latest guidelines.
+#-- Colors
+
+hue_signature: 22
+
+
+
+#-- Help
+#-----------------------------------
+#--
+#-- Inside this folder (the folder that contains this setting.txt file),
+#-- nics will strictly look at the following things:
+#--    (optional) assets/ . . : the folder for storing items used in markdown files
+#--    (REQUIRED) tree/ . . . : the docs structure
+#--    (optional) 404.md  . . : 404 page
+#--    (optional) favicon.png : currently, only PNG format is supported
+#--    (REQUIRED) settings.txt: the main settings
+#-- And nics will not touch any other files/folders that are being added to this folder
+#--
+#--
+#-- Inside tree/ folder, 
+#-- 
+#-- 
+#-- If you find this help outdated, you can visit https://nvfp.github.io/now-i-can-sleep/guide to read the latest guidelines.
+
+
+
+#-- == internal == 
+#-- (please do not modify any of these)
+
+_nics_version: '1.0.0'
+
+_docs: r'docs'
+_target: r'docs'
+
+_copyright_style: 'default'
