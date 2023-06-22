@@ -1,3 +1,8 @@
+#-- Welcome to NICS settings!
+#----------------------------
+
+#-- Everything starts with "#--" is a comment.
+#-- Visit https://nvfp.github.io/now-i-can-sleep to read the latest documentation.
 
 
 
@@ -7,6 +12,10 @@ author: 'Nicholas Valentinus'
 #-- Colors
 
 hue_signature: 22
+
+
+lowercase_the_url: True
+show_nics_credit: True
 
 
 
@@ -38,4 +47,9 @@ _nics_version: '1.0.0'
 _docs: r'docs'
 _target: r'docs'
 
+_coloring_type: 'signature'
+
 _copyright_style: 'default'
+
+_git_push_name: 'NICS'
+_git_push_email: '0@gmail.com'
