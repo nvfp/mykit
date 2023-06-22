@@ -8,3 +8,4 @@ title: Changelog
 
 foo
 
+![image](../assets/thumbnail.png)
