@@ -6,7 +6,7 @@
 
 author: 'Nicholas Valentinus'
 color_hue: 28
-show_credit: True
+show_credit: False
 
 
 #-- Docs: https://nvfp.github.io/now-i-can-sleep
