@@ -1,5 +1,5 @@
 ---
-permalink: //changelog/
+permalink: /changelog/
 layout: main
 title: changelog
 ---

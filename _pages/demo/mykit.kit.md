@@ -1,5 +1,5 @@
 ---
-permalink: /demo//mykit-kit/
+permalink: /demo/mykit-kit/
 layout: main
 title: mykit.kit
 ---
