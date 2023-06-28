@@ -41,10 +41,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -U nics
 
-      - name: 📂 Checkout docs branch
+      - name: Checkout gh-pages branch
         uses: actions/checkout@v3
         with:
-          ref: docs
+          ref: gh-pages
 
       - name: Compile
         run: |
@@ -58,4 +58,4 @@ jobs:
           git config user.email "nvfastplease@gmail.com"
           git add .
           git commit -m "by nics"
-          git push origin docs
+          git push
