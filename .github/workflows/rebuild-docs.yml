@@ -19,43 +19,43 @@ jobs:
 
     steps:
 
-      - name: 📂 Checkout main branch
+      - name: 📂Checkout main branch
         uses: actions/checkout@v3
         with:
           ref: main
 
-      - name: Creating NICS working directory
+      - name: 🛠️ Creating NICS working directory
         run: |
           cd ..
           mkdir __nics_work_dir__
           cd __nics_work_dir__
           cp -r ../mykit/docs/ .
 
-      - name: Set up Python
+      - name: 🐍Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
 
-      - name: Installing NICS
+      - name: 🐱Installing NICS
         run: |
           python -m pip install --upgrade pip
           pip install -U nics
 
-      - name: Checkout gh-pages branch
+      - name: 📂Checkout docs branch
         uses: actions/checkout@v3
         with:
-          ref: gh-pages
+          ref: docs
 
-      - name: Compile
+      - name: ⚙️ Compile
         run: |
           cd ..
           cd __nics_work_dir__
           nics _compile "$(pwd)/docs" "$(pwd)/../mykit"
 
-      - name: Deploy
+      - name: 🚀Deploy
         run: |
           git config user.name "Nicholas Valentinus (via nics)"
           git config user.email "nvfastplease@gmail.com"
           git add .
-          git commit -m "by nics"
+          git commit -m "nics rebuild the docs"
           git push
