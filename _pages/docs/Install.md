@@ -6,4 +6,4 @@ title: Install
 
 ## install
 
-cool
+cooll
