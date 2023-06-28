@@ -54,8 +54,8 @@ jobs:
 
       - name: 🚀Deploy
         run: |
-          git config user.name "Nicholas Valentinus (via nics)"
+          git config user.name "Nicholas Valentinus (via NICS)"
           git config user.email "nvfastplease@gmail.com"
           git add .
-          git commit -m "nics rebuild the docs"
+          git commit -m "NICS rebuild the docs"
           git push

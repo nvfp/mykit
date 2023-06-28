@@ -1,3 +1,7 @@
-## install
 
-cooll
+
+## Installation
+
+```sh
+pip install mykit
+```
