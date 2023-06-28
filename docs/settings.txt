@@ -10,3 +10,9 @@ show_credit: False
 
 
 #-- Docs: https://nvfp.github.io/now-i-can-sleep
+
+
+#-- The variables below should not be changed and are for NICS internal use only.
+
+_gh_username: 'nvfp'
+_gh_repo: 'mykit'
