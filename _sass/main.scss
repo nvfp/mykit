@@ -1,0 +1,83 @@
+---
+# not sure why, but Jekyll needs this front matter to convert this main.scss to main.css.
+# note: the "#" sign at the beginning is important to make it work.
+---
+
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat&family=Grandstander&display=swap');
+
+
+// variables
+
+// $font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+$font: 'Caveat', cursive;
+
+$font2: 'Grandstander', cursive;
+
+$font-size-mobile: 16px;
+
+$hue-signature: 28;
+
+$mobile-width: 850px;
+
+
+// Note that if variables are used in files imported below,
+// remember to place the variables above the imports.
+
+
+// imports
+
+@import "header";
+@import "footer";
+
+
+// styles
+
+body {
+  
+  // remove the unwanted margin
+  margin: 0;
+
+  // keep showing the scrollbar to prevent glitching
+  overflow-y: scroll;
+
+  background-color: hsl($hue-signature, 15%, 85%);
+
+  font-family: $font;
+
+
+  // main scrollbar
+  &::-webkit-scrollbar {
+    width: 7px;
+    background-color: hsl($hue-signature, 15%, 85%);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: hsl($hue-signature, 42%, 66%);
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: hsl($hue-signature, 42%, 71%);
+  }
+
+
+  // debugging
+  // background-color: red;
+}
+
+main {
+  min-height: 100vh;
+
+  width: 68%;
+  @media (max-width: $mobile-width) {
+      width: 91%;
+  }
+
+  margin: 0 auto;
+  margin-top: 58px;
+
+  font-family: $font2;
+
+  // debugging
+  // background-color: red;
+}

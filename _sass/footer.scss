@@ -1,0 +1,30 @@
+footer {
+
+  padding: 23px;
+  
+  text-align: center;
+  
+  background-color: hsl($hue-signature, 76%, 5%);
+
+
+  p {
+    margin: 5px 0;
+  }
+
+  #copyright {
+    font-size: 16px;
+    color: hsl($hue-signature, 65%, 85%);
+  }
+
+  #credit {
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+
+    color: hsl($hue-signature, 51%, 85%);
+
+    a {
+      color: inherit;
+    }
+  }
+}
