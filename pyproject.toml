@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mykit"
-version = "5.0.0"
+version = "5.0.1"
 description = "Python utility library"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -16,14 +16,14 @@ authors = [
 keywords = ["python", "toolkit", "mykit"]
 classifiers = [
     "License :: OSI Approved :: MIT License",
-    "Natural Language :: English"
+    "Natural Language :: English",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
 	"Topic :: Scientific/Engineering",
 ]
 dependencies = [
 	"numba>=0.55.2",
-	"numpy>=1.22.4"
+	"numpy>=1.22.4",
 ]
 
 
