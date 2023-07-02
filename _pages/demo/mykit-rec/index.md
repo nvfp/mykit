@@ -1,7 +1,7 @@
 ---
 permalink: /demo/mykit-rec/
 layout: main
-title: mykit.rec
+title: mykit-rec
 ---
 
 # mykit.rec

@@ -1,32 +1,36 @@
-
-
-
 header {
     display: flex;
     flex-direction: column;
     
     margin: 0;
+
+    color: hsl($hue-signature, 33%, 7%);
+
+    h1 {
+        margin: 0;
+        margin-top: 0;
+        margin-bottom: 37px;
+        padding: 13px;
+        padding-left: 41px;
+    
+        // same color as footer
+        background-color: hsl($hue-signature, 81%, 4%);
+        color: hsl($hue-signature, 65%, 91%);
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+
+    button {
+        color: inherit;
+    }
 }
 
-header h1 {
-    margin: 0;
-    margin-left: 33px;
-    margin-top: 17px;
-    margin-bottom: 13px;
-
-    color: hsl($hue-signature, 33%, 17%);
-
-    // debugging
-    // background-color: red;
-}
-
-header a {
-    text-decoration: none;
-    color: hsl($hue-signature, 55%, 17%);
-}
-header a:hover {
-    text-decoration: underline;
-}
 
 
 .wrap {
@@ -38,22 +42,18 @@ header a:hover {
 
     margin: 0 auto;
 
-    background-color: hsl($hue-signature, 55%, 88%);
-    border: 1px solid hsl($hue-signature, 22%, 71%);
+    background-color: hsl($hue-signature, 31%, 88%);
+    border: 1px solid hsl($hue-signature, 22%, 76%);
     border-radius: 7px;
 
     box-shadow: 0 2px 4px hsl($hue-signature, 22%, 71%);;
-
-    // debugging
-    // background-color: red;
 }
 .wrap #_root__nav {
 
     width: 100%;
     padding: 15px;
 
-    background-color: hsl($hue-signature, 95%, 78%);
-    color: hsl($hue-signature, 61%, 11%);
+    background-color: hsl($hue-signature, 35%, 76%);
     border: none;
     border-radius: 7px;
 
@@ -67,16 +67,14 @@ header a:hover {
     display: flex;
     flex-direction: column;
 
-    padding: 7px;
-    padding-left: 13px;
-    gap: 3px;
+    padding: 17px;
+    gap: 7px;
 }
 .main button {
 
-    padding: 6px;
+    padding: 9px;
 
-    background-color: hsl($hue-signature, 95%, 81%);
-    color: hsl($hue-signature, 61%, 11%);
+    background-color: hsl($hue-signature, 35%, 79%);
     border: none;
     border-radius: 7px;
 
@@ -93,7 +91,6 @@ header a:hover {
     display: none;
     flex-direction: column;
 
-    padding: 7px;
-    padding-left: 21px;
-    gap: 3px;
+    padding: 0 21px;
+    gap: 7px;
 }

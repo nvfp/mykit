@@ -1,7 +1,7 @@
 ---
-permalink: /docs/install/
+permalink: /docs/installation/
 layout: main
-title: Install
+title: Installation
 ---
 
 

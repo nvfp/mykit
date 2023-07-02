@@ -1,83 +1,99 @@
 ---
-# not sure why, but Jekyll needs this front matter to convert this main.scss to main.css.
-# note: the "#" sign at the beginning is important to make it work.
+# Jekyll requires this front matter, including the "#" sign, to convert main.scss to main.css.
 ---
 
-
 @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
-
-@import url('https://fonts.googleapis.com/css2?family=Caveat&family=Grandstander&display=swap');
-
-
-// variables
-
-// $font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 $font: 'Caveat', cursive;
-
+@import url('https://fonts.googleapis.com/css2?family=Caveat&family=Grandstander&display=swap');
 $font2: 'Grandstander', cursive;
+// monospace font
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
+$font3: 'IBM Plex Mono', monospace;
 
 $font-size-mobile: 16px;
-
-$hue-signature: 28;
-
 $mobile-width: 850px;
 
-
-// Note that if variables are used in files imported below,
-// remember to place the variables above the imports.
-
-
-// imports
-
+@import "constants";  // will be created during compilation
 @import "header";
 @import "footer";
 
-
-// styles
-
 body {
   
-  // remove the unwanted margin
-  margin: 0;
+	// remove the unwanted margin
+	margin: 0;
 
-  // keep showing the scrollbar to prevent glitching
-  overflow-y: scroll;
+	// keep showing the scrollbar to prevent glitching
+	overflow-y: scroll;
 
-  background-color: hsl($hue-signature, 15%, 85%);
+	background-color: hsl($hue-signature, 15%, 87%);
 
-  font-family: $font;
+	font-family: $font;
 
-
-  // main scrollbar
-  &::-webkit-scrollbar {
-    width: 7px;
-    background-color: hsl($hue-signature, 15%, 85%);
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: hsl($hue-signature, 42%, 66%);
-  }
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: hsl($hue-signature, 42%, 71%);
-  }
-
-
-  // debugging
-  // background-color: red;
+	// main scrollbar
+	&::-webkit-scrollbar {
+		width: 7px;
+		background-color: inherit;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: hsl($hue-signature, 21%, 71%);
+	}
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: hsl($hue-signature, 21%, 50%);
+	}
 }
 
 main {
-  min-height: 100vh;
+	min-height: 100vh;
 
-  width: 68%;
-  @media (max-width: $mobile-width) {
-      width: 91%;
-  }
+	width: 68%;
+	@media (max-width: $mobile-width) {
+		width: 91%;
+	}
 
-  margin: 0 auto;
-  margin-top: 58px;
+	margin: 0 auto;
+	margin-top: 41px;
+	margin-bottom: 81px;
 
-  font-family: $font2;
+	font-family: $font2;
+	font-size: 17px;
+	@media (max-width: $mobile-width) {
+		font-size: $font-size-mobile;
+	}
 
-  // debugging
-  // background-color: red;
+	color: hsl($hue-signature, 50%, 3%);
+
+	a {
+		color: inherit;
+	}
+	a:hover {
+		font-style: italic;
+	}
+
+	p {
+		line-height: 1.5;
+	}
+
+	ul, ol {
+		line-height: 1.5;
+	}
+
+	img {
+		max-width: 100%;
+	}
+
+	pre, code {
+		background-color: hsl($hue-signature, 7%, 77%);
+		border-radius: 5px;
+		font-family: $font3;
+	}
+	pre {
+		padding: 11px 0;
+	}
+	code {
+		padding: 2px 5px;
+	}
+
+	h1, h2 {
+		padding-top: 13px;
+	}
 }

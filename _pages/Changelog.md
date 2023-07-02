@@ -1,7 +1,7 @@
 ---
 permalink: /changelog/
 layout: main
-title: changelog
+title: Changelog
 ---
 
 # Changelog

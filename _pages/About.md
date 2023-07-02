@@ -1,7 +1,7 @@
 ---
 permalink: /about/
 layout: main
-title: about
+title: About
 ---
 
 # About

@@ -1,7 +1,7 @@
 ---
 permalink: /supports/
 layout: main
-title: supports
+title: Supports
 ---
 
 # Supports
