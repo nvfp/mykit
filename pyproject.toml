@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mykit"
-version = "4.1.0"
+version = "5.0.0"
 description = "Python utility library"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -15,16 +15,11 @@ authors = [
 ]
 keywords = ["python", "toolkit", "mykit"]
 classifiers = [
-	"Topic :: Scientific/Engineering",
     "License :: OSI Approved :: MIT License",
+    "Natural Language :: English"
     "Operating System :: OS Independent",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3 :: Only",
-    "Natural Language :: English"
+	"Topic :: Scientific/Engineering",
 ]
 dependencies = [
 	"numba>=0.55.2",
@@ -42,10 +37,10 @@ exclude = [
 
 
 [project.urls]
-documentation = "https://nvfp.github.io/mykit/docs"
-"report bugs" = "https://github.com/nvfp/mykit/issues"
-repo = "https://github.com/nvfp/mykit"
-changelog = "https://nvfp.github.io/mykit/changelog"
+Documentation = "https://nvfp.github.io/mykit/docs"
+"Report bugs" = "https://github.com/nvfp/mykit/issues"
+Repository = "https://github.com/nvfp/mykit"
+Changelog = "https://nvfp.github.io/mykit/changelog"
 
 
 [project.scripts]

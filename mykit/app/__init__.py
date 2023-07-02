@@ -2,18 +2,15 @@ import tkinter as _tk
 from typing import (
     Callable as _Callable,
     List as _List,
-    Optional as _Optional
 )
-
-from mykit.app.architecture import Architecture as _Architecture
 
 from mykit.app.button import Button as _Button
 from mykit.app.label import Label as _Label
 from mykit.app.slider import _Slider
 
-from mykit.app.arrow import Arrow as _Arrow
 from mykit.app.complex.plot import Plot as _Plot
 from mykit.app.complex.biplot import Biplot as _Biplot
+from mykit.app.arrow import Arrow as _Arrow
 
 
 class App:
@@ -31,7 +28,6 @@ class App:
         self,
         name: str = 'app',
         bg: str = '#111111',
-        architecture: _Optional[_Architecture] = None
     ) -> None:
 
         self.root = _tk.Tk()
@@ -127,6 +123,9 @@ class App:
 
     def teardown(self, funcs: _List[_Callable[[], None]]):
         self._teardown = funcs
+    
+    def use(self, component: _Callable[[], None], /) -> None:
+        component()
 
     def run(self):
 

@@ -1,5 +1,10 @@
 # Changelog
 
+- 5.0.0 (July 2):
+    - Breaking changes:
+        - Removed `architecture` arg from `.app.App`
+    - Tweaking `.app.App` and `.app.architecture.Eventdriven`
+    - Deleted `/app/architecture/__init__.py`
 - 4.1.0 (June 21, 2023):
     - NEW: in `/kit/utils.py`: `slowprint` and `print_screen`
 - 4.0.0 (June 18, 2023):

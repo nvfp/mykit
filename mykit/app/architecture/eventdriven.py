@@ -1,29 +1,23 @@
-from mykit.app.architecture import Architecture as _Architecture
+from typing import (
+    Callable as _Callable
+)
 
-from mykit.app import App  # be careful of circular imports. this is just used for typehint purposes
 
+class Eventdriven:
+    """Simple event-driven implementation"""
 
-class Eventdriven(_Architecture):
-    """
-    Simple event-driven architecture.
-    (still in beta)
-    """
+    bus = {}  # Container
 
-    bus = {}  # basically a container
-    
-    def register(name):
-        
+    def register(name: str, /) -> None:
         if name in Eventdriven.bus:
-            raise ValueError('Already exists')
+            raise ValueError(f'Event {repr(name)} already exists.')
         Eventdriven.bus[name] = []
 
-    def call(name):
-        
+    def call(name: str, /) -> None:
         for fn in Eventdriven.bus[name]:
             fn()
 
-    def listen(to, do):
-
+    def listen(to: str, do: _Callable[[], None]) -> None:
         if to not in Eventdriven.bus:
-            raise ValueError('Event not exist')
+            raise ValueError(f'Event {repr(to)} does not exist.')
         Eventdriven.bus[to].append(do)
