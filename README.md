@@ -8,7 +8,7 @@ Python utility toolkit.
 
 The aim of this project is to understand how things work by building them from the ground up, while also providing a lightweight version of something that already exists out there.
 
-<!-- reminder: use this link (don't use relative path to the one in the repo) to be able to display the banner on PyPI -->
+<!-- Use this link (don't use the relative path to the one in the repo) to be able to display the banner on PyPI -->
 ![mykit's banner](https://raw.githubusercontent.com/nvfp/mykit/master/assets/20230619-mykit-banner-360p.png)
 
 [![pypi version](https://img.shields.io/pypi/v/mykit?logo=pypi)](https://pypi.org/project/mykit/)
@@ -35,19 +35,18 @@ print(x)  # 2.79 PiB
 ```
 
 
-## FAQ
+## Links
 
-- 
-
-
-## Links🔗
-
+- [Documentation](https://nvfp.github.io/mykit)
+- [Demo](https://nvfp.github.io/mykit/demo)
+- [Supports💙](https://nvfp.github.io/mykit/supports)
 - [Changelog](https://nvfp.github.io/mykit/changelog)
+- [FAQs](https://nvfp.github.io/mykit/faqs)
 
 
 ## Troubleshoot
 
-- If you find any bugs, feel free to contribute by opening an issue or pull request. Thanks!
+- To report bugs or ask questions, please open an issue or submit a pull request.
 
 
 ## License
