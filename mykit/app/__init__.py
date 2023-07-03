@@ -1,5 +1,6 @@
 import tkinter as _tk
 from typing import (
+    Any as _Any,
     Callable as _Callable,
     List as _List,
 )
@@ -124,8 +125,8 @@ class App:
     def teardown(self, funcs: _List[_Callable[[], None]]):
         self._teardown = funcs
     
-    def use(self, component: _Callable[[], None], /) -> None:
-        component()
+    def use(self, component: _Callable[..., None], /, dependencies: dict[str, _Any]) -> None:
+        component(**dependencies)
 
     def run(self):
 

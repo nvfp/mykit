@@ -1,5 +1,7 @@
 # Changelog
 
+- 5.1.0 (July 3):
+    - Added `dependencies` arg to `.app.App.use`
 - 5.0.0 (July 2):
     - Breaking changes:
         - Removed `architecture` arg from `.app.App`
