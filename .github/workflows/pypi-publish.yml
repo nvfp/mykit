@@ -1,4 +1,4 @@
-name: 📦 Publish to PyPI
+name: Publish to PyPI
 
 on:
   release:
@@ -10,23 +10,23 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: 🔥 Checkout code
+    - name: Checkout the code
       uses: actions/checkout@v2
 
-    - name: 🐍 Set up Python
+    - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: 3.7
 
-    - name: 🛒 Install dependencies
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install build twine
 
-    - name: 🛠️ Build..
+    - name: Build
       run: python -m build
 
-    - name: 🎉 Publish
+    - name: Publish
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
