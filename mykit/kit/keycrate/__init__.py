@@ -5,7 +5,8 @@ from typing import (
     Dict as _Dict,
     List as _List,
     NoReturn as _NoReturn,
-    Optional as _Optional
+    Tuple as _Tuple,
+    Union as _Union
 )
 
 from mykit.kit.path import open_file as _open_file
@@ -24,8 +25,8 @@ class KeyCrate:
         /,
         key_is_var: bool = False,
         eval_value: bool = False,
-        only_keys: _Optional[_List[str]] = None,
-        need_keys: _Optional[_List[str]] = None
+        only_keys: _Union[_List[str], _Tuple[str, ...], None] = None,
+        need_keys: _Union[_List[str], _Tuple[str, ...], None] = None
     ) -> None:
         """
         Storing key-value pairs (key: value) in the .txt file `file_pth`.
@@ -66,12 +67,21 @@ class KeyCrate:
         if not _os.path.isfile(file_pth):
             raise FileNotFoundError(f'KeyCrate file {repr(file_pth)} is not found.')
 
+
         ## added the prefix "_kc__" to prevent conflicts with the keys
+
         self._kc__file_pth = file_pth
         self._kc__key_is_var = key_is_var
         self._kc__eval_value = eval_value
+
         self._kc__only_keys = only_keys
+        if type(only_keys) is tuple:
+            self._kc__only_keys = list(only_keys)
+
         self._kc__need_keys = need_keys
+        if type(need_keys) is tuple:
+            self._kc__need_keys = list(need_keys)
+
 
         ## init
         self.parse()
