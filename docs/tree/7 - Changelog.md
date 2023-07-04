@@ -1,5 +1,7 @@
 # Changelog
 
+- 5.3.0 (July 4):
+    - Added `.app.App.after_initialization_use` and `.app.App.add_dependencies` methods
 - 5.2.0 (July 4):
     - The `.kit.keycrate` now accepts tuple of strings as arguments for both `only_keys` and `need_keys`
 - 5.1.0 (July 3):

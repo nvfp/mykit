@@ -77,6 +77,9 @@ class App:
 
         self._background_processes = {}
 
+        self._after_initialization = []
+        self._dependencies = {}
+
         self._setup = []
         self._teardown = []
 
@@ -121,13 +124,27 @@ class App:
         self._background_processes[every].append(do)
 
     def setup(self, funcs: _List[_Callable[[], None]]):
+        """Running simple-functions right before startup."""
         self._setup = funcs
 
     def teardown(self, funcs: _List[_Callable[[], None]]):
+        """Running simple-functions right after startup."""
         self._teardown = funcs
 
     def use(self, component: _Callable[..., None], /, dependencies: _Dict[str, _Any]) -> None:
+        """This function helps make the dataflow easier to read."""
         component(**dependencies)
+
+    def after_initialization_use(self, component: _Callable[..., None], /, *, with_dependencies: _List[str]) -> None:
+        """Use `component` once all dependencies are ready."""
+        self._after_initialization.append([component, with_dependencies])
+
+    def add_dependencies(self, dependency: _Any, /) -> None:
+        """Adds a dependency and should be used with the `after_initialization_use` method."""
+        name = dependency.__name__
+        if name in self._dependencies:
+            raise ValueError(f'Dependency {repr(name)} is already added.')
+        self._dependencies[name] = dependency
 
     def run(self):
 
@@ -170,11 +187,16 @@ class App:
         run_background_processes()
 
 
-        ## setup
+        ## Initialize components that need to be initialized after all dependencies are ready
+        for component, dependencies in self._after_initialization:
+            component(**{d: self._dependencies[d] for d in dependencies})
+
+
+        ## Setup
         for fn in self._setup: fn()
 
-        ## run
+        ## Startup
         self.root.mainloop()
 
-        ## teardown
+        ## Teardown
         for fn in self._teardown: fn()
