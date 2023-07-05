@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  FOO:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,8 +20,11 @@ jobs:
           echo "Version: $ver"
         else
           echo "Pattern doesn't match."
-          return
+          exit 1
         fi
+
+  BAR:
+    needs: FOO
 
     - name: Checkout the code
       uses: actions/checkout@v2
