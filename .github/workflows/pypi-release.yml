@@ -11,6 +11,7 @@ jobs:
 
     outputs:
       status: ${{ steps.validate.outputs.status }}
+      version: ${{ steps.validate.outputs.version }}
 
     steps:
     - id: validate
@@ -25,6 +26,7 @@ jobs:
           ver="${BASH_REMATCH[1]}"
           echo "Version: $ver"
           echo "status=success" >> $GITHUB_OUTPUT
+          echo "version=$ver" >> $GITHUB_OUTPUT
         else
           echo "Pattern doesn't match."
           echo "status=fail" >> $GITHUB_OUTPUT
@@ -42,4 +44,4 @@ jobs:
     
     - name: Futher
       run: |
-        echo "foo"
+        echo "version: ${{ needs.check.outputs.version }}"
