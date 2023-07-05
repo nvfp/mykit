@@ -15,10 +15,11 @@ jobs:
     steps:
     - id: validate
       name: Check commit message
+      env:
+        COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
       run: |
-        commit_message="${{ github.event.head_commit.message }}"
         regex="^([0-9]+\.[0-9]+\.[0-9]+) Release.*"
-        if [[ $commit_message =~ $regex ]]; then 
+        if [[ $COMMIT_MESSAGE =~ $regex ]]; then 
           echo "Pattern matched."
           ver="${BASH_REMATCH[1]}"
           echo "Version: $ver"
