@@ -6,6 +6,9 @@ title: Changelog
 
 # Changelog
 
+- 6.0.0 (July 5):
+    - Breaking changes:
+        - The `component` now requires the `app: App` argument as a positional argument in the `.app.App.after_initialization_use` method
 - 5.3.0 (July 4):
     - Added `.app.App.after_initialization_use` and `.app.App.add_dependencies` methods
 - 5.2.0 (July 4):
