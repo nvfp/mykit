@@ -29,3 +29,4 @@ jobs:
     - name: Futher
       run: |
         echo "foo"
+        echo "bfoo"
