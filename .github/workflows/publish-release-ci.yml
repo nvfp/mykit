@@ -1,4 +1,4 @@
-name: Release Workflow
+name: Publish Release CI
 
 on:
   push:
@@ -13,8 +13,12 @@ jobs:
     - name: Check commit message
       run: |
         commit_message="${{ github.event.head_commit.message }}"
-        if [[ $commit_message == *Release ]]; then
-          echo "Pattern matched."
+        echo commit_message
+        echo "------"
+        if [[ $commit_message =~ ([0-9]+\.[0-9]+\.[0-9]+) Release.+ ]]; then
+          version="${BASH_REMATCH[1]}"
+          echo "Version number: $version"
+          # Use the captured version number for further processing
         else
           echo "Pattern doesn't match."
           exit 0
