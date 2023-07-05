@@ -19,3 +19,6 @@ jobs:
           echo "Pattern doesn't match."
           exit 0
         fi
+
+    - name: Checkout the code
+      uses: actions/checkout@v2
