@@ -13,9 +13,8 @@ jobs:
     - name: Check commit message
       run: |
         commit_message="${{ github.event.head_commit.message }}"
-        regex="^(?P<ver>[0-9]+\.[0-9]+\.[0-9]+) Release.*"
-        if [[ $commit_message =~ $regex ]]
-        then 
+        regex="^(?P<ver>\d+\.\d+\.\d+) Release.*"
+        if [[ $commit_message =~ $regex ]]; then 
           echo "Pattern matched."
           ver="${BASH_REMATCH[ver]}"
           echo "Version: $ver"
