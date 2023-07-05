@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  FOO:
+  job1:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,8 +23,8 @@ jobs:
           exit 1
         fi
 
-  BAR:
-    needs: FOO
+  job2:
+    needs: job1
 
     - name: Checkout the code
       uses: actions/checkout@v2
