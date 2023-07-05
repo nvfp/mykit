@@ -22,10 +22,10 @@ jobs:
           echo "Pattern matched."
           ver="${BASH_REMATCH[1]}"
           echo "Version: $ver"
-          echo "::set-output name=status::success"
+          echo "status=success" >> $GITHUB_OUTPUT
         else
           echo "Pattern doesn't match."
-          echo "::set-output name=status::fail"
+          echo "status=fail" >> $GITHUB_OUTPUT
         fi
 
   work:
