@@ -1,0 +1,21 @@
+name: Release Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check commit message
+      run: |
+        commit_message="${{ github.event.head_commit.message }}"
+        if [[ $commit_message == *Release ]]; then
+          echo "Pattern matched."
+        else
+          echo "Pattern doesn't match."
+          exit 0
+        fi
