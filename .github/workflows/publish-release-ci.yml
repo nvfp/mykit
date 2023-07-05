@@ -26,6 +26,9 @@ jobs:
   job2:
     needs: job1
 
+    runs-on: ubuntu-latest
+
+    steps:
     - name: Checkout the code
       uses: actions/checkout@v2
     
