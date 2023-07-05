@@ -20,7 +20,7 @@ jobs:
           echo "Version: $ver"
         else
           echo "Pattern doesn't match."
-          exit 1
+          return
         fi
 
     - name: Checkout the code
