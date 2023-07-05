@@ -10,30 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Testing
-      run: |
-        str='100.50.25 Release: Testing publish-release-ci.yml'
-        regex='^([0-9]+\.[0-9]+\.[0-9]+) Release.*'
-
-
-        if [[ $str =~ $regex ]]; then
-            ver="${BASH_REMATCH[1]}"
-            echo "$ver"
-        else
-            echo "Not match."
-        fi
-
     - name: Check commit message
       run: |
         commit_message="${{ github.event.head_commit.message }}"
-        regex="^([0-9]+\.[0-9]+\.[0-9]+) Release.*"
+        regex="^(\d+\.\d+\.\d+) Release.*"
         if [[ $commit_message =~ $regex ]]; then 
           echo "Pattern matched."
           ver="${BASH_REMATCH[1]}"
           echo "Version: $ver"
-          echo "-------"
-          ver=$(echo "$commit_message" | grep -oP "^\d+\.\d+\.\d+ Release" | sed -E 's/ Release$//')
-          echo "$ver"
         else
           echo "Pattern doesn't match."
           exit 0
