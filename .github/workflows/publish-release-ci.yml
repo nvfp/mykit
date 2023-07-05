@@ -15,8 +15,8 @@ jobs:
         commit_message="${{ github.event.head_commit.message }}"
         if [[ $commit_message =~ \d+\.\d+\.\d+ Release.+ ]]; then
           echo "Pattern matched."
-          ver=$(echo "$string" | grep -oP "^\d+\.\d+\.\d+ Release" | sed -E 's/ Release$//')
-          echo "$ver"
+          # ver=$(echo "$string" | grep -oP "^\d+\.\d+\.\d+ Release" | sed -E 's/ Release$//')
+          # echo "$ver"
         else
           echo "Pattern doesn't match."
           exit 0
