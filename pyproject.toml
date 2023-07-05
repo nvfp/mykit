@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mykit"
-version = "5.3.0"
+version = "6.0.0"
 description = "Python utility library"
 readme = "README.md"
 requires-python = ">=3.8"

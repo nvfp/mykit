@@ -189,7 +189,7 @@ class App:
 
         ## Initialize components that need to be initialized after all dependencies are ready
         for component, dependencies in self._after_initialization:
-            component(**{d: self._dependencies[d] for d in dependencies})
+            component(self, **{d: self._dependencies[d] for d in dependencies})
 
 
         ## Setup
