@@ -1,0 +1,216 @@
+# Fast PyPI Release (https://github.com/nvfp/fast-pypi-release) version: July 7, 2023
+
+name: Fast PyPI release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check-commit-message:
+    runs-on: ubuntu-latest
+
+    outputs:
+      status: ${{ steps.check.outputs.status }}
+      version: ${{ steps.check.outputs.version }}
+
+    steps:
+      - id: check
+        name: Check commit message
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          echo "INFO: Commit message: '$COMMIT_MESSAGE'"
+
+          # The regex ignore the word's casing (Release, RELEASE, release)  (https://stackoverflow.com/questions/44106842/case-insensitive-regex-in-bash)
+          # set nocasematch option
+          shopt -s nocasematch
+          regex="^([0-9]+\.[0-9]+\.[0-9]+) Release.*"
+          
+          if [[ $COMMIT_MESSAGE =~ $regex ]]; then 
+            echo "INFO: Pattern matched."
+            ver="${BASH_REMATCH[1]}"
+            echo "INFO: Version: $ver"
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "version=$ver" >> $GITHUB_OUTPUT
+          else
+            echo "INFO: Pattern doesn't match."
+            echo "status=fail" >> $GITHUB_OUTPUT
+          fi
+
+          # unset nocasematch option
+          shopt -u nocasematch
+
+  check-changelog-file:
+    needs: check-commit-message
+    if: needs.check-commit-message.outputs.status == 'success'
+
+    runs-on: ubuntu-latest
+    
+    outputs:
+      status: ${{ steps.match.outputs.status }}
+      latest_changelog: ${{ steps.parse.outputs.latest_changelog }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - id: validation
+        name: Validating
+        run: |
+          # Look (recursively) for files in the "docs" folder with "changelog" in their name (ignore case)
+          files=$(find docs -iname "*changelog*")
+          echo "DEBUG: files: '$files'"
+
+          # Validation I: Only one changelog file should be in the "docs" folder
+          file_count=$(echo "$files" | wc -l)
+          echo "DEBUG: file_count: $file_count"
+          if [ "$file_count" -ne 1 ]; then
+            echo "ERROR: Multiple changelog files found in the "docs" folder."
+            exit 1
+          fi
+
+          # Parse the changelog file
+          text=$(cat "$files")
+          echo "DEBUG: text: '$text'"
+          
+          # Store the multi-line `text` into outputs
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "text<<$EOF" >> $GITHUB_OUTPUT
+          echo "$text" >> $GITHUB_OUTPUT
+          echo "$EOF" >> $GITHUB_OUTPUT
+
+      - id: parse
+        name: Parse the latest changelog
+        shell: python
+        run: |
+          import re
+          import subprocess as sp
+          import sys
+
+
+          # Get the changelog file text from previous step
+          script = """
+          echo "${{ steps.validation.outputs.text }}"
+          """
+          text = sp.check_output(['bash', '-c', script]).decode().strip()
+          print(f'DEBUG: repr(text): {repr(text)}')
+          print(f'DEBUG: text: "{text}"')
+
+          res = re.search(r'^(?P<latest>- \d+\.\d+\.\d+.+?)\n-', text, re.MULTILINE | re.DOTALL)
+          if res is None:
+            print(f'ERROR: No latest changelog matches.')
+            sys.exit(1)
+          else:
+            latest_changelog = res.group('latest')
+            print(f'INFO: latest_changelog: "{latest_changelog}"')
+
+          script = f"""
+          echo "DEBUG: Using subprocess."
+
+          # Store the multi-line `latest_changelog` into steps outputs
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "latest_changelog<<$EOF" >> $GITHUB_OUTPUT
+          echo "{latest_changelog}" >> $GITHUB_OUTPUT
+          echo "$EOF" >> $GITHUB_OUTPUT
+          """
+          sp.run(['bash', '-c', script])
+
+      - id: match
+        name: Match the versions
+        run: |
+          # Get the parsed latest changelog
+          latest_changelog="${{ steps.parse.outputs.latest_changelog }}"
+          echo "DEBUG: latest_changelog: '$latest_changelog'"
+
+          # Parse the version from the changelog file
+          ver_from_changelog=$(echo "$latest_changelog" | grep -oP '\d+\.\d+\.\d+' | head -n 1)
+          echo "DEBUG: ver_from_changelog: '$ver_from_changelog'"
+
+          # Match the versions
+          ver_from_commit="${{ needs.check-commit-message.outputs.version }}"
+          if [[ "$ver_from_commit" != "$ver_from_changelog" ]]; then
+            echo "ERROR: Versions don't match ($ver_from_commit != $ver_from_changelog)."
+            exit 1
+          else
+            echo "INFO: Versions matched."
+            echo "status=success" >> $GITHUB_OUTPUT
+          fi
+
+  rewrite-pyproject-toml:
+    needs: [check-commit-message, check-changelog-file]
+    if: needs.check-changelog-file.outputs.status == 'success'
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Rewriting
+        run: |
+          version="${{ needs.check-commit-message.outputs.version }}"
+          echo "INFO: New version: '$version'"
+
+          # Change the version
+          sed -E -i "s/(version = \")[0-9]+\.[0-9]+\.[0-9]+/\1$version/" pyproject.toml
+
+      - name: Commit
+        run: |
+          git config user.name "nvfp/fast-pypi-release"    # EDITME
+          git config user.email "nicho@scapeville.com"  # EDITME
+
+          current_date=$(date +"%b %e, %l:%M %p")
+          git commit -am "Update version in pyproject.toml (on $current_date)"
+          
+          git push
+
+  create-gh-release:
+    needs: [check-commit-message, check-changelog-file, rewrite-pyproject-toml]
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Release
+        uses: nvfp/gh-action-simple-release@1.4.0
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          tag: ${{ needs.check-commit-message.outputs.version }}
+          desc: ${{ needs.check-changelog-file.outputs.latest_changelog }}
+
+  publish-to-PyPI:
+    needs: [check-commit-message, check-changelog-file, rewrite-pyproject-toml]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+
+      - name: Build
+        run: python -m build
+
+      - name: Publish
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: twine upload dist/*
