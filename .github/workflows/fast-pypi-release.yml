@@ -1,11 +1,11 @@
-# Fast PyPI Release (https://github.com/nvfp/fast-pypi-release) version: July 7, 2023
+# Fast PyPI Release (https://github.com/nvfp/fast-pypi-release) version 1.1.1
 
 name: Fast PyPI release
 
 on:
   push:
     branches:
-      - main
+      - main  # EDITME
 
 jobs:
   check-commit-message:
@@ -92,7 +92,8 @@ jobs:
 
           # Get the changelog file text from previous step
           script = """
-          echo "${{ steps.validation.outputs.text }}"
+          # Note: Don't use `echo "$foo"`; instead use `echo '$foo'` to prevent `` blocks from being executed (See #1.1.0 changelog)
+          echo '${{ steps.validation.outputs.text }}'
           """
           text = sp.check_output(['bash', '-c', script]).decode().strip()
           print(f'DEBUG: repr(text): {repr(text)}')
@@ -112,7 +113,7 @@ jobs:
           # Store the multi-line `latest_changelog` into steps outputs
           EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
           echo "latest_changelog<<$EOF" >> $GITHUB_OUTPUT
-          echo "{latest_changelog}" >> $GITHUB_OUTPUT
+          echo '{latest_changelog}' >> $GITHUB_OUTPUT
           echo "$EOF" >> $GITHUB_OUTPUT
           """
           sp.run(['bash', '-c', script])
@@ -121,7 +122,7 @@ jobs:
         name: Match the versions
         run: |
           # Get the parsed latest changelog
-          latest_changelog="${{ steps.parse.outputs.latest_changelog }}"
+          latest_changelog='${{ steps.parse.outputs.latest_changelog }}'
           echo "DEBUG: latest_changelog: '$latest_changelog'"
 
           # Parse the version from the changelog file
@@ -163,9 +164,9 @@ jobs:
           git config user.name "nvfp/fast-pypi-release"    # EDITME
           git config user.email "nicho@scapeville.com"  # EDITME
 
-          current_date=$(date +"%b %e, %l:%M %p")
-          git commit -am "Update version in pyproject.toml (on $current_date)"
-          
+          current_date=$(date +"%Y %b %e, %l:%M %p")
+          git commit -am "Update the version in \`pyproject.toml\` — $current_date"
+
           git push
 
   create-gh-release:
@@ -179,8 +180,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       
+      - name: Manual pull
+        run: | 
+          # Seems like actions/checkout@v3 doesn't grab the latest commit
+          # from the 'rewrite-pyproject-toml' job. To get it, perform a manual 'git pull'.
+          git pull
+
+          # Check it
+          echo "::group:: Debugging"
+          echo "DEBUG: Run 'git log -2'"
+          git log -2
+          echo "---"
+          echo "::endgroup::"
+
       - name: Release
-        uses: nvfp/gh-action-simple-release@1.4.0
+        uses: nvfp/gh-action-simple-release@1.8.0
         env:
           GH_TOKEN: ${{ github.token }}
         with:
@@ -193,9 +207,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -205,6 +216,22 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install build twine
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Manual pull
+        run: | 
+          # Seems like actions/checkout@v3 doesn't grab the latest commit
+          # from the 'rewrite-pyproject-toml' job. To get it, perform a manual 'git pull'.
+          git pull
+
+          # Check it
+          echo "::group:: Debugging"
+          echo "DEBUG: Run 'git log -2'"
+          git log -2
+          echo "---"
+          echo "::endgroup::"
 
       - name: Build
         run: python -m build
