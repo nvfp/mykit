@@ -107,10 +107,11 @@ def printer(__msg: str, /) -> None:
     ---
 
     ## Demo
-    >>> printer('INFO: foo')  # [06:15:09] INFO: foo
+    >>> printer('INFO: foo')     # [06:15:09] INFO: foo
     >>> printer('WARNING: bar')  # [06:15:09] WARNING: bar
     """
-    print(f'[{_datetime.datetime.now().strftime("%H:%M:%S")}] {__msg}')
+    T = _datetime.datetime.now().strftime('%H:%M:%S')
+    print(f'[{T}] {__msg}')
 
 def slowprint(__msg: str, /, delay: float = 0.15) -> None:
     """
@@ -131,7 +132,7 @@ def slowprint(__msg: str, /, delay: float = 0.15) -> None:
     >>> ## [06:38:33] INFO: 2
     """
     _time.sleep(delay)
-    print(f'[{_datetime.datetime.now().strftime("%H:%M:%S")}] {__msg}')
+    printer(__msg)
 
 def print_screen(__msg: str, /) -> None:
     """prints message at the bottom of the terminal screen, adapting to terminal's height."""
