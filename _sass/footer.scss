@@ -1,28 +1,19 @@
 footer {
-
   padding: 23px;
-  
   text-align: center;
-  
   background-color: hsl($hue-signature, 81%, 4%);
-
-
   p {
     margin: 5px 0;
   }
-
   #copyright {
     font-size: 16px;
     color: hsl($hue-signature, 65%, 91%);
   }
-
   #credit {
     font-size: 13px;
     font-weight: bold;
     letter-spacing: 2px;
-
     color: hsl($hue-signature, 51%, 91%);
-
     a {
       color: inherit;
     }

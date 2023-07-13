@@ -1,24 +1,35 @@
 
 
-# website
+# ~~ Website ~~
 
 baseurl: /mykit
-url: https://nvfp.github.io/mykit
+url: https://nvfp.github.io
 
 
-# personal
+# ~~ Personal ~~
 
 title: mykit
 author:
   name: Nicholas Valentinus
 
 
-# internal
+# ~~ Internal ~~
 
 include: [_pages, _sass, scripts]
-
-permalink: pretty
 
 sass:
   style: compact # possible values: nested expanded compact compressed
   sass_dir: _sass
+
+# Redirection purposes
+plugins:
+  - jekyll-redirect-from
+whitelist:
+  - jekyll-redirect-from
+
+# Syntax highlighting
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge

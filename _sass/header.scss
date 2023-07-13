@@ -1,9 +1,7 @@
 header {
     display: flex;
     flex-direction: column;
-    
     margin: 0;
-
     color: hsl($hue-signature, 33%, 7%);
 
     h1 {
@@ -13,7 +11,7 @@ header {
         padding: 13px;
         padding-left: 41px;
     
-        // same color as footer
+        // Same color as footer
         background-color: hsl($hue-signature, 81%, 4%);
         color: hsl($hue-signature, 65%, 91%);
     }
@@ -21,9 +19,9 @@ header {
     a {
         text-decoration: none;
         color: inherit;
-    }
-    a:hover {
-        text-decoration: underline;
+        &:hover {
+            text-decoration: underline;
+        }
     }
 
     button {
@@ -57,7 +55,6 @@ header {
     border: none;
     border-radius: 7px;
 
-    font-family: $font2;
     font-size: 23px;
     text-align: left;
     cursor: pointer;
@@ -78,14 +75,12 @@ header {
     border: none;
     border-radius: 7px;
 
-    font-family: $font2;
     font-size: 17px;
     text-align: left;
     cursor: pointer;
 }
-.main a {
-    font-family: $font2;
-}
+// .main a {
+// }
 
 .child {
     display: none;

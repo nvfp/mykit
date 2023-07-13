@@ -3,29 +3,25 @@
 
 <head>
 
-  <title>{{ page.title }} | {{ site.title }}</title>
+  <title>{{ page.title }} — {{ site.title }}</title>
 
-  <!-- favicon -->
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="{{ site.baseurl }}/favicon.png">
 
-  <!-- CSS files -->
+  <!-- Main CSS -->
   <link rel="stylesheet" href="{{ site.baseurl }}/_sass/main.css">
 
 </head>
 
 <body>
-
   {% include header.html %}
+  <!-- Header JavaScript -->
+  <script src="{{ site.baseurl }}/scripts/header.js"></script>
 
   <main>
     {{ content }}
   </main>
 
   {% include footer.html %}
-
-  <!-- JS files -->
-  <script src="{{ site.baseurl }}/scripts/header.js"></script>
-
 </body>
-
 </html>

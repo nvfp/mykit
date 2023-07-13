@@ -1,7 +1,9 @@
 ---
-permalink: /docs/installation/
 layout: main
 title: Installation
+permalink: /docs/installation
+redirect_from:
+  - /docs/installation/
 ---
 
 

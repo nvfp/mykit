@@ -1,99 +1,62 @@
 ---
-# Jekyll requires this front matter, including the "#" sign, to convert main.scss to main.css.
 ---
+// Note: Jekyll needs the front matter above to make this file work
+.a4b1e3f8d9 {opacity: 1;}  // This line is intended to silence the error warning message in VS Code
 
 @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
 $font: 'Caveat', cursive;
-@import url('https://fonts.googleapis.com/css2?family=Caveat&family=Grandstander&display=swap');
-$font2: 'Grandstander', cursive;
-// monospace font
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
-$font3: 'IBM Plex Mono', monospace;
 
-$font-size-mobile: 16px;
 $mobile-width: 850px;
 
-@import "constants";  // will be created during compilation
-@import "header";
-@import "footer";
+@import "constants";  // Will be created during compilation
 
 body {
-  
-	// remove the unwanted margin
-	margin: 0;
+	margin: 0;  // Remove the unwanted margin
+    overflow-y: scroll;  // Keep showing the scrollbar to prevent glitching
+	// Main font
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	// Default page color
+    background-color: hsl($hue-signature, 15%, 91%);;
+    // Default font color
+    color: #2f322f;
 
-	// keep showing the scrollbar to prevent glitching
-	overflow-y: scroll;
-
-	background-color: hsl($hue-signature, 15%, 87%);
-
-	font-family: $font;
-
-	// main scrollbar
+	// Main scrollbar
 	&::-webkit-scrollbar {
 		width: 7px;
 		background-color: inherit;
 	}
 	&::-webkit-scrollbar-thumb {
 		background-color: hsl($hue-signature, 21%, 71%);
-	}
-	&::-webkit-scrollbar-thumb:hover {
-		background-color: hsl($hue-signature, 21%, 50%);
+		&:hover {
+			background-color: hsl($hue-signature, 21%, 50%);
+		}
 	}
 }
 
 main {
 	min-height: 100vh;
-
-	width: 68%;
-	@media (max-width: $mobile-width) {
-		width: 91%;
-	}
-
 	margin: 0 auto;
-	margin-top: 41px;
-	margin-bottom: 81px;
-
-	font-family: $font2;
-	font-size: 17px;
-	@media (max-width: $mobile-width) {
-		font-size: $font-size-mobile;
-	}
-
-	color: hsl($hue-signature, 50%, 3%);
+	width: 68%;
+	@media (max-width: $mobile-width) {width: 91%;}
 
 	a {
 		color: inherit;
-	}
-	a:hover {
-		font-style: italic;
-	}
-
-	p {
-		line-height: 1.5;
+		&:hover {
+			color: hsl($hue-signature, 50%, 50%);
+		}
 	}
 
-	ul, ol {
-		line-height: 1.5;
-	}
-
-	img {
-		max-width: 100%;
-	}
-
-	pre, code {
-		background-color: hsl($hue-signature, 7%, 77%);
-		border-radius: 5px;
-		font-family: $font3;
-	}
-	pre {
-		padding: 11px 0;
-	}
-	code {
-		padding: 2px 5px;
-	}
-
-	h1, h2 {
-		padding-top: 13px;
-	}
+	// img {
+	// 	max-width: 100%;
+	// }
 }
+
+// I suspect these imports must be placed at the bottom,
+// or some SCSS styles might not be applied to them.
+// 
+//   					~ Nicholas @ July 12, 2023
+@import "header";
+@import "footer";
+
+// Syntax highlighting
+@import "sass-code-highlight.scss";

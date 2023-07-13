@@ -1,7 +1,9 @@
 ---
-permalink: /changelog/
 layout: main
 title: Changelog
+permalink: /changelog
+redirect_from:
+  - /changelog/
 ---
 
 # Changelog
