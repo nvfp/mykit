@@ -1,9 +1,7 @@
 ---
 layout: main
 title: Home
-permalink: ""
-redirect_from:
-  - /
+permalink: /
 ---
 
 <!-- make the status easily visible -->
