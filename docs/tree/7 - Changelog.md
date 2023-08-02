@@ -1,5 +1,7 @@
 # Changelog
 
+- 6.2.0 (Aug 2):
+    - Added `num_approx` to `mykit.kit.text`, including its unit tests.
 - 6.1.0 (Aug 2):
     - Added `in_byte` and `connum` to `mykit.kit.text`, including their unit tests.
     - Added `hex_to_rgb`, `Hex`, and `Colored` to `mykit.kit.color`, including some unit tests.

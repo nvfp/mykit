@@ -98,3 +98,48 @@ def in_byte(bytes: int, /, precision: int = 2, gap: int = 1) -> str:
     ]
 
     return sign + connum(number) + GAP + UNIT[power]
+
+
+def num_approx(num, /, precision:int=1, gap:int=1) -> str:
+    """
+    Round a number down to K (thousand), M (million), B (billion), etc.
+
+    ---
+
+    ## Params
+    - `precision`: rounding precision
+    - `gap`: gap (in spaces) between the number and the unit
+    """
+
+    suffixes = [
+        (1e3, ''),
+        (1e6, 'K'),
+        (1e9, 'M'),
+        (1e12, 'B'),
+        (1e15, 'T'),
+        (1e18, 'q'),  # quadrillion
+        (1e21, 'Q'),  # Quintillion
+        (1e24, 's'),  # sextillion
+        (1e27, 'S'),  # Septillion
+    ]
+
+    ## Handle negative `num`
+    sign = ''
+    if num < 0:
+        num = abs(num)
+        sign = '-'
+
+    for divisor, suffix in suffixes:
+        if num < divisor:
+            n_format = f'{num*1000/divisor:.{precision}f}'
+            break
+
+    ## Remove trailing zeros after the decimal point if precision is greater than 0
+    if precision > 0:
+        n_format = n_format.rstrip('0').rstrip('.')
+    
+    GAP = ''
+    if suffix != '':
+        GAP = ' '*gap
+
+    return sign + n_format + GAP + suffix

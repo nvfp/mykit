@@ -1,6 +1,6 @@
 import unittest
 
-from mykit.kit.text import connum, in_byte
+from mykit.kit.text import connum, in_byte, num_approx
 
 
 class Test__connum(unittest.TestCase):
@@ -119,6 +119,99 @@ class Test__in_byte(unittest.TestCase):
 
         result = in_byte(99999999999, gap=7)
         expected = '93.13       GiB'
+        self.assertEqual(result, expected)
+
+
+class Test__num_approx(unittest.TestCase):
+
+    def test_default(self):
+
+        self.assertEqual(num_approx(0), '0')
+        self.assertEqual(num_approx(1), '1')
+        self.assertEqual(num_approx(-1), '-1')
+        self.assertEqual(num_approx(3), '3')
+
+        self.assertEqual(num_approx(17), '17')
+        self.assertEqual(num_approx(333), '333')
+        self.assertEqual(num_approx(999), '999')
+        self.assertEqual(num_approx(-999), '-999')
+        self.assertEqual(num_approx(-124.12), '-124.1')
+
+        self.assertEqual(num_approx(1000), '1 K')
+        self.assertEqual(num_approx(1001), '1 K')
+        self.assertEqual(num_approx(1049), '1 K')
+        self.assertEqual(num_approx(1050), '1.1 K')
+        self.assertEqual(num_approx(1099), '1.1 K')
+        self.assertEqual(num_approx(1399), '1.4 K')
+        self.assertEqual(num_approx(-1399), '-1.4 K')
+
+        self.assertEqual(num_approx(999_000_000), '999 M')
+        self.assertEqual(num_approx(1_200_000_000), '1.2 B')
+        self.assertEqual(num_approx(356_351_352_642_742), '356.4 T')
+        self.assertEqual(num_approx(1e23 + 1213141353), '100 s')
+
+    def test_precision(self):
+
+        result = num_approx(0, precision=0)
+        expected = '0'
+        self.assertEqual(result, expected)
+
+        result = num_approx(0, precision=1)
+        expected = '0'
+        self.assertEqual(result, expected)
+
+        result = num_approx(0, precision=2)
+        expected = '0'
+        self.assertEqual(result, expected)
+
+        result = num_approx(1.25, precision=1)
+        expected = '1.2'
+        self.assertEqual(result, expected)
+
+        result = num_approx(1.25, precision=2)
+        expected = '1.25'
+        self.assertEqual(result, expected)
+
+        result = num_approx(1.25, precision=3)
+        expected = '1.25'
+        self.assertEqual(result, expected)
+
+        result = num_approx(321321123, precision=1)
+        expected = '321.3 M'
+        self.assertEqual(result, expected)
+
+        result = num_approx(321321123, precision=4)
+        expected = '321.3211 M'
+        self.assertEqual(result, expected)
+
+        result = num_approx(321321123, precision=9)
+        expected = '321.321123 M'
+        self.assertEqual(result, expected)
+
+    def test_gap(self):
+
+        result = num_approx(0, gap=0)
+        expected = '0'
+        self.assertEqual(result, expected)
+
+        result = num_approx(0, gap=1)
+        expected = '0'
+        self.assertEqual(result, expected)
+
+        result = num_approx(0, gap=7)
+        expected = '0'
+        self.assertEqual(result, expected)
+
+        result = num_approx(1000, gap=0)
+        expected = '1K'
+        self.assertEqual(result, expected)
+
+        result = num_approx(1000, gap=1)
+        expected = '1 K'
+        self.assertEqual(result, expected)
+
+        result = num_approx(1000, gap=3)
+        expected = '1   K'
         self.assertEqual(result, expected)
 
 
