@@ -5,7 +5,8 @@ from mykit.kit.color import (
     getgray,
     rgb_to_hex,
     hexa_to_hex,
-    interpolate_with_black
+    interpolate_with_black,
+    hex_to_rgb
 )
 
 
@@ -136,6 +137,27 @@ class TestColor(unittest.TestCase):
 
         result = interpolate_with_black('#abc123', 0.234)
         self.assertEqual(result, '#282d08')
+
+
+class Test__hex_to_rgb(unittest.TestCase):
+
+    def test(self):
+
+        result = hex_to_rgb('#000000')
+        expected = (0, 0, 0)
+        self.assertEqual(result, expected)
+
+        result = hex_to_rgb('#ffffff')
+        expected = (255, 255, 255)
+        self.assertEqual(result, expected)
+
+        result = hex_to_rgb('#ff0000')
+        expected = (255, 0, 0)
+        self.assertEqual(result, expected)
+
+        result = hex_to_rgb('#abcdef')
+        expected = (171, 205, 239)
+        self.assertEqual(result, expected)
 
 
 if __name__ == '__main__':
