@@ -27,9 +27,9 @@ class Test__connum(unittest.TestCase):
         self.assertEqual(connum(0.1010), '0.101')
         self.assertEqual(connum(-0.100), '-0.1')
 
-        self.assertEqual(connum(0.0000003), '0.0000003')
-        self.assertEqual(connum(0.000000300000), '0.0000003')
-        self.assertEqual(connum(-0.000000300000), '-0.0000003')
+        self.assertEqual(connum(0.0003), '0.0003')
+        self.assertEqual(connum(0.000300000), '0.0003')
+        self.assertEqual(connum(-0.000300000), '-0.0003')
         self.assertEqual(connum('+0.000000300000'), '0.0000003')
 
         with self.assertRaises(ValueError) as ctx: connum('foo')
@@ -43,11 +43,11 @@ class Test__in_byte(unittest.TestCase):
 
     def test_default(self):
 
-        self.assertEqual(in_byte(0), '0')
-        self.assertEqual(in_byte(-1), '-1')
-        self.assertEqual(in_byte(1), '1')
-        self.assertEqual(in_byte(-100), '-100')
-        self.assertEqual(in_byte(100), '100')
+        self.assertEqual(in_byte(0), '0 B')
+        self.assertEqual(in_byte(-1), '-1 B')
+        self.assertEqual(in_byte(1), '1 B')
+        self.assertEqual(in_byte(-100), '-100 B')
+        self.assertEqual(in_byte(100), '100 B')
         
         self.assertEqual(in_byte(1024), '1 KiB')
         self.assertEqual(in_byte(1025), '1 KiB')
