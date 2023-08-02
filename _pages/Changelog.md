@@ -10,6 +10,8 @@ redirect_from:
 
 - 6.1.0 (Aug 2):
     - Added `in_byte` and `connum` to `mykit.kit.text`, including their unit tests.
+    - Added `hex_to_rgb`, `Hex`, and `Colored` to `mykit.kit.color`, including some unit tests.
+    - Added `mykit.kit.pLog`.
 - 6.0.0 (July 5):
     - Breaking changes:
         - The `component` now requires the `app: App` argument as a positional argument in the `.app.App.after_initialization_use` method
