@@ -1,3 +1,5 @@
+import os as _os
+import sys as _sys
 from typing import (
     Tuple as _Tuple
 )
@@ -98,6 +100,7 @@ def interpolate_with_black(foreground: str, opacity: float) -> str:
 
 
 class Hex:
+    """List of colors in hexadecimal format."""
 
     ## Basic
 
@@ -214,23 +217,22 @@ class Hex:
 
 
 class Colored:
-
     _win_init = False  # To make it work in Windows command prompt
-
     _RESET = '\033[0m'
+    def __new__(cls, text: str, /, fg: str = Hex.MANATEE, bg: str = Hex.TERMINAL) -> str:
+        """
+        Return the colored version of `text`.
 
-    def __new__(
-        cls,
-        text: str,
-        /,
-        foreground: str = Hex.MANATEE,
-        background: str = Hex.TERMINAL
-    ) -> str:
-        """Return the colored version of `text`."""
+        ---
+
+        ## Params
+        - `fg`: foreground color in hexadecimal format
+        - `bg`: background color in hexadecimal format
+        """
 
         text = str(text)
-        fg_r, fg_g, fg_b = foreground
-        bg_r, bg_g, bg_b = background
+        fg_r, fg_g, fg_b = hex_to_rgb(fg)
+        bg_r, bg_g, bg_b = hex_to_rgb(bg)
 
         if _sys.platform.lower() == 'win32':
             if not Colored._win_init:
@@ -243,10 +245,8 @@ class Colored:
             f'48;2;{bg_r};{bg_g};{bg_b}m'
         )
 
+        ## Handle multiple colors in one string
         if cls._RESET in text:
             text = text.replace(cls._RESET, header)
 
-        out = header + text + cls._RESET
-        return out
-
-print(hex_to_rgb('#000000'))
+        return header + text + cls._RESET
