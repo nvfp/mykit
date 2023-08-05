@@ -68,6 +68,12 @@ def in_byte(bytes: int, /, precision: int = 2, gap: int = 1) -> str:
     - `precision`: rounding precision
     - `gap`: gap (in spaces) between the number and the unit
 
+    ## Demo
+    >>> in_byte(100)  # 100 B
+    >>> in_byte(1300)  # 1.27 KiB
+    >>> in_byte(1300, 0, 0)  # 1KiB
+    >>> in_byte(1700, 0, 0)  # 2KiB
+
     ## Docs
     - `in_byte` is the extended version of `mykit.kit.text.byteFmt`
     """
@@ -109,6 +115,14 @@ def num_approx(num, /, precision:int=1, gap:int=1) -> str:
     ## Params
     - `precision`: rounding precision
     - `gap`: gap (in spaces) between the number and the unit
+
+    ## Demo
+    >>> num_approx(999)  # 999
+    >>> num_approx(1000)  # 1 K
+    >>> num_approx(1001)  # 1 K
+    >>> num_approx(1_250_000)  # 1.2 M
+    >>> num_approx(1_250_000, 0, 0)  # 1M
+    >>> num_approx(1_750_000, 0, 0)  # 2M
     """
 
     suffixes = [
