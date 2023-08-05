@@ -75,6 +75,14 @@ class Test__in_byte(unittest.TestCase):
         expected = '1 B'
         self.assertEqual(result, expected)
 
+        result = in_byte(1200, precision=0)
+        expected = '1 KiB'
+        self.assertEqual(result, expected)
+
+        result = in_byte(1800, precision=0)
+        expected = '2 KiB'
+        self.assertEqual(result, expected)
+
         result = in_byte(12345, precision=0)
         expected = '12 KiB'
         self.assertEqual(result, expected)
@@ -164,6 +172,14 @@ class Test__num_approx(unittest.TestCase):
         expected = '0'
         self.assertEqual(result, expected)
 
+        result = num_approx(1.25, precision=0)
+        expected = '1'
+        self.assertEqual(result, expected)
+
+        result = num_approx(1.85, precision=0)
+        expected = '2'
+        self.assertEqual(result, expected)
+
         result = num_approx(1.25, precision=1)
         expected = '1.2'
         self.assertEqual(result, expected)
@@ -174,6 +190,10 @@ class Test__num_approx(unittest.TestCase):
 
         result = num_approx(1.25, precision=3)
         expected = '1.25'
+        self.assertEqual(result, expected)
+
+        result = num_approx(321321123, precision=0)
+        expected = '321 M'
         self.assertEqual(result, expected)
 
         result = num_approx(321321123, precision=1)
