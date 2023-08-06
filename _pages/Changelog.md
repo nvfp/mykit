@@ -8,6 +8,12 @@ redirect_from:
 
 # Changelog
 
+
+- 7.0.0 (Aug 6):
+    - Breaking changes:
+        - Updated default `gap` value in `.kit.text.num_approx` function from 1 to 0.
+    - Added `sort_dict_by_key`, `sort_dict_by_val`, `get_first_n_dict_items`, `get_last_n_dict_items`, `randhex`, and `reverse_dict` to `.kit.utils`
+
 - 6.2.0 (Aug 2):
     - Added `num_approx` to `mykit.kit.text`, including its unit tests.
 - 6.1.0 (Aug 2):
