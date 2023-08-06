@@ -8,7 +8,8 @@ redirect_from:
 
 # Changelog
 
-
+- 7.1.0 (Aug 6, 2023):
+    - Added `merge_dicts` to `.kit.utils`, and its unit test.
 - 7.0.0 (Aug 6):
     - Breaking changes:
         - Updated default `gap` value in `.kit.text.num_approx` function from 1 to 0.
