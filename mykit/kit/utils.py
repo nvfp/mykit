@@ -60,20 +60,20 @@ def map_range(__value, /, from_min, from_max, to_min, to_max) -> float:
     ---
 
     ## Params
-        - `__value`: The value to be mapped
-        - `from_min`: The minimum value of the original range
-        - `from_max`: The maximum value of the original range
-        - `to_min`: The minimum value of the target range
-        - `to_max`: The maximum value of the target range
+    - `__value`: The value to be mapped
+    - `from_min`: The minimum value of the original range
+    - `from_max`: The maximum value of the original range
+    - `to_min`: The minimum value of the target range
+    - `to_max`: The maximum value of the target range
 
     ## Returns
-        - The mapped value in the target range.
+    - The mapped value in the target range.
 
     ## Demo
-        >>> original_value = 5
-        >>> mapped_value = map_range(original_value, 1, 9, 0, 1)
-        >>> print(mapped_value)
-        0.5
+    >>> original_value = 5
+    >>> mapped_value = map_range(original_value, 1, 9, 0, 1)
+    >>> print(mapped_value)
+    0.5
     """
     
     ## normalize the value from the original range
@@ -144,3 +144,104 @@ def print_screen(__msg: str, /) -> None:
     n = len( __msg.split('\n') )
     
     print( '\n'*(h-n) + __msg )
+
+
+def sort_dict_by_key(input_dict:dict, /, reverse:bool=False) -> dict:
+    """Sort dictionary by keys (keys should be sortable).
+
+    ---
+    
+    ## Demo
+    >>> sort_dict_by_key({'b': 3, 'a': 1, 'c': 2}, 0)  # {'a': 1, 'b': 3, 'c': 2}
+    >>> sort_dict_by_key({'b': 3, 'a': 1, 'c': 2}, 1)  # {'c': 2, 'b': 3, 'a': 1}
+    >>> sort_dict_by_key({3: 0, 1: 0, 2: 0}, 0)  # {1: 0, 2: 0, 3: 0}
+    >>> sort_dict_by_key({3: 0, 1: 0, 2: 0}, 1)  # {3: 0, 2: 0, 1: 0}
+    """
+    out = {
+        k: input_dict[k]
+        for k in sorted(input_dict, reverse=reverse)
+    }
+    return out
+
+def sort_dict_by_val(input_dict:dict, /, reverse:bool=False) -> dict:
+    """Sort dictionary by values (values should be sortable).
+
+    ---
+    
+    ## Demo
+    >>> sort_dict_by_val({'x': 'b', 'y': 'a', 'z': 'c'}, 0)  # {'y': 'a', 'x': 'b', 'z': 'c'}
+    >>> sort_dict_by_val({'x': 'b', 'y': 'a', 'z': 'c'}, 1)  # {'z': 'c', 'x': 'b', 'y': 'a'}
+    >>> sort_dict_by_val({'a': 3, 'b': 1, 'c': 2}, 0)  # {'b': 1, 'c': 2, 'a': 3}
+    >>> sort_dict_by_val({'a': 3, 'b': 1, 'c': 2}, 1)  # {'a': 3, 'c': 2, 'b': 1}
+    """
+    out = {
+        k: input_dict[k]
+        for k in sorted(input_dict, key=input_dict.get, reverse=reverse)
+    }
+    return out
+
+
+def get_first_n_dict_items(input_dict:dict, /, first_n:int) -> dict:
+    """
+    Get the first `first_n` items from the dictionary.
+
+    ---
+
+    ## Params
+    - `first_n`: should be at least 0. If it's negative, it'll be set to 0.
+    """
+    out = {
+        k: input_dict[k]
+        for k in list(input_dict)[:max(0, first_n)]
+    }
+    return out
+
+def get_last_n_dict_items(input_dict:dict, /, last_n:int) -> dict:
+    """
+    Get the last `last_n` items from the dictionary.
+
+    ---
+
+    ## Params
+    - `last_n`: should be at least 0. If it's negative, it'll be set to 0.
+    """
+    last_n = max(0, last_n)
+    if last_n == 0: return {}
+    return {
+        k: input_dict[k]
+        for k in list(input_dict)[-last_n:]
+    }
+
+
+def randhex(length:int=3, /) -> str:
+    """
+    Get a random hexadecimal string
+
+    ---
+
+    ## Demo
+    >>> randhex()    # 13d
+    >>> randhex()    # 3c4
+    >>> randhex(7)   # f971445
+    >>> randhex(21)  # 9aa4d78014ba3416dec3b
+    """
+    hex = '0123456789abcdef'
+    return ''.join(_random.choices(hex, k=length))
+
+
+def reverse_dict(input_dict: dict, /) -> dict:
+    """
+    Reverse the order of dict items
+
+    ---
+
+    ## Demo
+    >>> reverse_dict({'a': 0, 'b': 0, 'c': 0})  # {'c': 0, 'b': 0, 'a': 0}
+    >>> reverse_dict({5: '', 1: '', 9: ''})  # {9: '', 1: '', 5: ''}
+    """
+    keys = list(input_dict.keys())
+    keys.reverse()
+    return {
+        k: input_dict[k]
+        for k in keys
+    }
