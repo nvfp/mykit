@@ -255,7 +255,8 @@ def merge_dicts(
     /
 ) -> _Dict[_Hashable, float]:
     """
-    Merge two dictionaries.
+    Merge two dictionaries, returning the merged result,
+    while keeping both input dictionaries `dict1` and `dict2` intact.
 
     ---
 
@@ -264,7 +265,12 @@ def merge_dicts(
     >>> dict2 = {'b': 3, 'c': 4}
     >>> merged_dict = merge_dicts(dict1, dict2)
     >>> # merged_dict is {'a': 1, 'b': 5, 'c': 4}
+
+    ## Docs
+    - See also `mykit.kit.utils.merging_dicts`
     """
+    dict1 = dict1.copy()
+    dict2 = dict2.copy()
 
     for key, value in dict2.items():
         if key in dict1:
@@ -273,3 +279,59 @@ def merge_dicts(
             dict1[key] = value
 
     return dict1
+
+def merging_dicts(
+    dict1:_Dict[_Hashable, float],
+    dict2:_Dict[_Hashable, float],
+    /
+) -> None:
+    """
+    Merge `dict2` into `dict1` (`dict2` unchanged).
+
+    ---
+
+    ## Demo
+    >>> dict1 = {'a': 1, 'b': 2}
+    >>> dict2 = {'b': 3, 'c': 4}
+    >>> merging_dicts(dict1, dict2)
+    >>> # dict1 will be {'a': 1, 'b': 5, 'c': 4}
+    >>> # dict2 will be {'b': 3, 'c': 4}
+
+    ## Docs
+    - Also see `mykit.kit.utils.merge_dicts`
+    """
+    for key, value in dict2.items():
+        if key in dict1:
+            dict1[key] += value
+        else:
+            dict1[key] = value
+
+
+def add_dict_val(
+    the_dict:_Dict[_Hashable, float],
+    key:_Hashable,
+    add:float=1,
+    init:float=1,
+) -> None:
+    """
+    Add or initialize a value in the given dictionary
+
+    ---
+
+    ## Params
+    - `the_dict`: A dictionary to which the value will be added or initialized.
+    - `key`: The key for which the value will be modified or initialized.
+    - `add`: The value to be added to the existing value associated with the key.
+    - `init`: The initial value to set for the key if it doesn't exist.
+
+    ## Demo
+    >>> my_dict = {'apple': 5, 'banana': 3}
+    >>> add_dict_val(my_dict, 'apple', 1, 1)
+    >>> # After the function call, my_dict will be: {'apple': 6, 'banana': 3}
+    >>> add_dict_val(my_dict, 'pear', 2, 0)
+    >>> # After the function call, my_dict will be: {'apple': 6, 'banana': 3, 'pear': 0}
+    """
+    if key in the_dict:
+        the_dict[key] += add
+    else:
+        the_dict[key] = init
