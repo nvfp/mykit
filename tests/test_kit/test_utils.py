@@ -267,25 +267,62 @@ class Test__reverse_dict(unittest.TestCase):
 
 class Test__merge_dicts(unittest.TestCase):
 
-    def test(self):
+    def test_1(self):
 
         dict1 = {'a': 1, 'b': 2, 'c': 3}
         dict2 = {'b': 3, 'c': 4, 'd': 5}
+
         result = merge_dicts(dict1, dict2)
         expected = {'a': 1, 'b': 5, 'c': 7, 'd': 5}
         self.assertEqual(result, expected)
 
+        ## Both input dictionaries should be preserved
+        self.assertEqual(
+            dict1,
+            {'a': 1, 'b': 2, 'c': 3}
+        )
+        self.assertEqual(
+            dict2,
+            {'b': 3, 'c': 4, 'd': 5}
+        )
+
+    def test_2(self):
+
         dict1 = {}
         dict2 = {'b': 3, 'c': 4, 'd': 5}
+
         result = merge_dicts(dict1, dict2)
         expected = {'b': 3, 'c': 4, 'd': 5}
         self.assertEqual(result, expected)
 
+        ## Both input dictionaries should be preserved
+        self.assertEqual(
+            dict1,
+            {}
+        )
+        self.assertEqual(
+            dict2,
+            {'b': 3, 'c': 4, 'd': 5}
+        )
+    
+    def test_3(self):
+
         dict1 = {'a': 1, 'b': 2, 'c': 3}
         dict2 = {}
+
         result = merge_dicts(dict1, dict2)
         expected = {'a': 1, 'b': 2, 'c': 3}
         self.assertEqual(result, expected)
+
+        ## Both input dictionaries should be preserved
+        self.assertEqual(
+            dict1,
+            {'a': 1, 'b': 2, 'c': 3}
+        )
+        self.assertEqual(
+            dict2,
+            {}
+        )
 
 
 if __name__ == '__main__':
