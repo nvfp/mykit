@@ -1,8 +1,8 @@
-<!-- make the status easily visible -->
-[![🧩Run tests](https://github.com/nvfp/mykit/actions/workflows/run-tests.yml/badge.svg)](https://github.com/nvfp/mykit/actions/workflows/run-tests.yml)
-
-
 # myKit
+
+[![Run tests](https://github.com/nvfp/mykit/actions/workflows/run-tests.yml/badge.svg)](https://github.com/nvfp/mykit/actions/workflows/run-tests.yml)
+[![pypi version](https://img.shields.io/pypi/v/mykit?logo=pypi)](https://pypi.org/project/mykit/)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://choosealicense.com/licenses/mit/)
 
 Python utility toolkit.
 
@@ -10,9 +10,6 @@ The aim of this project is to understand how things work by building them from t
 
 <!-- Use this link (don't use the relative path to the one in the repo) to be able to display the banner on PyPI -->
 ![mykit's banner](https://raw.githubusercontent.com/nvfp/mykit/master/assets/20230619-mykit-banner-360p.png)
-
-[![pypi version](https://img.shields.io/pypi/v/mykit?logo=pypi)](https://pypi.org/project/mykit/)
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://choosealicense.com/licenses/mit/)
 
 
 ## Installation
@@ -39,7 +36,7 @@ print(x)  # 2.79 PiB
 
 - [Documentation](https://nvfp.github.io/mykit)
 - [Demo](https://nvfp.github.io/mykit/demo)
-- [Supports💙](https://nvfp.github.io/mykit/supports)
+- [Supports💙](https://nvfp.github.io/many-thanks)
 - [Changelog](https://nvfp.github.io/mykit/changelog)
 - [FAQs](https://nvfp.github.io/mykit/faqs)
 
