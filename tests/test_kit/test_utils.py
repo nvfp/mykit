@@ -3,7 +3,8 @@ import unittest
 from mykit.kit.utils import (
     sort_dict_by_key, sort_dict_by_val,
     get_first_n_dict_items, get_last_n_dict_items,
-    reverse_dict
+    reverse_dict,
+    merge_dicts
 )
 
 
@@ -261,6 +262,29 @@ class Test__reverse_dict(unittest.TestCase):
             3: '',
             5: '',
         }
+        self.assertEqual(result, expected)
+
+
+class Test__merge_dicts(unittest.TestCase):
+
+    def test(self):
+
+        dict1 = {'a': 1, 'b': 2, 'c': 3}
+        dict2 = {'b': 3, 'c': 4, 'd': 5}
+        result = merge_dicts(dict1, dict2)
+        expected = {'a': 1, 'b': 5, 'c': 7, 'd': 5}
+        self.assertEqual(result, expected)
+
+        dict1 = {}
+        dict2 = {'b': 3, 'c': 4, 'd': 5}
+        result = merge_dicts(dict1, dict2)
+        expected = {'b': 3, 'c': 4, 'd': 5}
+        self.assertEqual(result, expected)
+
+        dict1 = {'a': 1, 'b': 2, 'c': 3}
+        dict2 = {}
+        result = merge_dicts(dict1, dict2)
+        expected = {'a': 1, 'b': 2, 'c': 3}
         self.assertEqual(result, expected)
 
 
