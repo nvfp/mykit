@@ -8,6 +8,12 @@ redirect_from:
 
 # Changelog
 
+
+- 8.0.0 (Aug 6, 2023):
+    - Breaking changes:
+        - Now, `.kit.utils.merge_dicts` will preserve both input dictionaries (the input dicts remain intact).
+    - Added `merging_dicts` and `add_dict_val` to `.kit.utils`, and their unit tests.
+
 - 7.1.0 (Aug 6, 2023):
     - Added `merge_dicts` to `.kit.utils`, and its unit test.
 - 7.0.0 (Aug 6):
