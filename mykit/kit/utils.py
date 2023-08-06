@@ -4,6 +4,8 @@ import os as _os
 import random as _random
 import time as _time
 from typing import (
+    Dict as _Dict,
+    Hashable as _Hashable,
     Tuple as _Tuple
 )
 
@@ -245,3 +247,29 @@ def reverse_dict(input_dict: dict, /) -> dict:
         k: input_dict[k]
         for k in keys
     }
+
+
+def merge_dicts(
+    dict1:_Dict[_Hashable, float],
+    dict2:_Dict[_Hashable, float],
+    /
+) -> _Dict[_Hashable, float]:
+    """
+    Merge two dictionaries.
+
+    ---
+
+    ## Demo
+    >>> dict1 = {'a': 1, 'b': 2}
+    >>> dict2 = {'b': 3, 'c': 4}
+    >>> merged_dict = merge_dicts(dict1, dict2)
+    >>> # merged_dict is {'a': 1, 'b': 5, 'c': 4}
+    """
+
+    for key, value in dict2.items():
+        if key in dict1:
+            dict1[key] += value
+        else:
+            dict1[key] = value
+
+    return dict1
