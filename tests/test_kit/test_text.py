@@ -145,18 +145,18 @@ class Test__num_approx(unittest.TestCase):
         self.assertEqual(num_approx(-999), '-999')
         self.assertEqual(num_approx(-124.12), '-124.1')
 
-        self.assertEqual(num_approx(1000), '1 K')
-        self.assertEqual(num_approx(1001), '1 K')
-        self.assertEqual(num_approx(1049), '1 K')
-        self.assertEqual(num_approx(1050), '1.1 K')
-        self.assertEqual(num_approx(1099), '1.1 K')
-        self.assertEqual(num_approx(1399), '1.4 K')
-        self.assertEqual(num_approx(-1399), '-1.4 K')
+        self.assertEqual(num_approx(1000), '1K')
+        self.assertEqual(num_approx(1001), '1K')
+        self.assertEqual(num_approx(1049), '1K')
+        self.assertEqual(num_approx(1050), '1.1K')
+        self.assertEqual(num_approx(1099), '1.1K')
+        self.assertEqual(num_approx(1399), '1.4K')
+        self.assertEqual(num_approx(-1399), '-1.4K')
 
-        self.assertEqual(num_approx(999_000_000), '999 M')
-        self.assertEqual(num_approx(1_200_000_000), '1.2 B')
-        self.assertEqual(num_approx(356_351_352_642_742), '356.4 T')
-        self.assertEqual(num_approx(1e23 + 1213141353), '100 s')
+        self.assertEqual(num_approx(999_000_000), '999M')
+        self.assertEqual(num_approx(1_200_000_000), '1.2B')
+        self.assertEqual(num_approx(356_351_352_642_742), '356.4T')
+        self.assertEqual(num_approx(1e23 + 1213141353), '100s')
 
     def test_precision(self):
 
@@ -193,19 +193,19 @@ class Test__num_approx(unittest.TestCase):
         self.assertEqual(result, expected)
 
         result = num_approx(321321123, precision=0)
-        expected = '321 M'
+        expected = '321M'
         self.assertEqual(result, expected)
 
         result = num_approx(321321123, precision=1)
-        expected = '321.3 M'
+        expected = '321.3M'
         self.assertEqual(result, expected)
 
         result = num_approx(321321123, precision=4)
-        expected = '321.3211 M'
+        expected = '321.3211M'
         self.assertEqual(result, expected)
 
         result = num_approx(321321123, precision=9)
-        expected = '321.321123 M'
+        expected = '321.321123M'
         self.assertEqual(result, expected)
 
     def test_gap(self):
