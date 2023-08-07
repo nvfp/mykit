@@ -1,6 +1,7 @@
 import os as _os
 import sys as _sys
 from typing import (
+    Optional as _Optional,
     Tuple as _Tuple
 )
 
@@ -217,9 +218,17 @@ class Hex:
 
 
 class Colored:
+
     _win_init = False  # To make it work in Windows command prompt
     _RESET = '\033[0m'
-    def __new__(cls, text: str, /, fg: str = Hex.MANATEE, bg: str = Hex.TERMINAL) -> str:
+
+    def __new__(
+        cls,
+        text:str,
+        /,
+        fg:str=Hex.MANATEE,
+        bg:_Optional[str]=None
+    ) -> str:
         """
         Return the colored version of `text`.
 
@@ -227,23 +236,31 @@ class Colored:
 
         ## Params
         - `fg`: foreground color in hexadecimal format
-        - `bg`: background color in hexadecimal format
+        - `bg`: background color in hexadecimal format; if not specified,
+                the default terminal background color will be used.
         """
 
-        text = str(text)
-        fg_r, fg_g, fg_b = hex_to_rgb(fg)
-        bg_r, bg_g, bg_b = hex_to_rgb(bg)
-
+        ## Windows users
         if _sys.platform.lower() == 'win32':
             if not Colored._win_init:
                 _os.system('color')
                 Colored._win_init = True
 
+        text = str(text)
+        fg_r, fg_g, fg_b = hex_to_rgb(fg)
+
+        ## Refs: - https://stackoverflow.com/questions/287871/how-do-i-print-colored-text-to-the-terminal
+        ##       - https://gist.github.com/Abraxos/f491670c85fd76bfeb7067cb8ea1acf7
         header = (
             '\033['
-            f'38;2;{fg_r};{fg_g};{fg_b};'
-            f'48;2;{bg_r};{bg_g};{bg_b}m'
+            f'38;2;{fg_r};{fg_g};{fg_b}'
         )
+
+        if bg is not None:
+            bg_r, bg_g, bg_b = hex_to_rgb(bg)
+            header += f';48;2;{bg_r};{bg_g};{bg_b}'
+
+        header += 'm'
 
         ## Handle multiple colors in one string
         if cls._RESET in text:
