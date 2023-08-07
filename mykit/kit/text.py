@@ -157,3 +157,50 @@ def num_approx(num, /, precision:int=1, gap:int=0) -> str:
         GAP = ' '*gap
 
     return sign + n_format + GAP + suffix
+
+
+def num_round(number:int, /, keep:int=2, add_commas:bool=True) -> str:
+    """
+    Rounding number (see demo below).
+
+    ---
+    
+    ## Params
+    - `number`: The input number; floats are also accepted.
+    - `keep`: number of the non-zero part (see demo below)
+    - `add_commas`: separated the thousands with commas
+
+    ## Demo
+    >>> num_round(12345, 1)  # 10,000
+    >>> num_round(12345, 2)  # 12,000
+    >>> num_round(12345, 3)  # 12,300
+    >>> num_round(12385, 3)  # 12,400
+
+    ## Docs
+    - `keep` value is clamped to a minimum of 1.
+    """
+
+    ## Handle float
+    number = round(number)
+
+    ## Handle negative number
+    sign = ''
+    if number < 0:
+        number = abs(number)
+        sign = '-'
+
+    ## Clamp
+    keep = max(1, keep)
+    
+    ## Rounding
+    power = len(str(number)) - keep
+    scale = int( _math.pow(10, power) )
+    rounded = round(number/scale)*scale
+
+    ## Stringify
+    if add_commas:
+        rounded = f'{rounded:,}'
+    else:
+        rounded = str(rounded)
+
+    return sign + rounded
