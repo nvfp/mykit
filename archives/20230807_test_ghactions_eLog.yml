@@ -1,0 +1,28 @@
+name: Test mykit.ghactions.eLog.eL
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pip install -U mykit
+      - run: |
+          from mykit.ghactions.eLog import eL
+          eL.debug('debug')
+          eL.info('info')
+          eL.warning('warning')
+          eL.error('error')
+
+          import time
+          time.sleep(3)
+
+          eL.group('Foo bar')
+          eL.debug('debug again..')
+          eL.info('info again..')
+          eL.warning('warning again..')
+          eL.error('error again..')
+          eL.endgroup()
+        shell: python
