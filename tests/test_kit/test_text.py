@@ -246,7 +246,7 @@ class Test__num_round(unittest.TestCase):
         self.assertEqual(num_round(1.7), '2')
 
         self.assertEqual(num_round(11), '11')
-        self.assertEqual(num_round(-11), '11')
+        self.assertEqual(num_round(-11), '-11')
         self.assertEqual(num_round(69), '69')
         
         self.assertEqual(num_round(111), '110')
