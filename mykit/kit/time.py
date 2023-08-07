@@ -1,4 +1,9 @@
+import datetime as _datetime
+import platform as _platform
 import re as _re
+from typing import (
+    Optional as _Optional
+)
 
 
 def get_sexagecimal(secs: float, /, include_ms: bool = False) -> str:
@@ -104,3 +109,36 @@ def get_dur(__secs: float, /) -> str:
         parts.append(f'{seconds} secs')
 
     return ' '.join(parts)
+
+
+class TimeFmt:  # Time Formats
+    """Various datetime presets"""
+
+    def _get_time(ts, fmt):
+        if ts is None: dt = _datetime.datetime.now()
+        else: dt = _datetime.datetime.fromtimestamp(ts)
+        return dt.astimezone().strftime(fmt)
+
+    def date(timestamp:_Optional[float]=None) -> str:
+        """
+        ## Params
+        - `timestamp`: If not specified, the current timestamp will be used.
+
+        ## Return
+        - `Aug 1, 2023`
+        """
+        if _platform.system() == 'Windows' : fmt = '%b %#d, %Y'
+        elif _platform.system() == 'Linux' : fmt = '%b %-d, %Y'
+        elif _platform.system() == 'Darwin': fmt = '%b %-d, %Y'  # macOS
+        else: raise NotImplementedError
+        return TimeFmt._get_time(timestamp, fmt)
+
+    def hour(timestamp:_Optional[float]=None) -> str:
+        """
+        ## Params
+        - `timestamp`: If not specified, the current timestamp will be used.
+
+        ## Return
+        - `HH:MM:SS` / `03:02:01`
+        """
+        return TimeFmt._get_time(timestamp, '%H:%M:%S')
