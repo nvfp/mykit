@@ -106,7 +106,7 @@ def in_byte(bytes: int, /, precision: int = 2, gap: int = 1) -> str:
     return sign + connum(number) + GAP + UNIT[power]
 
 
-def num_approx(num, /, precision:int=1, gap:int=0) -> str:
+def num_approx(num:float, /, precision:int=1, gap:int=0) -> str:
     """
     Round a number down to K (thousand), M (million), B (billion), etc.
 
