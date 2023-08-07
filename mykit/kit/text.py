@@ -190,7 +190,7 @@ def num_round(number:int, /, keep:int=2, add_commas:bool=True) -> str:
         sign = '-'
 
     ## Clamp
-    keep = max(1, keep)
+    keep = min(len(str(number)), max(1, keep))
     
     ## Rounding
     power = len(str(number)) - keep
