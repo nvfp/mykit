@@ -4,11 +4,11 @@ from mykit.kit.color import (
     Hex as _Hex,
     Colored as _Colored
 )
-from mykit.kit.time import TimeFmt
+from mykit.kit.time import TimeFmt as _TimeFmt
 
 
 def _logger(level, color, msg):
-    _sp.run(['echo', f'[{TimeFmt.hour()}] {_Colored(level, color)}: {msg}'])
+    _sp.run(['echo', f'[{_TimeFmt.hour()}] {_Colored(level, color)}: {msg}'])
 
 
 class eL:
