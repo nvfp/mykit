@@ -1,6 +1,6 @@
 import unittest
 
-from mykit.kit.text import connum, in_byte, num_approx
+from mykit.kit.text import connum, in_byte, num_approx, num_round
 
 
 class Test__connum(unittest.TestCase):
@@ -233,6 +233,44 @@ class Test__num_approx(unittest.TestCase):
         result = num_approx(1000, gap=3)
         expected = '1   K'
         self.assertEqual(result, expected)
+
+
+class Test__num_round(unittest.TestCase):
+
+    def test_default(self):
+
+        self.assertEqual(num_round(0), '0')
+        self.assertEqual(num_round(-1), '-1')
+        self.assertEqual(num_round(1), '1')
+        self.assertEqual(num_round(1.3), '1')
+        self.assertEqual(num_round(1.7), '2')
+
+        self.assertEqual(num_round(11), '11')
+        self.assertEqual(num_round(-11), '11')
+        self.assertEqual(num_round(69), '69')
+        
+        self.assertEqual(num_round(111), '110')
+        self.assertEqual(num_round(119), '120')
+        self.assertEqual(num_round(733), '730')
+        self.assertEqual(num_round(-739), '-740')
+
+        self.assertEqual(num_round(1130), '1,100')
+        self.assertEqual(num_round(1180), '1,200')
+        
+        self.assertEqual(num_round(3_331_324), '3,300,000')
+        self.assertEqual(num_round(3_371_324), '3,400,000')
+
+    def test_keep(self):
+        self.assertEqual(num_round(123_456_789, 0), '100,000,000')  # Will be clamped
+        self.assertEqual(num_round(123_456_789, 1), '100,000,000')
+        self.assertEqual(num_round(123_456_789, 2), '120,000,000')
+        self.assertEqual(num_round(123_456_789, 3), '123,000,000')
+        self.assertEqual(num_round(123_456_789, 4), '123,500,000')
+        self.assertEqual(num_round(123_456_789, 5), '123,460,000')
+
+    def test_add_commas(self):
+        self.assertEqual(num_round(123_456_789, add_commas=False), '120000000')
+        self.assertEqual(num_round(123_456_789, add_commas=True ), '120,000,000')
 
 
 if __name__ == '__main__':
