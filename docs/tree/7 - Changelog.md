@@ -1,6 +1,19 @@
 # Changelog
 
 
+- 9.0.0 (Aug 7, 2023):
+    - Breaking changes:
+        - The `bg` arg for `.kit.color.Colored` is now optional. Note that this breaking change propagates to all functions that are using `Colored`.
+    - Added `num_round` to `.kit.text`, and its unit test.
+    - Added `.ghactions` master module.
+    - Added `TimeFmt` to `.kit.time`.
+
+- 
+<!-- The hyphen '-' above so that the 9.0.0 release (via fast-pypi-release) doesn't contain these comments -->
+<!-- Note: 8.1.0 has been aborted, but 8.1.0b1 published on PyPI -->
+~~- 8.1.0 (Aug 7, 2023):~~
+~~    - Added `num_round` to `.kit.text`, and its unit test.~~
+~~    - Added `.ghactions` master module.~~
 - 8.0.0 (Aug 6, 2023):
     - Breaking changes:
         - Now, `.kit.utils.merge_dicts` will preserve both input dictionaries (the input dicts remain intact).
