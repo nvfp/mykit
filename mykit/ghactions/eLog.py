@@ -1,8 +1,8 @@
 import subprocess as _sp
 
 from mykit.kit.color import (
+    Colored as _Colored,
     Hex as _Hex,
-    Colored as _Colored
 )
 from mykit.kit.time import TimeFmt as _TimeFmt
 
@@ -18,20 +18,36 @@ class eL:
     Inspired by `mykit.kit.pLog.pL`.
     """
 
+    @staticmethod
     def group(name:str, /) -> None:
         _sp.run(['echo', f'::group::{name}'])
 
-    def endgroup() -> None:
+    @staticmethod
+    def endgroup(name:str='', /) -> None:
+        """
+        ## Params
+        - `name`: doesn't do anything, just for readability.
+        
+        ## Demo
+        >>> eL.group('group-a')
+        >>> eL.endgroup()
+        >>> eL.group('group-b')
+        >>> eL.endgroup('group-b')
+        """
         _sp.run(['echo', '::endgroup::'])
 
+    @staticmethod
     def debug(msg:str, /) -> None:
         _logger('DEBUG', _Hex.WHEAT, msg)
 
+    @staticmethod
     def info(msg:str, /) -> None:
         _logger('INFO', _Hex.BLUE_GRAY, msg)
 
+    @staticmethod
     def warning(msg:str, /) -> None:
         _logger('WARNING', _Hex.DARK_ORANGE, msg)
 
+    @staticmethod
     def error(msg:str, /) -> None:
         _logger('ERROR', _Hex.SCARLET, msg)
