@@ -9,6 +9,8 @@ redirect_from:
 # Changelog
 
 
+- 9.1.0 (Aug , 2023):
+    - Added a helper arg `name` to `.ghactions.eLog.eL.endgroup`.
 - 9.0.0 (Aug 7, 2023):
     - Breaking changes:
         - The `bg` arg for `.kit.color.Colored` is now optional. Note that this breaking change propagates to all functions that are using `Colored`.
