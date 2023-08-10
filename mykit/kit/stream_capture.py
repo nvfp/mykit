@@ -3,26 +3,22 @@ import sys as _sys
 
 
 class StreamCapture:
-    r"""
-    Redirects and captures stream content.
-
-    ---
-
-    ## Demo
-    >>> with StreamCapture() as captured:
-    >>>     print('foo\n\nbar')
-    >>>     print('baz')
-    >>> print(repr(captured.value))  # 'foo\n\nbar\nbaz\n'
-    """
+    """Redirects and captures stream content"""
 
     def __init__(self, fd:int=1):
-        """
+        r"""
         Initialize the context manager.
 
         ---
 
         ## Params
         - `fd`: file descriptors: `0` for stdin, `1` for stdout, and `2` is for stderr.
+
+        ## Demo
+        >>> with StreamCapture() as captured:
+        >>>     print('foo\n\nbar')
+        >>>     print('baz')
+        >>> print(repr(captured.value))  # 'foo\n\nbar\nbaz\n'
         """
         self.fd = fd
 
