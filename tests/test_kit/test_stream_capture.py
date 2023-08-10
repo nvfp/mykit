@@ -18,7 +18,7 @@ class Test__StreamCapture(unittest.TestCase):
         with StreamCapture() as captured:
             print(123)
         result = captured.value
-        expected = '132'
+        expected = '123'
         self.assertEqual(result, expected)
 
         with StreamCapture() as captured:
