@@ -39,9 +39,64 @@ class Test__eL(unittest.TestCase):
             eL.info('info')
             eL.warning('warning')
             eL.error('error')
-        result = captured.value
-        expected = None
+        result = len( captured.value.split('\n') )  # Remember the '\n' at the end of the `captured.value` string
+        expected = 7
         self.assertEqual(result, expected)
+
+    def test_at_debug_level(self):
+        eL.set_level('DEBUG')
+        with StreamCapture() as captured:
+            eL.group('group')
+            eL.endgroup('endgroup')
+            eL.debug('debug')
+            eL.info('info')
+            eL.warning('warning')
+            eL.error('error')
+        self.assertEqual(len( captured.value.split('\n') ), 7)
+
+    def test_at_info_level(self):
+        eL.set_level('INFO')
+        with StreamCapture() as captured:
+            eL.group('group')
+            eL.endgroup('endgroup')
+            eL.debug('debug')
+            eL.info('info')
+            eL.warning('warning')
+            eL.error('error')
+        self.assertEqual(len( captured.value.split('\n') ), 6)
+
+    def test_at_warning_level(self):
+        eL.set_level('WARNING')
+        with StreamCapture() as captured:
+            eL.group('group')
+            eL.endgroup('endgroup')
+            eL.debug('debug')
+            eL.info('info')
+            eL.warning('warning')
+            eL.error('error')
+        self.assertEqual(len( captured.value.split('\n') ), 5)
+
+    def test_at_error_level(self):
+        eL.set_level('ERROR')
+        with StreamCapture() as captured:
+            eL.group('group')
+            eL.endgroup('endgroup')
+            eL.debug('debug')
+            eL.info('info')
+            eL.warning('warning')
+            eL.error('error')
+        self.assertEqual(len( captured.value.split('\n') ), 4)
+
+    def test_at_quiet_level(self):
+        eL.set_level('QUIET')
+        with StreamCapture() as captured:
+            eL.group('group')
+            eL.endgroup('endgroup')
+            eL.debug('debug')
+            eL.info('info')
+            eL.warning('warning')
+            eL.error('error')
+        self.assertEqual(len( captured.value.split('\n') ), 1)
 
 
 if __name__ == '__main__':
