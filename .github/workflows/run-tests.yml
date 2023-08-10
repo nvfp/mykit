@@ -3,9 +3,13 @@ name: Run tests
 on:
   push:
     branches:
-      - main
+      - '*'
     paths:
       - 'mykit/**'  # Run tests only when the distribution directory is changed
+  pull_request:
+    types:
+      - opened
+      - synchronize
   workflow_dispatch:
 
 jobs:

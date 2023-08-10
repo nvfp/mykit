@@ -1,3 +1,4 @@
+import enum as _enum
 import subprocess as _sp
 
 from mykit.kit.color import (
@@ -7,8 +8,16 @@ from mykit.kit.color import (
 from mykit.kit.time import TimeFmt as _TimeFmt
 
 
-def _logger(level, color, msg):
-    _sp.run(['echo', f'[{_TimeFmt.hour()}] {_Colored(level, color)}: {msg}'])
+class _Level(_enum.IntEnum):
+
+    QUIET = 0
+
+    _ADDONS = 50  # Used for the ones that will always be printed (echoed) at any level except QUIET
+
+    ERROR = 100
+    WARNING = 200
+    INFO = 300
+    DEBUG = 400
 
 
 class eL:
@@ -18,12 +27,39 @@ class eL:
     Inspired by `mykit.kit.pLog.pL`.
     """
 
-    @staticmethod
-    def group(name:str, /) -> None:
-        _sp.run(['echo', f'::group::{name}'])
+    _testing = False  # Testing purposes
 
-    @staticmethod
-    def endgroup(name:str='', /) -> None:
+    level = _Level.DEBUG  # This is not a private variable (users should use it to get the current log level)
+
+    @classmethod
+    def set_level(cls, level:str, /) -> None:
+        """
+        `level`:
+        - `'quiet'`
+        - `'error'`
+        - `'warning'`
+        - `'info'`
+        - `'debug'`
+        """
+        try:
+            cls.level = getattr(_Level, str(level).upper())
+        except AttributeError:
+            raise ValueError(f'Invalid level value: {repr(level)}.')
+
+
+    @classmethod
+    def _echo(cls, text, level:_Level):
+        if level <= cls.level:
+            if cls._testing: print(text)
+            else: _sp.run(['echo', text])
+
+
+    @classmethod
+    def group(cls, name:str, /) -> None:
+        cls._echo(f'::group::{name}', _Level._ADDONS)
+
+    @classmethod
+    def endgroup(cls, name:str='', /) -> None:
         """
         ## Params
         - `name`: doesn't do anything, just for readability.
@@ -34,20 +70,26 @@ class eL:
         >>> eL.group('group-b')
         >>> eL.endgroup('group-b')
         """
-        _sp.run(['echo', '::endgroup::'])
+        cls._echo('::endgroup::', _Level._ADDONS)
 
-    @staticmethod
-    def debug(msg:str, /) -> None:
-        _logger('DEBUG', _Hex.WHEAT, msg)
 
-    @staticmethod
-    def info(msg:str, /) -> None:
-        _logger('INFO', _Hex.BLUE_GRAY, msg)
+    @classmethod
+    def _logger(cls, level:_Level, color, msg):
+        text = f'[{_TimeFmt.hour()}] {_Colored(level.name, color)}: {msg}'
+        cls._echo(text, level)
 
-    @staticmethod
-    def warning(msg:str, /) -> None:
-        _logger('WARNING', _Hex.DARK_ORANGE, msg)
+    @classmethod
+    def debug(cls, msg:str, /) -> None:
+        cls._logger(_Level.DEBUG, _Hex.WHEAT, msg)
 
-    @staticmethod
-    def error(msg:str, /) -> None:
-        _logger('ERROR', _Hex.SCARLET, msg)
+    @classmethod
+    def info(cls, msg:str, /) -> None:
+        cls._logger(_Level.INFO, _Hex.BLUE_GRAY, msg)
+
+    @classmethod
+    def warning(cls, msg:str, /) -> None:
+        cls._logger(_Level.WARNING, _Hex.DARK_ORANGE, msg)
+
+    @classmethod
+    def error(cls, msg:str, /) -> None:
+        cls._logger(_Level.ERROR, _Hex.SCARLET, msg)
