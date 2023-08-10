@@ -6,6 +6,9 @@ from mykit.kit.stream_capture import StreamCapture
 
 class Test__eL(unittest.TestCase):
 
+    def setUp(self):
+        eL._testing = True
+
     def test_set_level(self):
         
         ## Passes
@@ -28,10 +31,14 @@ class Test__eL(unittest.TestCase):
         self.assertEqual(str(ctx.exception), "Invalid level value: 0.")
 
     def test_default(self):
-        return
 
         with StreamCapture() as captured:
-            eL.debug()
+            eL.group('group')
+            eL.endgroup('endgroup')
+            eL.debug('debug')
+            eL.info('info')
+            eL.warning('warning')
+            eL.error('error')
         result = captured.value
         expected = None
         self.assertEqual(result, expected)

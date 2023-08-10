@@ -27,6 +27,8 @@ class eL:
     Inspired by `mykit.kit.pLog.pL`.
     """
 
+    _testing = False  # Testing purposes
+
     level = _Level.DEBUG  # This is not a private variable (users should use it to get the current log level)
 
     @classmethod
@@ -48,7 +50,8 @@ class eL:
     @classmethod
     def _echo(cls, text, level:_Level):
         if level <= cls.level:
-            _sp.run(['echo', text])
+            if cls._testing: print(text)
+            else: _sp.run(['echo', text])
 
 
     @classmethod
