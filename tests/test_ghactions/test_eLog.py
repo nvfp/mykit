@@ -43,7 +43,7 @@ class Test__eL(unittest.TestCase):
     #         eL.warning('warning')
     #         eL.error('error')
     #     result = len( captured.value.split('\n') )  # Remember the '\n' at the end of the `captured.value` string
-    #     expected = 7
+    #     expected = 7  # Count the number of lines, since the captured string contains 'clock' which can't be determined.
     #     self.assertEqual(result, expected)
 
     def test_at_debug_level(self):
