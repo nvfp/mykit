@@ -1,7 +1,7 @@
 # Changelog
 
 
-- 9.1.0 (Aug , 2023):
+- 9.1.0 (Aug 10, 2023):
     - Added a helper arg `name` to `.ghactions.eLog.eL.endgroup`.
     - Updated `.ghactions.eLog.eL` by adding a level mechanism and created unit tests.
     - Added `.kit.stream_capture` along with its unit tests.
