@@ -97,6 +97,7 @@ class Test__equaldirs(unittest.TestCase):
 
         self.assertEqual(os.listdir(dir2), [])
 
+        os.rmdir(dir2)  # Needs to be removed for shutil.copytree to work
         shutil.copytree(dir1, dir2)
 
         self.assertEqual(sorted(os.listdir(dir2)), ['subdir_1', 'subdir_2', 'test_1', 'test_2', 'test_3'])

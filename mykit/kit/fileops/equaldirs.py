@@ -11,7 +11,7 @@ def _compare(dir, ref, cmp):
 
     dir_rel = os.path.relpath(dir, ref)
     dir_cmp_pth = os.path.join(cmp, dir_rel)
-    if not os.path.isdir(dir_cmp_pth): AssertionError('The current iterated directory is missing in the comparison.')
+    if not os.path.isdir(dir_cmp_pth): raise AssertionError('The current iterated directory is missing in the comparison.')
 
     for thing in os.listdir(dir):
         thing_pth = os.path.join(dir, thing)
@@ -19,10 +19,10 @@ def _compare(dir, ref, cmp):
         if os.path.isfile(thing_pth):
             file_rel = os.path.relpath(thing_pth, ref)
             file_cmp_pth = os.path.join(cmp, file_rel)
-            if not os.path.isfile(file_cmp_pth): AssertionError('The current iterated file is missing in the comparison.')
+            if not os.path.isfile(file_cmp_pth): raise AssertionError('The current iterated file is missing in the comparison.')
             with open(thing_pth, 'r') as f: text1 = f.read()
             with open(file_cmp_pth, 'r') as f: text2 = f.read()
-            if text1 != text2: AssertionError('File content differs between ref and cmp directories.')
+            if text1 != text2: raise AssertionError('File content differs between ref and cmp directories.')
         else:
             _compare(thing_pth, ref, cmp)
 
