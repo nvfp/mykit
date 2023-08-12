@@ -214,6 +214,18 @@ class Test__equaldirs(unittest.TestCase):
         expected = False
         self.assertEqual(result, expected)
 
+    def test_not_equal_7_same_file_name_but_different_content(self):
+
+        dir1 = tempfile.mkdtemp()
+        dir2 = tempfile.mkdtemp()
+
+        with open(os.path.join(dir1, 'foo.txt'), 'w') as f: f.write('abc')
+        with open(os.path.join(dir2, 'foo.txt'), 'w') as f: f.write('xyz')
+
+        result = equaldirs(dir1, dir2)
+        expected = False
+        self.assertEqual(result, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
