@@ -9,6 +9,8 @@ redirect_from:
 # Changelog
 
 
+- 9.2.0 (Aug 11, 2023):
+    - Added `.kit.fileops.equaldirs` with its tests.
 - 9.1.0 (Aug 10, 2023):
     - Added a helper arg `name` to `.ghactions.eLog.eL.endgroup`.
     - Updated `.ghactions.eLog.eL` by adding a level mechanism and created unit tests.
