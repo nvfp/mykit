@@ -97,11 +97,12 @@ class Test__JsonListDbManager(unittest.TestCase):
         ## files in dir not valid II
         dir = tempfile.mkdtemp()
         open(os.path.join(dir, 'foo.json'), 'w').close()
-        os.mkdir(os.path.join(dir, 'subdir'))
+        subdir = os.path.join(dir, 'subdir')
+        os.mkdir(subdir)
         with self.assertRaises(AssertionError) as ctx: JsonListDbManager(dir)
         self.assertTrue(
             str(ctx.exception) == f'All items in {repr(dir)} must be JSON files.' or
-            str(ctx.exception) == f'Not a file: {repr(dir)}.'
+            str(ctx.exception) == f'Not a file: {repr(subdir)}.'
         )
 
 

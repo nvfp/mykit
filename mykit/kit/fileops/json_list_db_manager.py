@@ -119,6 +119,6 @@ class JsonListDbManager:
     def get_all(self) -> _List[_Any]:
         """Get the entire database"""
         out = []
-        for _, pth in _list_dir(self.container):
+        for _, pth in self._get_blocks():
             out += _SafeJSON.read(pth)
         return out
