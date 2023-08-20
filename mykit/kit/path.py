@@ -97,6 +97,11 @@ class SafeJSON:
             _os.remove(bak_file)
             return
 
+        ## case IV (Weirdly happening, but currently disabled because I don't know if this is the case in other environments.)
+        # if (not _os.path.exists(pth_norm)) and (not _os.path.exists(tmp_file)) and _os.path.exists(bak_file):
+        #     _os.rename(bak_file, pth_norm)
+        #     return
+
 
 def open_file(file_pth: str, /) -> None:
     """
