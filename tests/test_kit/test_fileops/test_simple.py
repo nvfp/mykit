@@ -18,7 +18,7 @@ class Test__same_ext_for_all_dir_files(unittest.TestCase):
         
         dir = tempfile.mkdtemp()
         n = random.randint(1, 10)
-        for i in range(n): open(os.path.join(dir, f'file_{i}.txt'), 'w').close()
+        for i in range(n): open(os.path.join(dir, f'file_{i}.TXT'), 'w').close()
 
         self.assertEqual(len(os.listdir(dir)), n)  # Debugging purposes
 
@@ -29,10 +29,10 @@ class Test__same_ext_for_all_dir_files(unittest.TestCase):
         
         dir = tempfile.mkdtemp()
         n = random.randint(1, 10)
-        for i in range(n): open(os.path.join(dir, f'file_{i}.txt'), 'w').close()
+        for i in range(n): open(os.path.join(dir, f'file_{i}.txT'), 'w').close()
         for i in range(n): open(os.path.join(dir, f'file_{i}.mdx'), 'w').close()
 
-        result = same_ext_for_all_dir_files(dir, '.txt')
+        result = same_ext_for_all_dir_files(dir, '.tXt')
         self.assertEqual(result, False)
 
     def test_not_a_dir(self):
