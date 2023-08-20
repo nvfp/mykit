@@ -42,8 +42,8 @@ class Test__JsonListDbManager(unittest.TestCase):
         db.save(4, max=MAX)
 
         self.assertEqual(len(os.listdir(dir)), 2)  # Created new database file
-        with open(os.path.join(dir, os.listdir(dir)[0] ), 'r') as f: self.assertEqual(f.read(), '[1, 2, 3]')  # Check the old database file
-        with open(os.path.join(dir, os.listdir(dir)[-1]), 'r') as f: self.assertEqual(f.read(), '[4]')        # Check the new database file
+        with open(os.path.join(dir, sorted(os.listdir(dir))[0] ), 'r') as f: self.assertEqual(f.read(), '[1, 2, 3]')  # Check the old database file
+        with open(os.path.join(dir, sorted(os.listdir(dir))[-1]), 'r') as f: self.assertEqual(f.read(), '[4]')        # Check the new database file
 
     def test_core_III(self):
 
@@ -97,7 +97,7 @@ class Test__JsonListDbManager(unittest.TestCase):
         ## files in dir not valid II
         dir = tempfile.mkdtemp()
         open(os.path.join(dir, 'foo.json'), 'w').close()
-        os.mkdir(os.path.join(dir, 'subdir'), 'w')
+        os.mkdir(os.path.join(dir, 'subdir'))
         with self.assertRaises(AssertionError) as ctx: JsonListDbManager(dir)
         self.assertEqual(str(ctx.exception), f'All items in {repr(dir)} must be JSON files.')
 
