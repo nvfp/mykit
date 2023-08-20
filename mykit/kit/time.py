@@ -112,7 +112,15 @@ def get_dur(__secs: float, /) -> str:
 
 
 class TimeFmt:  # Time Formats
-    """Various datetime presets"""
+    """
+    Various datetime presets
+
+    ### Docs
+    - using local timezone
+
+    ### TODO
+    - support custom timezone
+    """
 
     def _get_time(ts, fmt):
         if ts is None: dt = _datetime.datetime.now()
@@ -121,11 +129,8 @@ class TimeFmt:  # Time Formats
 
     def date(timestamp:_Optional[float]=None) -> str:
         """
-        ## Params
-        - `timestamp`: If not specified, the current timestamp will be used.
-
-        ## Return
-        - `Aug 1, 2023`
+        @param `timestamp`: If not specified, the current timestamp will be used.
+        @returns: `Aug 1, 2023`
         """
         if _platform.system() == 'Windows' : fmt = '%b %#d, %Y'
         elif _platform.system() == 'Linux' : fmt = '%b %-d, %Y'
@@ -135,10 +140,14 @@ class TimeFmt:  # Time Formats
 
     def hour(timestamp:_Optional[float]=None) -> str:
         """
-        ## Params
-        - `timestamp`: If not specified, the current timestamp will be used.
-
-        ## Return
-        - `HH:MM:SS` / `03:02:01`
+        @param `timestamp`: If not specified, the current timestamp will be used.
+        @returns: `HH:MM:SS` / `03:02:01`
         """
         return TimeFmt._get_time(timestamp, '%H:%M:%S')
+
+    def sort(timestamp:_Optional[float]=None) -> str:
+        """
+        @param `timestamp`: If not specified, the current timestamp will be used.
+        @returns: `YYYYMMDD_HHMMSS` / `20231221_013030`
+        """
+        return TimeFmt._get_time(timestamp, '%Y%m%d_%H%M%S')
