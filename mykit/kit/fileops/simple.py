@@ -3,6 +3,10 @@ Most of the functions here are standalone
 """
 import os as _os
 import re as _re
+from typing import (
+    List as _List,
+    Tuple as _Tuple,
+)
 
 
 def same_ext_for_all_dir_files(dir_path:str, extension:str) -> bool:
@@ -33,3 +37,32 @@ def same_ext_for_all_dir_files(dir_path:str, extension:str) -> bool:
         if not _os.path.isfile(pth): raise FileNotFoundError(f'Not a file: {repr(pth)}.')
         if not file.lower().endswith(extension.lower()): return False
     return True
+
+
+def list_dir(dir_path:str, /) -> _List[_Tuple[str, str]]:
+    """
+    The extended version of `os.listdir`.
+
+    @param `dir_path`: absolute path
+    @returns: List of pairs of item names and the items' absolute paths,
+              e.g., `[(file_name, file_abspath), (dir_name, dir_abspath), ...]`
+
+    ### Exceptions
+    - `NotADirectoryError`: if `dir_path` not a folder
+
+    ### Demo
+    ```
+    for file_name, file_path in list_dir('/dir/abs/path'):
+        pass
+    for item, abspth in list_dir('/dir/abs/path'):
+        pass
+    for name, pth in list_dir('/dir/abs/path'):  # my favorite  ~Nicholas
+        pass
+    ```
+    """
+    if not _os.path.isdir(dir_path): raise NotADirectoryError(f'Not a dir: {repr(dir_path)}.')
+    out = []
+    for name in _os.listdir(dir_path):
+        pth = _os.path.join(dir_path, name)
+        out.append((name, pth))
+    return out

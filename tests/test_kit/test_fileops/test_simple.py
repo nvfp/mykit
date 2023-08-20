@@ -4,7 +4,7 @@ import os
 import random
 import tempfile
 
-from mykit.kit.fileops.simple import same_ext_for_all_dir_files
+from mykit.kit.fileops.simple import same_ext_for_all_dir_files, list_dir
 
 
 class Test__same_ext_for_all_dir_files(unittest.TestCase):
@@ -89,6 +89,57 @@ class Test__same_ext_for_all_dir_files(unittest.TestCase):
         with self.assertRaises(FileNotFoundError) as ctx: same_ext_for_all_dir_files(dir, '.py')
         self.assertEqual(str(ctx.exception), f'Not a file: {repr(pth)}.')
 
+
+class Test__list_dir(unittest.TestCase):
+
+    def test_core_I(self):  # Empty dir
+        dir = tempfile.mkdtemp()
+        result = list_dir(dir)
+        expected = []
+        self.assertEqual(result, expected)
+
+    def test_core_II(self):  # normal
+        
+        dir = tempfile.mkdtemp()
+        name = 'file.py'
+        pth = os.path.join(dir, name)
+        open(pth, 'w').close()
+
+        result = list_dir(dir)
+        expected = [(name, pth)]
+        self.assertEqual(result, expected)
+
+    def test_core_III(self):  # normal
+        
+        dir = tempfile.mkdtemp()
+        for i in range(3): open(os.path.join(dir, f'file_{i}.txt'), 'w').close()
+
+        result = sorted(list_dir(dir))  # Sorting to double-check expected behavior
+        expected = [
+            ('file_0.txt', os.path.join(dir, 'file_0.txt')),
+            ('file_1.txt', os.path.join(dir, 'file_1.txt')),
+            ('file_2.txt', os.path.join(dir, 'file_2.txt')),
+        ]
+        self.assertEqual(result, expected)
+
+    def test_core_IV(self):  # normal
+        
+        dir = tempfile.mkdtemp()
+        for i in range(3): open(os.path.join(dir, f'file_{i}.txt'), 'w').close()
+        for i in range(3): os.mkdir(os.path.join(dir, f'subdir_{i}'))
+
+        self.assertEqual(len(os.listdir(dir)), 6)  # Debugging purposes
+
+        result = sorted(list_dir(dir))  # Sorting to double-check expected behavior
+        expected = [
+            ('file_0.txt', os.path.join(dir, 'file_0.txt')),
+            ('file_1.txt', os.path.join(dir, 'file_1.txt')),
+            ('file_2.txt', os.path.join(dir, 'file_2.txt')),
+            ('subdir_0', os.path.join(dir, 'subdir_0')),
+            ('subdir_1', os.path.join(dir, 'subdir_1')),
+            ('subdir_2', os.path.join(dir, 'subdir_2')),
+        ]
+        self.assertEqual(result, expected)
 
 if __name__ == '__main__':
     unittest.main()
