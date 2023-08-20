@@ -24,7 +24,7 @@ def same_ext_for_all_dir_files(dir_path:str, extension:str) -> bool:
     ### Exceptions
     - `NotADirectoryError`: if `dir_path` is not a folder
     - `ValueError`: if `extension` doesn't match the regex
-    - `FileNotFoundError`: if an item in the folder is not a file
+    - `AssertionError`: if an item in the folder is not a file
 
     ### Docs
     - Will return `True` when `dir_path` is empty
@@ -34,7 +34,7 @@ def same_ext_for_all_dir_files(dir_path:str, extension:str) -> bool:
     if not _re.match(r'^\.\w+$', extension): raise ValueError(f'Invalid extension: {repr(extension)}.')
     for file in _os.listdir(dir_path):
         pth = _os.path.join(dir_path, file)
-        if not _os.path.isfile(pth): raise FileNotFoundError(f'Not a file: {repr(pth)}.')
+        if not _os.path.isfile(pth): raise AssertionError(f'Not a file: {repr(pth)}.')
         if not file.lower().endswith(extension.lower()): return False
     return True
 

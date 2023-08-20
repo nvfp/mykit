@@ -86,7 +86,7 @@ class Test__same_ext_for_all_dir_files(unittest.TestCase):
         pth = os.path.join(dir, 'subdir')
         os.mkdir(pth)
 
-        with self.assertRaises(FileNotFoundError) as ctx: same_ext_for_all_dir_files(dir, '.py')
+        with self.assertRaises(AssertionError) as ctx: same_ext_for_all_dir_files(dir, '.py')
         self.assertEqual(str(ctx.exception), f'Not a file: {repr(pth)}.')
 
 

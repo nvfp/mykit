@@ -53,8 +53,11 @@ class JsonListDbManager:
         - Please manually review this function dependencies for more exceptions
         """
         if not _os.path.isdir(container): raise NotADirectoryError(f'Not a dir: {repr(container)}.')
-        if not _same_ext_for_all_dir_files(container, '.json'):
-            raise AssertionError(f'All items in {repr(container)} must be JSON files.')
+        try:
+            if not _same_ext_for_all_dir_files(container, '.json'):
+                raise AssertionError(f'All items in {repr(container)} must be JSON files.')
+        except (NotADirectoryError, ValueError, AssertionError) as err:
+            raise AssertionError(err)
         self.container = container
     
     def _get_blocks(self):

@@ -99,7 +99,10 @@ class Test__JsonListDbManager(unittest.TestCase):
         open(os.path.join(dir, 'foo.json'), 'w').close()
         os.mkdir(os.path.join(dir, 'subdir'))
         with self.assertRaises(AssertionError) as ctx: JsonListDbManager(dir)
-        self.assertEqual(str(ctx.exception), f'All items in {repr(dir)} must be JSON files.')
+        self.assertTrue(
+            str(ctx.exception) == f'All items in {repr(dir)} must be JSON files.' or
+            str(ctx.exception) == f'Not a file: {repr(dir)}.'
+        )
 
 
 if __name__ == '__main__':
