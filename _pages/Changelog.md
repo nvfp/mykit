@@ -9,6 +9,9 @@ redirect_from:
 # Changelog
 
 
+- 9.3.0 (Aug 19, 2023):
+    - Added `.kit.fileops.json_list_db_manager`, `.kit.fileops.simple`; along with their tests.
+    - Added `sort` to `.kit.time.TimeFmt`, create tests for `.kit.time.TimeFmt`.
 - 9.2.0 (Aug 11, 2023):
     - Added `.kit.fileops.equaldirs` with its tests.
 - 9.1.0 (Aug 10, 2023):
