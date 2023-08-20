@@ -91,14 +91,14 @@ class Test__JsonListDbManager(unittest.TestCase):
         dir = tempfile.mkdtemp()
         open(os.path.join(dir, 'foo.json'), 'w').close()
         open(os.path.join(dir, 'foo.txt'), 'w').close()
-        with self.assertRaises(NotADirectoryError) as ctx: JsonListDbManager(dir)
+        with self.assertRaises(AssertionError) as ctx: JsonListDbManager(dir)
         self.assertEqual(str(ctx.exception), f'All items in {repr(dir)} must be JSON files.')
 
         ## files in dir not valid II
         dir = tempfile.mkdtemp()
         open(os.path.join(dir, 'foo.json'), 'w').close()
         os.mkdir(os.path.join(dir, 'subdir'), 'w')
-        with self.assertRaises(NotADirectoryError) as ctx: JsonListDbManager(dir)
+        with self.assertRaises(AssertionError) as ctx: JsonListDbManager(dir)
         self.assertEqual(str(ctx.exception), f'All items in {repr(dir)} must be JSON files.')
 
 

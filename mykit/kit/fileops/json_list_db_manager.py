@@ -1,4 +1,5 @@
 import os as _os
+import time as _time
 from typing import (
     Any as _Any,
     List as _List,
@@ -94,7 +95,9 @@ class JsonListDbManager:
     def bulk_save(self, list_of_data:_List[_Any], /, max:int=1024) -> None:
         """Similar to `.save`, but for bulk operations."""
         ## TODO: Implement a much more efficient approach soon
-        for data in list_of_data: self.save(data, max=max)
+        for data in list_of_data:
+            self.save(data, max=max)
+            _time.sleep(1/max)  # To prevent collisions in database file names (which happen during testing when `max` is small)
 
     def get_partial(self, idx:int) -> _List[_Any]:
         """
