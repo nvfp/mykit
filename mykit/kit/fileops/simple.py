@@ -45,7 +45,7 @@ def list_dir(dir_path:str, /) -> _List[_Tuple[str, str]]:
 
     @param `dir_path`: absolute path
     @returns: List of pairs of item names and the items' absolute paths,
-              e.g., `[(file_name, file_abspath), (dir_name, dir_abspath), ...]`
+              e.g., `[(file_name, file_abspath), (subdir_name, subdir_abspath), ...]`
 
     ### Exceptions
     - `NotADirectoryError`: if `dir_path` not a folder
