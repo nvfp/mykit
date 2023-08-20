@@ -85,9 +85,11 @@ class JsonListDbManager:
             db = _SafeJSON.read(target)
             if len(db) >= max:
                 target = _os.path.join(self.container, f'db_{_TimeFmt.sort()}.json')
-                db = []
-            db.append(data)
-            _SafeJSON.rewrite(target, db, do_log=False)
+                db = [data]
+                _SafeJSON.write(target, db, do_log=False)
+            else:
+                db.append(data)
+                _SafeJSON.rewrite(target, db, do_log=False)
 
     def bulk_save(self, list_of_data:_List[_Any], /, max:int=1024) -> None:
         """Similar to `.save`, but for bulk operations."""
