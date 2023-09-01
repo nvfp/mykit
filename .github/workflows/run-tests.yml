@@ -5,7 +5,7 @@ on:
     branches:
       - '*'
     paths:
-      - 'mykit/**'  # Run tests only when the distribution directory is changed
+      - 'mykit/**'
   pull_request:
     types:
       - opened

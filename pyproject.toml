@@ -2,7 +2,6 @@
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
-
 [project]
 name = "mykit"
 version = "9.1.0"
@@ -11,21 +10,8 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-  	{email = "nvfastplease@gmail.com"},
+  	{name = "Nicholas Valentinus", email = "nicho@scapeville.com"},
 ]
-keywords = ["python", "toolkit", "mykit"]
-classifiers = [
-    "License :: OSI Approved :: MIT License",
-    "Natural Language :: English",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python",
-	"Topic :: Scientific/Engineering",
-]
-dependencies = [
-	"numba>=0.55.2",
-	"numpy>=1.22.4",
-]
-
 
 [tool.setuptools.packages.find]
 exclude = [
@@ -33,13 +19,9 @@ exclude = [
     "tests*",
 ]
 
-
 [project.urls]
-Documentation = "https://nvfp.github.io/mykit/docs"
-"Report bugs" = "https://github.com/nvfp/mykit/issues"
+Documentation = "https://nvfp.github.io/mykit"
 Repository = "https://github.com/nvfp/mykit"
-Changelog = "https://nvfp.github.io/mykit/changelog"
-
 
 [project.scripts]
 mykit = "mykit.__main__:main"

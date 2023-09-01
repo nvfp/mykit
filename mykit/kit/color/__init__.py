@@ -24,7 +24,7 @@ def interpolate_color(color1: str, color2: str, x: float) -> str:
     >>> interpolate_color('#ff0000', '#0000ff', 0.0)
     '#ff0000'
     >>> interpolate_color('#ff0000', '#0000ff', 0.5)
-    '#7f007f'
+    '#800080'
     >>> interpolate_color('#ff0000', '#0000ff', 1.0)
     '#0000ff'
     """
@@ -33,9 +33,9 @@ def interpolate_color(color1: str, color2: str, x: float) -> str:
     r2, g2, b2 = int(color2[1:3], 16), int(color2[3:5], 16), int(color2[5:7], 16)
 
     ## interpolate RGB values based on x
-    r = int(r1 + (r2 - r1)*x)
-    g = int(g1 + (g2 - g1)*x)
-    b = int(b1 + (b2 - b1)*x)
+    r = round(r1 + (r2 - r1)*x)
+    g = round(g1 + (g2 - g1)*x)
+    b = round(b1 + (b2 - b1)*x)
 
     ## convert interpolated RGB values to hexadecimal color string
     interpolated_color = f'#{r:02x}{g:02x}{b:02x}'
