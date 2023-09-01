@@ -29,9 +29,6 @@ dependencies = [
 
 [tool.setuptools.packages.find]
 exclude = [
-    "archives*",
-    "assets*",
-    "demo*",
     "docs*",
     "tests*",
 ]

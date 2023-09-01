@@ -6,10 +6,7 @@
 
 Python utility toolkit.
 
-The aim of this project is to understand how things work by building them from the ground up, while also providing a lightweight version of something that already exists out there.
-
-<!-- Use this link (don't use the relative path to the one in the repo) to be able to display the banner on PyPI -->
-![mykit's banner](https://raw.githubusercontent.com/nvfp/mykit/master/assets/20230619-mykit-banner-360p.png)
+![mykit's banner](https://raw.githubusercontent.com/nvfp/mykit/master/docs/banner.png)
 
 
 ## Installation
@@ -36,16 +33,11 @@ print(x)  # 2.79 PiB
 
 - [Documentation](https://nvfp.github.io/mykit)
 - [Demo](https://nvfp.github.io/mykit/demo)
-- [Supports💙](https://nvfp.github.io/many-thanks)
+- [Supports💙](https://nvfp.github.io/thank-you)
 - [Changelog](https://nvfp.github.io/mykit/changelog)
 - [FAQs](https://nvfp.github.io/mykit/faqs)
 
 
-## Troubleshoot
-
-- To report bugs or ask questions, please open an issue or submit a pull request.
-
-
 ## License
 
-This project is licensed under the MIT license.
+[MIT](https://github.com/nvfp/mykit/blob/main/LICENSE)
