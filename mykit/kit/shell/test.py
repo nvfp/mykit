@@ -15,7 +15,7 @@ class Test__run(unittest.TestCase):
     def test(self):
         cwd = tempfile.mkdtemp()
         self.assertEqual(os.listdir(cwd), [])
-        run('git init', cwd=cwd)
+        run('git init --quiet', cwd=cwd)
         self.assertEqual(os.listdir(cwd), ['.git'])
         run('mkdir foo', cwd=cwd)
         self.assertEqual(sorted(os.listdir(cwd)), ['.git', 'foo'])
