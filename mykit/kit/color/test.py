@@ -10,7 +10,7 @@ from mykit.kit.color import (
 )
 
 
-class TestColor(unittest.TestCase):
+class Test__Color(unittest.TestCase):
 
     def test_interpolate_color(self):
         
@@ -20,7 +20,7 @@ class TestColor(unittest.TestCase):
         self.assertEqual(result, '#ff0000')
 
         result = interpolate_color('#ff0000', '#0000ff', 0.5)
-        self.assertEqual(result, '#7f007f')
+        self.assertEqual(result, '#800080')
 
         result = interpolate_color('#ff0000', '#0000ff', 1.0)
         self.assertEqual(result, '#0000ff')

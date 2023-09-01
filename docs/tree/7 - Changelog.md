@@ -1,6 +1,11 @@
 # Changelog
 
 
+- 10.0.0 (Sep 1, 2023):
+    - Breaking changes:
+        - Improvement: use `round` instead of `int` in `color.interpolate_color`
+        - Starting with this version, the entire test suite will gradually be put side by side with the source to make the development process easier.
+
 - 9.3.0 (Aug 19, 2023):
     - Added `.kit.fileops.json_list_db_manager`, `.kit.fileops.simple`; along with their tests.
     - Added `sort` to `.kit.time.TimeFmt`, create tests for `.kit.time.TimeFmt`.
