@@ -9,6 +9,7 @@
     - New:
         - Added `LAVENDER_BLISS` to `color.Hex`
         - Added `.kit.shell`
+        - Now `.kit.time.TimeFmt` supports custom UTC offset.
 
 - 9.3.0 (Aug 19, 2023):
     - Added `.kit.fileops.json_list_db_manager`, `.kit.fileops.simple`; along with their tests.
