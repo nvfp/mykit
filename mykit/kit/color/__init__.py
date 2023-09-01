@@ -216,6 +216,8 @@ class Hex:
     TERMINAL = '#0c0c0c'
     GRAY30 = '#1e1e1e'
 
+    LAVENDER_BLISS = '#d0adf0'  # Very soft violet
+
 
 class Colored:
 

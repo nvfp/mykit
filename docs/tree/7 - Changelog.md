@@ -6,6 +6,8 @@
         - Improvement: use `round` instead of `int` in `color.interpolate_color`
         - Starting with this version, the entire test suite will gradually be put side by side with the source to make the development process easier.
         - Improvement: From now on, numpy and numba will no longer be automatically downloaded with this library to improve download speed. Users will need to install them manually if needed. This for efficiency because just some parts of the module that need these dependencies.
+    - New:
+        - Added `LAVENDER_BLISS` to `color.Hex`
 
 - 9.3.0 (Aug 19, 2023):
     - Added `.kit.fileops.json_list_db_manager`, `.kit.fileops.simple`; along with their tests.
