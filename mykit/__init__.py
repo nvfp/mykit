@@ -10,6 +10,6 @@ def _main():
     p = _argparse.ArgumentParser()
 
     ## Global optional args
-    p.add_argument('-v', '--version', action='version', version=f'%(prog)s-{__version__}')
+    p.add_argument('-v', '--version', action='version', version=f'mykit-{__version__}')
 
     args = p.parse_args()  # Run the parser
