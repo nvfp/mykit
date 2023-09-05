@@ -66,3 +66,7 @@ def list_dir(dir_path:str, /) -> _List[_Tuple[str, str]]:
         pth = _os.path.join(dir_path, name)
         out.append((name, pth))
     return out
+
+
+def remove_all_specific_files_in(dir:str, file_extension:str='', recursive:bool=True):
+    pass
