@@ -175,7 +175,7 @@ class Test__remove_all_specific_files_in(unittest.TestCase):
 
         self.assertEqual(sorted(os.listdir(self.dir)), ['abc.py', 'bar.txt', 'baz.txt', 'foo.txt', 'subdir', 'xyz.py'])
         self.assertEqual(sorted(os.listdir(os.path.join(self.dir, 'subdir'))), ['foobar.js', 'subdir2', 'test1.txt', 'test2.txt'])
-        self.assertEqual(sorted(os.listdir(os.path.join(self.dir, 'subdir', 'subdir2'))), ['b.ts', 'f1.txt', 'f2.txtx'])
+        self.assertEqual(sorted(os.listdir(os.path.join(self.dir, 'subdir', 'subdir2'))), ['b.ts', 'f1.txt', 'f2.txt'])
 
     def tearDown(self):
         shutil.rmtree(self.dir)
