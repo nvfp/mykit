@@ -21,6 +21,8 @@ Python utility toolkit.
 pip install mykit
 ```
 
+If you use a module requiring these dependencies, run `pip install -r requirements.txt`.
+
 
 ## Usage
 
