@@ -217,6 +217,16 @@ class Test__remove_all_specific_files_in(unittest.TestCase):
         self.assertEqual(sorted(os.listdir(os.path.join(self.dir, 'subdir'))), ['foobar.js', 'subdir2', 'test1.txt', 'test2.txt'])
         self.assertEqual(sorted(os.listdir(os.path.join(self.dir, 'subdir', 'subdir2'))), ['b.ts', 'f1.txt', 'f2.txt'])
 
+    def test_delete_no_recursive(self):
+        deleted = remove_all_specific_files_in(self.dir, r'.*?\.py$', False)
+        self.assertEqual(sorted(deleted), [
+            os.path.join(self.dir, 'abc.py'),
+            os.path.join(self.dir, 'xyz.py'),
+        ])
+        self.assertEqual(sorted(os.listdir(self.dir)), ['bar.txt', 'baz.txt', 'foo.txt', 'subdir'])
+        self.assertEqual(sorted(os.listdir(os.path.join(self.dir, 'subdir'))), ['foobar.js', 'subdir2', 'test1.txt', 'test2.txt'])
+        self.assertEqual(sorted(os.listdir(os.path.join(self.dir, 'subdir', 'subdir2'))), ['b.ts', 'f1.txt', 'f2.txt'])
+
 
 if __name__ == '__main__':
     unittest.main()
