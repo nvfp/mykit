@@ -68,5 +68,32 @@ def list_dir(dir_path:str, /) -> _List[_Tuple[str, str]]:
     return out
 
 
-def remove_all_specific_files_in(dir:str, file_extension:str='', recursive:bool=True):
-    pass
+def remove_all_specific_files_in(dir_path:str, file_pattern:str, recursive:bool=False) -> _List[str]:
+    """
+    Delete certain files within the `dir_path` folder.
+
+    ---
+
+    ## Params
+    - `dir_path`: Absolute path to the folder
+    - `file_pattern`: Regex pattern to match the files that you want to delete.
+    - `recursive`: If `False`, just delete the files inside `dir_path`.
+
+    ## Returns
+    - List of deleted files' absolute paths.
+
+    ## Docs
+    - Please review the code for this function before using it.
+    """
+    deleted = []
+    def run(pth):
+        for stuff in _os.listdir(pth):
+            stuff_pth = _os.path.join(pth, stuff)
+            if _os.path.isdir(stuff_pth):
+                if recursive: run(stuff_pth)
+            else:
+                if _re.match(file_pattern, stuff):
+                    _os.remove(stuff_pth)
+                    deleted.append(stuff_pth)
+    run(dir_path)
+    return deleted
