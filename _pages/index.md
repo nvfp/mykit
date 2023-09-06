@@ -40,12 +40,10 @@ print(x)  # 2.79 PiB
 ## Links
 
 - [Documentation](https://nvfp.github.io/mykit)
-- [Demo](https://nvfp.github.io/mykit/demo)
 - [Supports💙](https://nvfp.github.io/thank-you)
 - [Changelog](https://nvfp.github.io/mykit/changelog)
-- [FAQs](https://nvfp.github.io/mykit/faqs)
 
 
 ## License
 
-[MIT](https://github.com/nvfp/mykit/blob/main/LICENSE)
+MIT

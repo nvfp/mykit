@@ -23,6 +23,7 @@ redirect_from:
         - Now `.kit.time.TimeFmt` supports custom UTC offset.
         - NEW master module `myprog`
         - Added `.fileops.simple.remove_all_specific_files_in`
+        - Added `lock_version` to `mykit/__init__.py`
 
 - 9.3.0 (Aug 19, 2023):
     - Added `.kit.fileops.json_list_db_manager`, `.kit.fileops.simple`; along with their tests.
