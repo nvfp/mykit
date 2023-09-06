@@ -2,8 +2,6 @@
 
 
 - 10.0.0 (Sep 1, 2023):
-    - Warning:
-        - Since `myprog` was released, `mykit` shouldn't implicitly install other libraries like `numpy`, `numba`, etc. (users need to install them as listed in `requirements.txt` by themselves) because `myprog` aims for zero dependencies.
     - Breaking changes:
         - Improvement: use `round` instead of `int` in `color.interpolate_color`
         - Starting with this version, the entire test suite will gradually be put side by side with the source to make the development process easier.
@@ -13,7 +11,6 @@
         - Added `LAVENDER_BLISS` to `color.Hex`
         - Added `.kit.shell`
         - Now `.kit.time.TimeFmt` supports custom UTC offset.
-        - NEW master module `myprog`
         - Added `.fileops.simple.remove_all_specific_files_in`
         - Added `lock_version` to `mykit/__init__.py`
 
