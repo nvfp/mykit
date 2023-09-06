@@ -5,7 +5,7 @@ from typing import (
 )
 
 
-__version__ = '9.1.0'
+__version__ = None  # This value will be written during the build process before production.
 
 
 def lock_version(version:str, /) -> _Union[None, _NoReturn]:
