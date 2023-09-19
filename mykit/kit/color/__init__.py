@@ -221,6 +221,13 @@ class Hex:
 
 
 class Colored:
+    """
+    ## Test
+    >>> from mykit.kit.color import Colored, Hex
+    >>> for k, v in Hex.__dict__.items():
+    >>>     if k.startswith('__'): continue
+    >>>     print(Colored(k, v))
+    """
 
     _win_init = False  # To make it work in Windows command prompt
     _RESET = '\033[0m'

@@ -193,7 +193,7 @@ class Test__colored_len(unittest.TestCase):
         result = colored_len(text)
         self.assertEqual(result, 5)
 
-        text = Colored('12' + Colored('345', Hex.GREEN)) + '67'
+        text = Colored('12' + Colored('345', Hex.GREEN, Hex.BLACK)) + '67'
         result = colored_len(text)
         self.assertEqual(result, 7)
 
