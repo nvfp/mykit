@@ -27,9 +27,9 @@ class Test__SingleSimple(unittest.TestCase):
           # "||   foo       -> show this message then exit ||\n"
           # "||   foo c1    -> test desc                   ||\n"
           # "||   foo c2345 -> test desc 123               ||\n"
-            f"||   {Colored('foo', Hex.CORN)}       -> {Colored('show this message then exit', Hex.CORN)} ||\n"
             f"||   {Colored('foo c1', Hex.CORN)}    -> {Colored('test desc', Hex.CORN)}                   ||\n"
             f"||   {Colored('foo c2345', Hex.CORN)} -> {Colored('test desc 123', Hex.CORN)}               ||\n"
+            f"||   {Colored('foo', Hex.CORN)}       -> {Colored('show this message then exit', Hex.CORN)} ||\n"
             "||                                            ||\n"
             "|| Info:                                      ||\n"
             "||   software  : foo                          ||\n"
@@ -39,11 +39,6 @@ class Test__SingleSimple(unittest.TestCase):
             "================================================"
             '\n'  # effect from the `print` function
         )
-        print('------------------')
-        print(result)
-        print('------------------')
-        print(expected)
-        print('------------------')
         self.assertEqual(result, expected)
 
     def test_invalid_input_command(self):
