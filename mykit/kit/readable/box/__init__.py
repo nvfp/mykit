@@ -13,4 +13,7 @@ def box(text:str, /) -> str:
     >>> # ============
     """
     w = _paragraph_width(text)
-    return '='*(w+4) + '||' + text.replace('\n', '||\n||') + '||' + '='*(w+4)
+    text_modified = ''
+    for line in text.split('\n'):
+        text_modified += line + ' '*(w-len(line))
+    return '='*(w+4) + '||' + text_modified.replace('\n', '||\n||') + '||' + '='*(w+4)

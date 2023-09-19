@@ -37,6 +37,7 @@ class Test__SingleSimple(unittest.TestCase):
             "||   repository: foo bar baz                  ||\n"
             "||                                            ||\n"
             "================================================"
+            '\n'  # effect from the `print` function
         )
         self.assertEqual(result, expected)
 
@@ -46,18 +47,18 @@ class Test__SingleSimple(unittest.TestCase):
             self.parser._run_inner(['...', 'c3'], True)
         
         result = captured.value
-        expected = "Unknown commands 'c3', run `foo` for help."
+        expected = "Unknown commands 'c3', run `foo` for help.\n"
         self.assertEqual(result, expected)
     
     def test_run_the_functions(self):
         
         with StreamCapture() as captured:
             self.parser._run_inner(['...', 'c1'], True)
-        self.assertEqual(captured.value, 'c1!')
+        self.assertEqual(captured.value, 'c1!\n')
 
         with StreamCapture() as captured:
             self.parser._run_inner(['...', 'c2345'], True)
-        self.assertEqual(captured.value, 'c2!')
+        self.assertEqual(captured.value, 'c2!\n')
 
 
 if __name__ == '__main__':
