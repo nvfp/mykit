@@ -1,4 +1,5 @@
 import os as _os
+import re as _re
 import sys as _sys
 from typing import (
     Optional as _Optional,
@@ -220,6 +221,13 @@ class Hex:
 
 
 class Colored:
+    """
+    ## Test
+    >>> from mykit.kit.color import Colored, Hex
+    >>> for k, v in Hex.__dict__.items():
+    >>>     if k.startswith('__'): continue
+    >>>     print(Colored(k, v))
+    """
 
     _win_init = False  # To make it work in Windows command prompt
     _RESET = '\033[0m'
@@ -269,3 +277,19 @@ class Colored:
             text = text.replace(cls._RESET, header)
 
         return header + text + cls._RESET
+
+
+def colored_len(text:str, /) -> int:
+    """
+    Count the text length produced by `Colored` (also works for nested `Colored`).
+
+    ## Demo
+    >>> colored_len(Colored('hi'))  # 2
+    >>> colored_len('12'+ Colored('34') + '56')  # 6
+    >>> colored_len(Colored('12' + Colored('34', Hex.RED)))  # 4
+    """
+    original_len = len(text)
+    c1 = _re.findall(r'\033\[38;2;\d{1,3};\d{1,3};\d{1,3}(?:;48;2;\d{1,3};\d{1,3};\d{1,3})?m', text)
+    c2 = _re.findall(r'\033\[0m', text)
+    color_len = sum([len(i) for i in c1+c2])
+    return original_len - color_len

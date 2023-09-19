@@ -13,6 +13,7 @@
         - Now `.kit.time.TimeFmt` supports custom UTC offset.
         - Added `.fileops.simple.remove_all_specific_files_in`
         - Added `lock_version` to `mykit/__init__.py`
+        - Added `cli_parser/` and `readable/` modules
 
 - 9.3.0 (Aug 19, 2023):
     - Added `.kit.fileops.json_list_db_manager`, `.kit.fileops.simple`; along with their tests.

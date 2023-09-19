@@ -6,7 +6,8 @@ from mykit.kit.color import (
     rgb_to_hex,
     hexa_to_hex,
     interpolate_with_black,
-    hex_to_rgb
+    hex_to_rgb,
+    colored_len, Colored, Hex
 )
 
 
@@ -158,6 +159,43 @@ class Test__hex_to_rgb(unittest.TestCase):
         result = hex_to_rgb('#abcdef')
         expected = (171, 205, 239)
         self.assertEqual(result, expected)
+
+
+class Test__colored_len(unittest.TestCase):
+
+    def test(self):
+
+        text = 'hi'
+        result = colored_len(text)
+        self.assertEqual(result, 2)
+
+        text = Colored('hi')
+        result = colored_len(text)
+        self.assertEqual(result, 2)
+
+        text = Colored('')
+        result = colored_len(text)
+        self.assertEqual(result, 0)
+
+        text = Colored('12345', Hex.RED, Hex.BLACK)
+        result = colored_len(text)
+        self.assertEqual(result, 5)
+
+        text = '123' + Colored('45', Hex.RED, Hex.BLACK) + '67'
+        result = colored_len(text)
+        self.assertEqual(result, 7)
+
+        text = '123' + Colored('45', Hex.RED, Hex.BLACK) + '67' + Colored('89')
+        result = colored_len(text)
+        self.assertEqual(result, 9)
+
+        text = Colored('12' + Colored('345', Hex.GREEN))
+        result = colored_len(text)
+        self.assertEqual(result, 5)
+
+        text = Colored('12' + Colored('345', Hex.GREEN, Hex.BLACK)) + '67'
+        result = colored_len(text)
+        self.assertEqual(result, 7)
 
 
 if __name__ == '__main__':
