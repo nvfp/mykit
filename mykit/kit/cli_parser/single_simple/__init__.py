@@ -11,12 +11,14 @@ from mykit.kit.readable.box import box as _box
 
 
 def _show_help_msg(software, version, repository, cmds):  # dev-docs: the code is a bit messy but compact, it's perfect.
-    longest = max([len(i) for i in cmds.keys()])  # Length of longest command name
+    H = 'show this message then exit'
+    longest_c = max([len(i) for i in cmds.keys()])  # Length of longest command name
+    longest_d = max([len(i) for i in cmds.keys()] + [len(H)])  # Length of longest description
     cmds_help = ''
     for name, (_, desc) in cmds.items():
         ## The extra space at the end is one-space padding
-        cmds_help += f"   {_Colored(software + ' ' + name, _Hex.CORN)}{' '*(longest-len(name))} -> {_Colored(desc, _Hex.CORN)} \n"
-    cmds_help += f"   {_Colored(software, _Hex.CORN)} {' '*longest} -> {_Colored('show this message then exit', _Hex.CORN)} \n"
+        cmds_help += f"   {_Colored(software + ' ' + name, _Hex.CORN)}{' '*(longest_c-len(name))} -> {_Colored(desc, _Hex.CORN)}{' '*(longest_d-len(desc))} \n"
+    cmds_help += f"   {_Colored(software, _Hex.CORN)} {' '*longest_c} -> {_Colored(H, _Hex.CORN)}{' '*(longest_d-len(H))} \n"
     msg = _box(
         '\n'
         ' Commands: \n'  # The extra space at the end is one-space padding (just in case `cmds_help` length < this line length)
