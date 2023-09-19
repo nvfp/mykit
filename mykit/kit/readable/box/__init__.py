@@ -16,4 +16,4 @@ def box(text:str, /) -> str:
     text_modified = ''
     for line in text.split('\n'):
         text_modified += line + ' '*(w-len(line))
-    return '='*(w+4) + '||' + text_modified.replace('\n', '||\n||') + '||' + '='*(w+4)
+    return '='*(w+4) + '\n||' + text_modified.replace('\n', '||\n||') + '||\n' + '='*(w+4)
