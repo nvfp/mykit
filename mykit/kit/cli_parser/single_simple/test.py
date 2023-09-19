@@ -39,6 +39,11 @@ class Test__SingleSimple(unittest.TestCase):
             "================================================"
             '\n'  # effect from the `print` function
         )
+        print('------------------')
+        print(result)
+        print('------------------')
+        print(expected)
+        print('------------------')
         self.assertEqual(result, expected)
 
     def test_invalid_input_command(self):
