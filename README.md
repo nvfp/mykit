@@ -6,6 +6,8 @@
 
 Python utility toolkit.
 
+*Dream high, never fall!*
+
 ![mykit's banner](https://raw.githubusercontent.com/nvfp/mykit/master/docs/banner.png)
 
 
@@ -18,13 +20,12 @@ pip install mykit
 If you use a module requiring these dependencies, run `pip install -r requirements.txt`.
 
 
-## Usage
+## Give it a shot!
 
 ```python
 from mykit.kit.text import byteFmt
 from mykit.app.arrow import Arrow
 from mykit.app.slider import Slider
-
 
 x = byteFmt(3141592653589793)
 print(x)  # 2.79 PiB
@@ -33,11 +34,11 @@ print(x)  # 2.79 PiB
 
 ## Links
 
+- [Thanks💙](https://nvfp.github.io/thank-you)
 - [Documentation](https://nvfp.github.io/mykit)
-- [Supports💙](https://nvfp.github.io/thank-you)
 - [Changelog](https://nvfp.github.io/mykit/changelog)
 
 
 ## License
 
-MIT
+This project's source code and documentation are under the MIT license.
