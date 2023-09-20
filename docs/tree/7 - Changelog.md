@@ -7,6 +7,7 @@
         - Starting with this version, the entire test suite will gradually be put side by side with the source to make the development process easier.
         - Improvement: From now on, numpy and numba will no longer be automatically downloaded with this library to improve download speed. Users will need to install them manually if needed. This for efficiency because just some parts of the module that need these dependencies.
         - Removed constants (These constants kind of useless, deleted to make things more readable.) from `mykit.__init__.py`: `LIB_REPO`, `LIB_NAME`, `LIB_DIST_NAME`, `DIST_DIR_PTH`, `APP_DIR_PTH`, `KIT_DIR_PTH`, `REC_DIR_PTH`, `WEB_DIR_PTH`
+        - Various changes to `app/` master module implementation
     - New:
         - Added `LAVENDER_BLISS` to `color.Hex`
         - Added `.kit.shell`
@@ -14,6 +15,7 @@
         - Added `.fileops.simple.remove_all_specific_files_in`
         - Added `lock_version` to `mykit/__init__.py`
         - Added `cli_parser/` and `readable/` modules
+    - Note, there are so many additions and adjustments for this update. And some of them I may forget to put here.
 
 - 9.3.0 (Aug 19, 2023):
     - Added `.kit.fileops.json_list_db_manager`, `.kit.fileops.simple`; along with their tests.
