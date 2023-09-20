@@ -14,7 +14,11 @@ from mykit.app.complex.plot import Plot as _Plot
 from mykit.app.complex.biplot import Biplot as _Biplot
 from mykit.app.arrow import Arrow as _Arrow
 
-from mykit.app._utils.types import Component
+from mykit.app.photoimg import PhotoImg
+
+
+def _install_components(app):
+    PhotoImg._install(app)
 
 
 class App:
@@ -58,6 +62,9 @@ class App:
         _Biplot._set_page(self.page)
 
         ## </register the page>
+
+
+        _install_components(self)
 
 
         ## <constants>
@@ -106,21 +113,6 @@ class App:
             self._left_mouse_release.append(do)
         else:
             ValueError(f'Invalid event: {repr(to)}.')
-
-    def will_be_using(self, comp:Component, /) -> None:
-        """
-        ## Demo
-        >>> from mykit.app import App
-        >>> from mykit.app.button import Button
-        >>> from mykit.app.slider import Slider
-        >>> app = App()
-        >>> app.will_be_using(Button)
-        >>> app.will_be_using(Slider)
-
-        ## Docs
-        - There are no validations. Please do not install the component more than once. TODO: Add validations for the critical ones.
-        """
-        comp._install(self)
 
     def add_background_processes(self, every: int, do: _Callable[[], None]) -> None:
         """
