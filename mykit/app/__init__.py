@@ -1,3 +1,4 @@
+import time as _time
 import tkinter as _tk
 from typing import (
     Any as _Any,
@@ -69,6 +70,7 @@ class App:
 
         ## <constants>
 
+        self.T = _time.time()  # The timestamp when the app instance was initiated, usually used as the startup time.
         self.MON_WIDTH = self.root.winfo_screenwidth()
         self.MON_HEIGHT = self.root.winfo_screenheight()
         

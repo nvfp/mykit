@@ -9,7 +9,7 @@ from typing import (
     Union as _Union
 )
 
-from mykit.app._utils.tagid_manager import TagIdManager as _TagIdManager
+from mykit.app.utils.tagid_manager import TagIdManager as _TagIdManager
 
 
 class _Rt:  # Runtime
@@ -23,7 +23,7 @@ class _Rt:  # Runtime
 class PhotoImg:
 
     @staticmethod
-    def _install(app):
+    def _install(app):  # For internal use only
         """Fully standalone installation function to plug this component into the app."""
         _Rt.p = app.page
 
@@ -31,7 +31,9 @@ class PhotoImg:
         id: _Optional[str] = None,
         tags: _Optional[_Union[str, _List[str], _Tuple[str, ...]]] = None,
     ) -> None:
-        pass
+        
+        ## Handle ID and tags
+        _TagIdManager._register_tagid(self, _Rt, id, tags)
 
     def annihilate(self) -> None:
         """Completely remove it as if it never existed before."""  # dev-docs: use "it" so i dont have to change it for each class
