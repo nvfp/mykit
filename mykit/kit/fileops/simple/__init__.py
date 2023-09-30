@@ -6,6 +6,8 @@ import re as _re
 from typing import (
     List as _List,
     Tuple as _Tuple,
+    Optional as _Optional,
+    Union as _Union,
 )
 
 
@@ -97,3 +99,69 @@ def remove_all_specific_files_in(dir_path:str, file_pattern:str, recursive:bool=
                     deleted.append(stuff_pth)
     run(dir_path)
     return deleted
+
+
+def norm_pth(__pth:str, /, lowercasing:bool=False) -> str:
+    r"""
+    Normalizing path.
+
+    ## Params
+    - `__pth`: The path
+    - `lowercasing`: normalize the case (into lowercase)
+
+    ## Examples
+    >>> norm_pth(r'/path/dir////file')  # \path\dir\file
+    >>> norm_pth(r'/Path/dir/\/\/\file.TXT/', True)  # \path\dir\file.txt
+    """
+    if lowercasing: __pth = _os.path.normcase(__pth)
+    return _os.path.normpath(__pth)
+
+
+def definitely_a_dir(__pth:str, /) -> None:
+    r"""
+    Making sure the given path `__pth` is a directory and it exists
+
+    ## Exceptions
+    - `NotADirectoryError`: if not a dir
+
+    ## Demo
+    >>> normalized_pth = norm_pth(r'/foo//Bar/\\/\//myDir')
+    >>> definitely_a_dir(normalized_pth)
+    """
+    if not _os.path.isdir(__pth): raise NotADirectoryError(f'Not a dir: {repr(__pth)}.')
+
+
+def dont_worry_the_path_ends_with(__pth:str, / suffixes:_Optional[_Union[str, _Tuple[str, ...]]]=None, ignore_case:bool=True) -> None:
+    """
+    Making sure the given path `__pth` ends with the given `suffixes`,
+    or if `__pth` is a file path, it guarantees the file has the correct expected extension(s).
+
+    ## Params
+    - `__pth`: the path
+    - `suffixes`: single or multiple suffixes
+    - `ignore_case`: if `False`, ".jpg" is not the same as ".JPG"
+
+    ## Exceptions
+    - `ValueError`: if `suffixes` is an empty string
+    - 
+
+    ## Examples
+    - `dont_worry_the_path_ends_with('init_log.txt', '_log.txt')  # okay`
+    - `dont_worry_the_path_ends_with('testfile.txt', '_log.txt')  # no`
+    - `dont_worry_the_path_ends_with('file.txt', ('.txt', '.log'))  # okay`
+    - `dont_worry_the_path_ends_with('file.log', ('.txt', '.log'))  # okay`
+    - `dont_worry_the_path_ends_with('file.cpp', ('.txt', '.log'))  # no`
+    - `dont_worry_the_path_ends_with('x.foo', ('.FOO', '.BAR'))  # okay`
+    - `dont_worry_the_path_ends_with('x.FOO', ('.foo', '.bar'))  # okay`
+    - `dont_worry_the_path_ends_with('x.Foo', '.foo', True)   # okay`
+    - `dont_worry_the_path_ends_with('x.Foo', '.foo', False)  # no`
+
+    ## Demo
+    >>> normalized_pth = norm_pth(r'/foo//Bar/\\/\//file.TXt')
+    >>> dont_worry_the_path_ends_with(normalized_pth, '.txt')
+    """
+    if suffixes == '': raise ValueError("`suffixes` shouldn't be an empty string.")
+
+
+def definitely_a_file():
+    pass

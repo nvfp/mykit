@@ -1,7 +1,7 @@
 # Changelog
 
 
-- 10.0.0 (Sep 1, 2023):
+- 10.0.0 (Sep 1st - 30th, 2023):
     - Breaking changes:
         - Improvement: use `round` instead of `int` in `color.interpolate_color`
         - Starting with this version, the entire test suite will gradually be put side by side with the source to make the development process easier.
@@ -15,6 +15,7 @@
         - Added `.fileops.simple.remove_all_specific_files_in`
         - Added `lock_version` to `mykit/__init__.py`
         - Added `cli_parser/` and `readable/` modules
+        - new set of options like `mykit v` for version checking, `mykit build` to build mykit-project, etc.
     - Note, there are so many additions and adjustments for this update. And some of them I may forget to put here.
 
 - 9.3.0 (Aug 19, 2023):

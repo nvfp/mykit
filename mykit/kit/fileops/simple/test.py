@@ -5,7 +5,10 @@ import random
 import tempfile
 import shutil
 
-from mykit.kit.fileops.simple import same_ext_for_all_dir_files, list_dir, remove_all_specific_files_in
+from mykit.kit.fileops.simple import (
+    same_ext_for_all_dir_files, list_dir, remove_all_specific_files_in, definitely_a_dir,
+    dont_worry_the_path_ends_with,
+)
 
 
 class Test__same_ext_for_all_dir_files(unittest.TestCase):
@@ -226,6 +229,42 @@ class Test__remove_all_specific_files_in(unittest.TestCase):
         self.assertEqual(sorted(os.listdir(self.dir)), ['bar.txt', 'baz.txt', 'foo.txt', 'subdir'])
         self.assertEqual(sorted(os.listdir(os.path.join(self.dir, 'subdir'))), ['foobar.js', 'subdir2', 'test1.txt', 'test2.txt'])
         self.assertEqual(sorted(os.listdir(os.path.join(self.dir, 'subdir', 'subdir2'))), ['b.ts', 'f1.txt', 'f2.txt'])
+
+
+class Test__definitely_a_dir(unittest.TestCase):
+
+    def test(self):
+
+        ## Pass
+
+        p = tempfile.mkdtemp()
+        pth = os.path.join(p, 'test_dir')
+        os.mkdir(pth)
+        definitely_a_dir(pth)
+
+        ## Fail
+
+        pth = os.path.join(p, 'test_dir2')
+        with self.assertRaises(NotADirectoryError) as ctx: definitely_a_dir(pth)
+        self.assertEqual(str(ctx.exception), f"Not a dir: {repr(pth)}.")
+
+
+class Test__dont_worry_the_path_ends_with(unittest.TestCase):
+
+    def test(self):
+
+        ## Pass
+
+        p = tempfile.mkdtemp()
+        pth = os.path.join(p, 'test_dir')
+        os.mkdir(pth)
+        definitely_a_dir(pth)
+
+        ## Fail
+
+        pth = os.path.join(p, 'test_dir2')
+        with self.assertRaises(NotADirectoryError) as ctx: definitely_a_dir(pth)
+        self.assertEqual(str(ctx.exception), f"Not a dir: {repr(pth)}.")
 
 
 if __name__ == '__main__':
