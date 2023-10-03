@@ -30,7 +30,7 @@ print(x)  # 2.79 PiB
 ```
 
 
-## Others
+## Misc
 
 - [Thank you💙](https://nvfp.github.io/thank-you)
 - [Documentation](https://nvfp.github.io/mykit)
