@@ -131,7 +131,7 @@ def definitely_a_dir(__pth:str, /) -> None:
     if not _os.path.isdir(__pth): raise NotADirectoryError(f'Not a dir: {repr(__pth)}.')
 
 
-def dont_worry_the_path_ends_with(__pth:str, / suffixes:_Union[str, _List[str], _Tuple[str, ...]], ignore_case:bool=True) -> None:
+def dont_worry_the_path_ends_with(__pth:str, /, suffixes:_Union[str, _List[str], _Tuple[str, ...]], ignore_case:bool=True) -> None:
     """
     Making sure the given path `__pth` ends with the given `suffixes`,
     or if `__pth` is a file path, it guarantees the file has the correct expected extension(s).
