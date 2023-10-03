@@ -1,3 +1,4 @@
+import time as _time
 import tkinter as _tk
 from typing import (
     Any as _Any,
@@ -14,16 +15,19 @@ from mykit.app.complex.plot import Plot as _Plot
 from mykit.app.complex.biplot import Biplot as _Biplot
 from mykit.app.arrow import Arrow as _Arrow
 
+from mykit.app.photoimg import PhotoImg
+
+
+def _install_components(app):
+    PhotoImg._install(app)
+
 
 class App:
     """
     A single-page app framework.
-    (currently in beta)
-
-    ---
 
     ## Limitations
-    - currently available only in fullscreen mode
+    - Currently available only in fullscreen mode
     """
 
     def __init__(
@@ -36,7 +40,7 @@ class App:
         self.root.attributes('-fullscreen', True)
         self.root.title(name)
 
-        ## app's page
+        ## App's main page
         self.page = _tk.Canvas(
             master=self.root,
             width=self.root.winfo_screenwidth(),
@@ -61,8 +65,12 @@ class App:
         ## </register the page>
 
 
+        _install_components(self)
+
+
         ## <constants>
 
+        self.T = _time.time()  # The timestamp when the app instance was initiated, usually used as the startup time.
         self.MON_WIDTH = self.root.winfo_screenwidth()
         self.MON_HEIGHT = self.root.winfo_screenheight()
         
@@ -85,11 +93,9 @@ class App:
 
         ## </runtime>
 
-    def listen(self, to: str, do: _Callable[[_tk.Event], None]):
+    def listen(self, to:str, do:_Callable[[_tk.Event], None]) -> None:
         """
         Add event listener.
-
-        ---
 
         ## Params
         - `to`: event type:
@@ -109,26 +115,24 @@ class App:
             self._left_mouse_release.append(do)
         else:
             ValueError(f'Invalid event: {repr(to)}.')
-    
+
     def add_background_processes(self, every: int, do: _Callable[[], None]) -> None:
         """
         Execute `do` every `every` milliseconds.
         
-        ---
-
         ## Docs
-        - the first execution occurs immediately after the app runs
+        - The first execution occurs immediately after the app runs.
         """
         if every not in self._background_processes:
             self._background_processes[every] = []
         self._background_processes[every].append(do)
 
-    def setup(self, funcs: _List[_Callable[[], None]]):
+    def setup(self, funcs: _List[_Callable[[], None]]) -> None:
         """Running simple-functions right before startup."""
         self._setup = funcs
 
-    def teardown(self, funcs: _List[_Callable[[], None]]):
-        """Running simple-functions right after startup."""
+    def teardown(self, funcs: _List[_Callable[[], None]]) -> None:
+        """Running simple-functions right after the app stops."""
         self._teardown = funcs
 
     def use(self, component: _Callable[..., None], /, dependencies: _Dict[str, _Any]) -> None:
@@ -193,10 +197,12 @@ class App:
 
 
         ## Setup
-        for fn in self._setup: fn()
+        for function in self._setup:
+            function()
 
         ## Startup
         self.root.mainloop()
 
         ## Teardown
-        for fn in self._teardown: fn()
+        for function in self._teardown:
+            function()
