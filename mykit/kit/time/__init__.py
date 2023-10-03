@@ -150,3 +150,12 @@ class TimeFmt:
     def neat(timestamp:_Optional[float]=None, utc_offset:_Optional[float]=None) -> str:
         """`2020 Jan 01, 01:02:03 UTC+0000` (fixed length) | See class docstring for parameter descriptions."""
         return TimeFmt._get_time(timestamp, utc_offset, '%Y %b %d, %H:%M:%S UTC%z')
+
+    ## TODO: make tests for this one
+    def full(timestamp:_Optional[float]=None, utc_offset:_Optional[float]=None) -> str:
+        """`Monday, Jan 1, 2024, 21:12:34 UTC+0000` | See class docstring for parameter descriptions."""
+        if _platform.system() == 'Windows' : fmt = '%A, %b %#d, %H:%M:%S UTC%z'
+        elif _platform.system() == 'Linux' : fmt = '%A, %b %-d, %H:%M:%S UTC%z'
+        elif _platform.system() == 'Darwin': fmt = '%A, %b %-d, %H:%M:%S UTC%z'  # macOS
+        else: raise NotImplementedError
+        return TimeFmt._get_time(timestamp, utc_offset, fmt)

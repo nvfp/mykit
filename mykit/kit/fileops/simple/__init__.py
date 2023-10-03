@@ -131,7 +131,7 @@ def definitely_a_dir(__pth:str, /) -> None:
     if not _os.path.isdir(__pth): raise NotADirectoryError(f'Not a dir: {repr(__pth)}.')
 
 
-def dont_worry_the_path_ends_with(__pth:str, / suffixes:_Optional[_Union[str, _Tuple[str, ...]]]=None, ignore_case:bool=True) -> None:
+def dont_worry_the_path_ends_with(__pth:str, / suffixes:_Union[str, _List[str], _Tuple[str, ...]], ignore_case:bool=True) -> None:
     """
     Making sure the given path `__pth` ends with the given `suffixes`,
     or if `__pth` is a file path, it guarantees the file has the correct expected extension(s).
@@ -143,7 +143,7 @@ def dont_worry_the_path_ends_with(__pth:str, / suffixes:_Optional[_Union[str, _T
 
     ## Exceptions
     - `ValueError`: if `suffixes` is an empty string
-    - 
+    - `AssertionError`: if the ending does not match the expected `suffixes`
 
     ## Examples
     - `dont_worry_the_path_ends_with('init_log.txt', '_log.txt')  # okay`
@@ -151,8 +151,8 @@ def dont_worry_the_path_ends_with(__pth:str, / suffixes:_Optional[_Union[str, _T
     - `dont_worry_the_path_ends_with('file.txt', ('.txt', '.log'))  # okay`
     - `dont_worry_the_path_ends_with('file.log', ('.txt', '.log'))  # okay`
     - `dont_worry_the_path_ends_with('file.cpp', ('.txt', '.log'))  # no`
-    - `dont_worry_the_path_ends_with('x.foo', ('.FOO', '.BAR'))  # okay`
-    - `dont_worry_the_path_ends_with('x.FOO', ('.foo', '.bar'))  # okay`
+    - `dont_worry_the_path_ends_with('x.foo', ['.FOO', '.BAR'])  # okay`
+    - `dont_worry_the_path_ends_with('x.FOO', ['.foo', '.bar'])  # okay`
     - `dont_worry_the_path_ends_with('x.Foo', '.foo', True)   # okay`
     - `dont_worry_the_path_ends_with('x.Foo', '.foo', False)  # no`
 
@@ -161,7 +161,51 @@ def dont_worry_the_path_ends_with(__pth:str, / suffixes:_Optional[_Union[str, _T
     >>> dont_worry_the_path_ends_with(normalized_pth, '.txt')
     """
     if suffixes == '': raise ValueError("`suffixes` shouldn't be an empty string.")
+    
+    if ignore_case:
+        p_ = __pth.lower()
+        if type(suffixes) is str:
+            s_ = suffixes.lower()
+        else:
+            s_ = tuple([s.lower() for s in suffixes])
+    else:
+        p_ = __pth
+        if type(suffixes) is str:
+            s_ = suffixes
+        else:
+            s_ = tuple([s for s in suffixes])
+    
+    if not p_.endswith(s_):
+        raise AssertionError(f'Invalid suffixes: [expected: {repr(suffixes)}] [got: {repr(__pth)}]')
 
 
-def definitely_a_file():
-    pass
+def definitely_a_file(__path:str, /) -> None:
+    """
+    Making sure the given path is a file that also exists
+
+    ## Exceptions
+    - `FileNotFoundError`: if not a file path
+
+    ## Demo
+    >>> normalized_pth = norm_pth(r'/foo//Bar/\\/\//file.Txt', True)
+    >>> dont_worry_the_path_ends_with(normalized_pth, '.txt')
+    >>> definitely_a_file(normalized_pth)
+    """
+    if not _os.path.isfile(__path): raise FileNotFoundError(f"Not a file: {repr(__path)}.")
+
+
+def this_path_must_not_exist(__path:str, /) -> None:
+    """
+    Make sure the given path is not a file, directory, etc.
+    This is created to ensure that when performing writing operations, nothing will be overwritten.
+
+    ## Exceptions
+    - `AssertionError`: if already exists
+
+    ## Demo
+    >>> path_normalized = norm_pth(r'/foo//Bar/\\/\//file.Txt', True)
+    >>> dont_worry_the_path_ends_with(path_normalized, '.txt')
+    >>> this_path_must_not_exist(path_normalized)
+    >>> # rest of the script
+    """
+    if _os.path.exists(__path): raise AssertionError(f"Already exists: {repr(__path)}.")

@@ -8,6 +8,8 @@ import shutil
 from mykit.kit.fileops.simple import (
     same_ext_for_all_dir_files, list_dir, remove_all_specific_files_in, definitely_a_dir,
     dont_worry_the_path_ends_with,
+    definitely_a_file,
+    this_path_must_not_exist,
 )
 
 
@@ -251,20 +253,87 @@ class Test__definitely_a_dir(unittest.TestCase):
 
 class Test__dont_worry_the_path_ends_with(unittest.TestCase):
 
-    def test(self):
+    def test_empty_string_suffixes(self):
+        with self.assertRaises(ValueError) as ctx: dont_worry_the_path_ends_with('/path/foo', '')
+        self.assertEqual(str(ctx.exception), "`suffixes` shouldn't be an empty string.")
 
+    def test_core(self):
+        
+        dont_worry_the_path_ends_with('init_log.txt', '_log.txt')
+
+        with self.assertRaises(AssertionError) as ctx: dont_worry_the_path_ends_with('testfile.txt', '_log.txt')
+        self.assertEqual(str(ctx.exception), "Invalid suffixes: [expected: '_log.txt'] [got: 'testfile.txt']")
+
+        dont_worry_the_path_ends_with('file.txt', ('.txt', '.log'))
+        dont_worry_the_path_ends_with('file.log', ('.txt', '.log'))
+
+        with self.assertRaises(AssertionError) as ctx: dont_worry_the_path_ends_with('file.cpp', ('.txt', '.log'))
+        self.assertEqual(str(ctx.exception), "Invalid suffixes: [expected: ('.txt', '.log')] [got: 'file.cpp']")
+        
+        dont_worry_the_path_ends_with('x.foo', ['.FOO', '.BAR'])
+        dont_worry_the_path_ends_with('x.FOO', ['.foo', '.bar'])
+        dont_worry_the_path_ends_with('x.Foo', '.foo', True)
+
+        with self.assertRaises(AssertionError) as ctx: dont_worry_the_path_ends_with('x.Foo', '.foo', False)
+        self.assertEqual(str(ctx.exception), "Invalid suffixes: [expected: '.foo'] [got: 'x.Foo']")
+
+
+class Test__definitely_a_file(unittest.TestCase):
+
+    def test(self):
+        
+        p = tempfile.mkdtemp()
+        
         ## Pass
 
-        p = tempfile.mkdtemp()
-        pth = os.path.join(p, 'test_dir')
-        os.mkdir(pth)
-        definitely_a_dir(pth)
+        pth = os.path.join(p, 'test_file.txt')
+        open(pth, 'w').close()
+        definitely_a_file(pth)
 
         ## Fail
 
-        pth = os.path.join(p, 'test_dir2')
-        with self.assertRaises(NotADirectoryError) as ctx: definitely_a_dir(pth)
-        self.assertEqual(str(ctx.exception), f"Not a dir: {repr(pth)}.")
+        pth = os.path.join(p, 'test_file2.txt')
+        with self.assertRaises(FileNotFoundError) as ctx: definitely_a_file(pth)
+        self.assertEqual(str(ctx.exception), f"Not a file: {repr(pth)}.")
+
+
+class Test__this_path_must_not_exist(unittest.TestCase):
+
+    def test(self):
+        
+        p = tempfile.mkdtemp()
+        
+
+        ## Pass
+        ## vvvv
+
+        ## file
+        pth = os.path.join(p, 'test_file.txt')
+        self.assertEqual(os.path.isfile(pth), False)
+        this_path_must_not_exist(pth)
+
+        ## dir
+        pth = os.path.join(p, 'test_dir.txt')
+        self.assertEqual(os.path.isdir(pth), False)
+        this_path_must_not_exist(pth)
+
+
+        ## Fail
+        ## vvvv
+
+        ## file
+        pth = os.path.join(p, 'test_file2.txt')
+        open(pth, 'w').close()
+        self.assertEqual(os.path.isfile(pth), True)
+        with self.assertRaises(AssertionError) as ctx: this_path_must_not_exist(pth)
+        self.assertEqual(str(ctx.exception), f"Already exists: {repr(pth)}.")
+
+        ## dir
+        pth = os.path.join(p, 'test_dir2.txt')
+        os.mkdir(pth)
+        self.assertEqual(os.path.isdir(pth), True)
+        with self.assertRaises(AssertionError) as ctx: this_path_must_not_exist(pth)
+        self.assertEqual(str(ctx.exception), f"Already exists: {repr(pth)}.")
 
 
 if __name__ == '__main__':
