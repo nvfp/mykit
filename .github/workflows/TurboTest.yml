@@ -29,5 +29,8 @@ jobs:
       - run: pip install -r requirements.txt
       - run: pip install mykit==10.0.0b4  # Testing purposes: will be removed soon
       - run: pip install turbotest
-      - run: cd mykit
-      - run: turbotest
+      
+      # - run: cd mykit
+      # - run: turbotest
+      # vvvvvvvvvvvvvvvvv
+      - run: cd mykit && turbotest
