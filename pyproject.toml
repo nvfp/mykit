@@ -15,7 +15,7 @@ authors = [
 
 [tool.setuptools.packages.find]
 exclude = [
-    "docs*",
+    "_etc*",
     "tests*",
 ]
 
