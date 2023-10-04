@@ -4,9 +4,9 @@
 [![pypi version](https://img.shields.io/pypi/v/mykit?logo=pypi)](https://pypi.org/project/mykit/)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://choosealicense.com/licenses/mit/)
 
-Collections of common functions that can be reused. The idea is, let's try to understand how it works by remaking it. It's messy, but it works. Written in Python for Python projects.
+Collections of common functions for Python <3
 
-![mykit's banner](https://raw.githubusercontent.com/nvfp/mykit/master/_etc/assets/banner.jpg)
+![banner](https://raw.githubusercontent.com/nvfp/mykit/master/_etc/assets/banner.jpg)
 
 
 ## Installation
