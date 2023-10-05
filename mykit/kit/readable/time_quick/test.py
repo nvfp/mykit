@@ -3,7 +3,9 @@ from . import time_quick
 
 
 def Awesome():
-    
+
+    # print('TT testing: Awesome')
+
     result = time_quick(0)
     expected = '0m0.0s'
     tt.both_are_equal(result, expected)
@@ -31,3 +33,9 @@ def Awesome():
     result = time_quick(3600)
     expected = '60m0.0s'
     tt.both_are_equal(result, expected)
+
+
+## TT Testing purposes
+# print(locals())
+# exec('from kit.readable.time_quick import time_quick')
+# print(locals())

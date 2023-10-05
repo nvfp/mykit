@@ -57,7 +57,7 @@ class NiceIO:
 
         ## Params
         - `content`: the file contents
-        - `suffixes`: Guarantee reading from the expected file (e.g., making sure it's a Python file by setting `suffixes='.py'`)
+        - `suffixes`: Guarantee the expected file (e.g., making sure it's a Python file by setting `suffixes='.py'`)
 
         ## Exceptions
         - Please manually inspect this function for all possible exceptions
@@ -76,13 +76,13 @@ class NiceIO:
             fp.write(content)
 
     @staticmethod
-    def rewrite(file_path:str, content:str, suffixes:_Optional[_Union[str, _List[str], _Tuple[str, ...]]]=None) -> None:
+    def rewrite(file_path:str, new_content:str, suffixes:_Optional[_Union[str, _List[str], _Tuple[str, ...]]]=None) -> None:
         """
-        Replace the existing file at `file_path` with the new `content`
+        Replace the existing file at `file_path` with the `new_content`
 
         ## Params
-        - `content`: the file contents
-        - `suffixes`: Guarantee reading from the expected file (e.g., making sure it's a Python file by setting `suffixes='.py'`)
+        - `new_content`: the file contents
+        - `suffixes`: Guarantee the expected file (e.g., making sure it's a Python file by setting `suffixes='.py'`)
 
         ## Exceptions
         - Please manually inspect this function for all possible exceptions
@@ -101,10 +101,10 @@ class NiceIO:
         _this_path_must_not_exist(bak_path)
 
         ## Run
-        with open(tmp_path, 'w') as fp: fp.write(content)  # writing the new as temp
-        _os.rename(path_normalized, bak_path)              # backup the previous
-        _os.rename(tmp_path, path_normalized)              # rename the temp to the new
-        _os.remove(bak_path)                               # delete the previous
+        with open(tmp_path, 'w') as fp: fp.write(new_content)  # writing the new as temp
+        _os.rename(path_normalized, bak_path)                  # backup the previous
+        _os.rename(tmp_path, path_normalized)                  # rename the temp to the new
+        _os.remove(bak_path)                                   # delete the previous
 
     @staticmethod
     def recover(file_path:str, /, suffixes:_Optional[_Union[str, _List[str], _Tuple[str, ...]]]=None) -> None:
@@ -114,7 +114,7 @@ class NiceIO:
         not fully optimized and might still change in the future.
 
         ## Params
-        - `suffixes`: Guarantee reading from the expected file (e.g., making sure it's a Python file by setting `suffixes='.py'`)
+        - `suffixes`: Guarantee the expected file (e.g., making sure it's a Python file by setting `suffixes='.py'`)
 
         ## Exceptions
         - Please manually inspect this function for all possible exceptions
@@ -150,3 +150,16 @@ class NiceIO:
         # if (not _os.path.exists(path_normalized)) and (not _os.path.exists(tmp_path)) and _os.path.exists(bak_path):
         #     _os.rename(bak_path, path_normalized)
         #     return
+
+    @staticmethod
+    def erase(file_path:str, /, suffixes:_Optional[_Union[str, _List[str], _Tuple[str, ...]]]=None) -> None:
+        """
+        ⚠️ Clear the file's content.
+
+        ## Params
+        - `suffixes`: Guarantee the expected file (e.g., making sure it's a Python file by setting `suffixes='.py'`)
+
+        ## Exceptions
+        - Please manually inspect this function for all possible exceptions
+        """
+        NiceIO.rewrite(file_path, '', suffixes)
