@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: ${{ matrix.version }}
       - run: pip install -r requirements.txt
-      - run: pip install mykit==10.0.0b8  # Testing purposes: will be removed soon
+      - run: pip install mykit==10.0.0b9  # Testing purposes: will be removed soon
       - run: pip install turbotest
       
       # - run: cd mykit
