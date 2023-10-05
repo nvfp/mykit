@@ -28,11 +28,10 @@ jobs:
           python-version: ${{ matrix.version }}
       - run: pip install -r requirements.txt
       - run: pip install mykit==10.0.0b9  # Testing purposes: will be removed soon
-      - run: pip install turbotest
+      - run: pip install -U turbotest
       
       # - run: cd mykit
       # - run: turbotest
       # vvvvvvvvvvvvvvvvv dev-doc: The above attempt failed since the cwd goes back to root after a new `run:` block
       - run: cd mykit && turbotest
 
-      
