@@ -1,6 +1,7 @@
 import sys as _sys
 
 
+## Birthdate: Oct 4, 2023
 def get_py_ver() -> str:
     """Get the current Python version in the expected 'Major.minor.patch' format"""
     info = _sys.version_info
