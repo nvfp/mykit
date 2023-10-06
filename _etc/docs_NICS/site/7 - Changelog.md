@@ -1,7 +1,7 @@
 # Changelog
 
 
-- 10.0.0 (Sep 1st - 30th, 2023):
+- 10.0.0 (Sep 1st - Oct 5th, 2023):
     - Breaking changes:
         - Improvement: use `round` instead of `int` in `color.interpolate_color`
         - Starting with this version, the entire test suite will gradually be put side by side with the source to make the development process easier.
@@ -18,7 +18,8 @@
         - new set of options like `mykit v` for version checking, `mykit build` to build mykit-project, etc.
         - Added `time_millennia`, `time_quick`, `make_separator`
         - Added `checks`, `regex` parent modules
-        - Added `get_py_ver`, `trim_long_str`
+        - Added `get_py_ver`, `trim_long_str`, `ctx`
+        - Added `str_ops` parent module
     - Note, there are so many additions and adjustments for this update. And some of them I may forget to put here.
 
 - 9.3.0 (Aug 19, 2023):

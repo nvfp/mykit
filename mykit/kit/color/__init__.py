@@ -227,6 +227,9 @@ class Colored:
     >>> for k, v in Hex.__dict__.items():
     >>>     if k.startswith('__'): continue
     >>>     print(Colored(k, v))
+
+    ## WARNING
+    - This class will be deprecated soon, use `mykit.kit.color.ctxt` instead
     """
 
     _win_init = False  # To make it work in Windows command prompt

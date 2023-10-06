@@ -18,7 +18,7 @@ pip install mykit
 If you use a module requiring these dependencies, run `pip install -r requirements.txt`.
 
 
-## Give it a try!
+## examples
 
 ```python
 from mykit.kit.text import byteFmt
@@ -30,11 +30,13 @@ print(x)  # 2.79 PiB
 ```
 
 
-## Misc
+## other stuff
 
 - [Thank you💙](https://nvfp.github.io/thank-you)
 - [Documentation](https://nvfp.github.io/mykit)
 - [Changelog](https://nvfp.github.io/mykit/changelog)
+
+At the moment, I don't have any job. Any support you give to me is really appreciated. Thank you.
 
 
 ## License
