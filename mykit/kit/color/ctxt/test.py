@@ -213,7 +213,7 @@ def The_colored_cant_get_recolored():
     tt.both_are_equal(result, expected)
 
 def The_colored_cant_get_recolored_II():
-    t1 = ctxt('A', RED, YELLOW)
+    t1 = ctxt('D', RED, YELLOW)
     t2 = ctxt(t1, GREEN)
     result = t2
     expected = FG_RED_BG_YELLOW
