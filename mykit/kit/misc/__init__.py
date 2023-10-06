@@ -1,3 +1,0 @@
-"""
-Collections of uncategorized functions
-"""
