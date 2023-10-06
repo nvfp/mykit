@@ -223,8 +223,7 @@ def erase_an_existing_file():
     NiceIO.erase(pth)
     tt.both_are_equal(NiceIO.read(pth), '')
 
-## These are good to do but not necessary since the above cases
-## already cover them (jk, i'm just too lazy to write these out >:D)
+## These are good to do but not necessary since the above cases already cover these
 # def cant_erase_if_unexpected_file_type(): ...
 # def cant_erase_if_the_file_doesnt_exist(): ...
 # def cant_erase_when_previous_rewrite_operation_failed(): ...

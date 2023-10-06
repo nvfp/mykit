@@ -18,6 +18,7 @@
         - new set of options like `mykit v` for version checking, `mykit build` to build mykit-project, etc.
         - Added `time_millennia`, `time_quick`, `make_separator`
         - Added `checks`, `regex` parent modules
+        - Added `get_py_ver`, `trim_long_str`
     - Note, there are so many additions and adjustments for this update. And some of them I may forget to put here.
 
 - 9.3.0 (Aug 19, 2023):
