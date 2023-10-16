@@ -2,10 +2,10 @@ name: Rebuild docs (NICS)
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - '_etc/docs/**'
+    # branches:
+    #   - main
+    # paths:
+    #   - '_etc/docs/**'
   workflow_dispatch:
 
 jobs:
