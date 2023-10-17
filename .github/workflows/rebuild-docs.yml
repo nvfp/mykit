@@ -17,7 +17,7 @@ jobs:
 
       ## Compile
       # - uses: nvfp/now-i-can-sleep@v3
-      - uses: nvfp/now-i-can-sleep@main
+      - uses: nvfp/now-i-can-sleep@main 
         with:
           nics_docs_dir_relpth: ./_etc/docs
       
