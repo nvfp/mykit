@@ -1,6 +1,5 @@
 # Changelog
 
-
 - 10.0.0 (Sep 1st - Oct 5th, 2023):
     - Breaking changes:
         - Improvement: use `round` instead of `int` in `color.interpolate_color`

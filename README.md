@@ -1,6 +1,7 @@
 # myKit🧰
 
 [![Run tests](https://github.com/nvfp/mykit/actions/workflows/run-tests.yml/badge.svg)](https://github.com/nvfp/mykit/actions/workflows/run-tests.yml)
+[![Rebuild docs](https://github.com/nvfp/mykit/actions/workflows/rebuild-docs.yml/badge.svg)](https://github.com/nvfp/mykit/actions/workflows/rebuild-docs.yml)
 [![pypi version](https://img.shields.io/pypi/v/mykit?logo=pypi)](https://pypi.org/project/mykit/)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://choosealicense.com/licenses/mit/)
 

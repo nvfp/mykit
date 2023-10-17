@@ -2,23 +2,22 @@ name: Rebuild docs
 
 on:
   push:
-    # branches:
-    #   - main  # EDITME
-    # paths:
-    #   - '_etc/docs/**'  # EDITME
+    branches:
+      - main
+    paths:
+      - '_etc/docs/**'
   workflow_dispatch:
 
 jobs:
   run:
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write      # GitHub Pages: to deploy to Pages
-      id-token: write   # GitHub Pages: to verify the deployment originates from an appropriate source
-    environment:
-      name: Documentation  # EDITME
     steps:
-      - uses: nvfp/now-i-can-sleep@main
+      - uses: nvfp/now-i-can-sleep@v3
         with:
+
           nics_docs_dir_relpth: ./_etc/docs
           author: Nicholas Valentinus
           google_analytics_tracking_id: G-G3HERGXF6P
+
+    runs-on: ubuntu-latest
+    permissions: { pages: write, id-token: write }
+    environment: { name: Documentation }
