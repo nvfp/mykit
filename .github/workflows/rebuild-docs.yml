@@ -3,37 +3,22 @@ name: Rebuild docs
 on:
   push:
     # branches:
-    #   - main
+    #   - main  # EDITME
     # paths:
-    #   - '_etc/docs/**'
+    #   - '_etc/docs/**'  # EDITME
   workflow_dispatch:
 
 jobs:
-
-  ## Build the static assets
-  build:
+  run:
     runs-on: ubuntu-latest
+    permissions:
+      pages: write      # GitHub Pages: to deploy to Pages
+      id-token: write   # GitHub Pages: to verify the deployment originates from an appropriate source
+    environment:
+      name: Documentation  # EDITME
     steps:
-
-      ## Compile
-      # - uses: nvfp/now-i-can-sleep@v3
-      - uses: nvfp/now-i-can-sleep@main 
+      - uses: nvfp/now-i-can-sleep@main
         with:
           nics_docs_dir_relpth: ./_etc/docs
-      
-      # ## Upload the artifact
-      # - uses: actions/upload-pages-artifact@v2
-
-  # ## Deploy
-  # deploy:
-  #   needs: build
-  #   # permissions:
-  #   #   pages: write      # to deploy to Pages
-  #   #   id-token: write   # to verify the deployment originates from an appropriate source
-  #   environment:
-  #     name: Documentation  # EDITME
-  #     url: ${{ steps.deployment.outputs.page_url }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - id: deployment
-  #       uses: actions/deploy-pages@v2  # Deploy to GitHub Pages
+          author: Nicholas Valentinus
+          google_analytics_tracking_id: G-G3HERGXF6P
