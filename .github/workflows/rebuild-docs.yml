@@ -1,4 +1,4 @@
-name: Rebuild docs (NICS)
+name: Rebuild docs
 
 on:
   push:
@@ -9,16 +9,31 @@ on:
   workflow_dispatch:
 
 jobs:
-  run:
+
+  ## Build the static assets
+  build:
     runs-on: ubuntu-latest
-    # permissions:
-    #   contents: write
     steps:
+
+      ## Compile
       # - uses: nvfp/now-i-can-sleep@v3
       - uses: nvfp/now-i-can-sleep@main
         with:
           nics_docs_dir_relpth: ./_etc/docs
-        # env:
-        #   GH_TOKEN: ${{ github.token }}
+      
+      # ## Upload the artifact
+      # - uses: actions/upload-pages-artifact@v2
 
-        
+  # ## Deploy
+  # deploy:
+  #   needs: build
+  #   # permissions:
+  #   #   pages: write      # to deploy to Pages
+  #   #   id-token: write   # to verify the deployment originates from an appropriate source
+  #   environment:
+  #     name: Documentation  # EDITME
+  #     url: ${{ steps.deployment.outputs.page_url }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - id: deployment
+  #       uses: actions/deploy-pages@v2  # Deploy to GitHub Pages
