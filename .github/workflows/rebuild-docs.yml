@@ -11,12 +11,12 @@ on:
 jobs:
   run:
     steps:
-      - uses: nvfp/now-i-can-sleep@v3
+      - uses: nvfp/now-i-can-sleep@v4
         with:
 
-          nics_docs_dir_relpth: ./_etc/docs
+          src: ./_etc/docs
           author: Nicholas Valentinus
-          google_analytics_tracking_id: G-G3HERGXF6P
+          analytics: G-G3HERGXF6P
 
     runs-on: ubuntu-latest
     permissions: { pages: write, id-token: write }
