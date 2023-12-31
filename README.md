@@ -17,8 +17,6 @@ Collections of common functions for Python.
 pip install mykit
 ```
 
-Run `pip install -r requirements.txt` if you're using functions that need these dependencies.
-
 
 ## examples
 
@@ -30,6 +28,14 @@ from mykit.app.slider import Slider
 x = byteFmt(3141592653589793)
 print(x)  # 2.79 PiB
 ```
+
+
+## Dependencies
+
+Install these if you're using functions that need these dependencies.
+
+- numba>=0.55.2
+- numpy>=1.22.4
 
 
 ## License
