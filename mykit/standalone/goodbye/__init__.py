@@ -46,7 +46,7 @@ class Goodbye:  # Born: 2023 Dec 29
             '─'*(os.get_terminal_size().columns-1) + '\n' +
             f'Done! Took about {Goodbye._get_dur(time.time() - T_STARTUP)}.\n' +
             random.choice([
-                'Goodbye and see you...', 'Bye, you are awesome!', 'You are cool!',
+                'Goodbye and see you...', 'Bye, you are awesome!', 'You are cool!', 'You are loved.',
                 'Have a good day!', 'See you, have a great day.', 'Take care, have a great time!',
                 'See you again and take care.', 'You are incredible!', 'You are amazing, see you!',
             ])
