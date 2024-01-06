@@ -34,8 +34,8 @@ print(x)  # 2.79 PiB
 
 Install these if you're using functions that need these dependencies.
 
-- numba>=0.55.2
-- numpy>=1.22.4
+- `numba>=0.55.2`
+- `numpy>=1.22.4`
 
 
 ## License
