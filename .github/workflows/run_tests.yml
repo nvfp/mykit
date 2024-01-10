@@ -1,0 +1,39 @@
+name: Run tests
+
+on:
+  push:
+  #   branches:
+  #     - '*'
+  #   paths:
+  #     - 'mykit/**'
+  # pull_request:
+  #   types:
+  #     - opened
+  #     - synchronize
+  workflow_dispatch:
+
+jobs:
+  on:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        py_ver: ['3.10', '3.11']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: nvfp/turbotest@main
+        with:
+          python_ver: ${{ matrix.py_ver }}
+
+          
+      # - uses: actions/checkout@v3
+      # - uses: actions/setup-python@v4
+      #   with:
+      #     python-version: ${{ matrix.version }}
+      # - run: pip install -r requirements.txt
+      # - run: pip install mykit==10.0.0b11  # Testing purposes: will be removed soon
+      # - run: pip install -U turbotest
+      
+      # # - run: cd mykit
+      # # - run: turbotest
+      # # vvvvvvvvvvvvvvvvv dev-doc: The above attempt failed since the cwd goes back to root after a new `run:` block
+      # - run: cd mykit && turbotest
