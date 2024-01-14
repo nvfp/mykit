@@ -30,7 +30,7 @@ jobs:
           printf '─%.0s' {1..111}; printf '\n'; echo "DEBUG: custom pyver: $(python --version)"
         shell: bash
         
-      - run: pip install build twine
+      - run: pip install build==1.0.3 twine==4.0.2
       - run: pip list
 
       ## prebuild
@@ -38,6 +38,10 @@ jobs:
       - run: ls -la
       - run: |
           import os, json
+
+          REPO_FULL = '${{ github.repository }}'
+          OWNER = '${{ github.actor }}'
+          REPO = REPO_FULL[len(OWNER)+1:]  # just get the repo name
           
           CFG = os.path.join(os.getcwd(), '_etc', 'build_configs.json')
           with open(CFG, 'r') as f:
@@ -47,7 +51,7 @@ jobs:
 
           texts = (
             f"[project]\n"
-            f"name = \"${{ github.repository }}\"\n"
+            f"name = \"{REPO}\"\n"
             f"version = \"${{ inputs.version }}\"\n"
             f"[project.scripts]\n"
           )
@@ -75,7 +79,7 @@ jobs:
         shell: python
       - run: ls -la
 
-      - run: find . -mindepth 1 -maxdepth 1 ! -name 'mykit' -exec rm -r {} +
+      - run: find . -mindepth 1 -maxdepth 1 ! -name 'mykit' ! -name 'pyproject.toml' -exec rm -r {} +
       - run: ls -la
 
       - run: ls -la
