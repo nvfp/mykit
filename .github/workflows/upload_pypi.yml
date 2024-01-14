@@ -46,7 +46,8 @@ jobs:
 
           VER = '${{ inputs.version }}'
           if VER == '':  # during testing
-            VER = datetime.now().strftime('%Y.%m.%d-testing%H%M%S')
+            # VER = datetime.now().strftime('%Y.%m.%d-testing%H%M%S')  # not allowed by PIP
+            VER = datetime.now().strftime('%Y.%m.%d-b%H%M%S')
           
           CFG = os.path.join(os.getcwd(), '_etc', 'build_configs.json')
           with open(CFG, 'r') as f:
