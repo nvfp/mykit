@@ -49,6 +49,7 @@ jobs:
               if os.path.isfile(ipth):
                 print(f"Now: {repr(ipth)}")
                 size0 = os.path.getsize(ipth)
+                if size0 == 0: print("Empty file..."); continue
                 with open(ipth, 'r') as f: txt = f.read().split('\n')
                 
                 # for idx, line in enumerate(txt):
@@ -66,10 +67,14 @@ jobs:
                 ## vvvvvvv bugfixed: do not pop while iterating, the next pop will has incorrect index. so, just replace the unwanted line with `None`
                 for idx, line in enumerate(txt):
                   res = re.match(r'^[ ]*$', line)  # blank line
+                  # if res is not None: print(f"@{idx+1}: {repr(txt[idx])}"); txt[idx] = None
+                  ## vvvv devdocs: print first then assign, so will not printing `None`.
                   if res is not None: txt[idx] = None; print(f"@{idx+1}: {repr(txt[idx])}")
                   else:
                     res = re.match(r'^[ ]*#.*$', line)  # commented line
-                    if res is not None: txt[idx] = None; print(f"@{idx+1}: {repr(txt[idx])}")
+                    # if res is not None: txt[idx] = None; print(f"@{idx+1}: {repr(txt[idx])}")
+                    ## vvv print first
+                    if res is not None: print(f"@{idx+1}: {repr(txt[idx])}"); txt[idx] = None
                     else:
                       res = re.match(r'(?P<keep>.*?)(?P<rm>#.*)', line)  # inline comments
                       if res is not None: txt[idx] = res.group('keep'); print(f"@{idx+1}: {repr(res.group('rm'))}")
@@ -77,6 +82,10 @@ jobs:
                         res = re.match(r'(?P<keep>.*?)(?P<rm>[ ]+)$', line)  # inline unused spaces
                         if res is not None: txt[idx] = res.group('keep'); print(f"@{idx+1}: {repr(res.group('rm'))}")
                 txt = [i for i in txt if (i is not None)]  # remove the `None`s
+
+                if len(txt) == 0:  # handle the case where it's an empty file with some blank lines
+                  print("Endup being empty...")
+                  txt = ['']
                 
                 with open(ipth, 'w') as f: f.write('\n'.join(txt))
                 print(f"Compression: {round( 100*(size0-os.path.getsize(ipth))/size0 )}%")
