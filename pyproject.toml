@@ -6,11 +6,5 @@ build-backend = "setuptools.build_meta"
 name = "mykit"
 version = "10.0.0b11"
 
-[tool.setuptools.packages.find]
-exclude = [
-    "_etc*",
-    "tests*",
-]
-
 [project.scripts]
 mykit = "mykit.__main__:main"
