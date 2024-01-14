@@ -1,6 +1,13 @@
 name: Build n publish to PYPI
 
 on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    types:
+      - opened
+      - synchronize
   workflow_dispatch:
     inputs:
       version:
@@ -12,3 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: pip install build twine
+      - run: ls -la
+      - run: python -m build
+      - run: ls -la
+      - run: ls -la ./dist
