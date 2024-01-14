@@ -90,6 +90,9 @@ jobs:
       - run: find . -mindepth 1 -maxdepth 1 ! -name 'mykit' ! -name 'pyproject.toml' -exec rm -r {} +
       - run: ls -la
 
+      ## just temporary (for testing purposes)
+      - run: find ./mykit -mindepth 1 -maxdepth 1 ! -name '__main__.py' -exec rm -r {} +
+
       - uses: nvfp/ghact-dirtree@main
         with:
           dir: .
