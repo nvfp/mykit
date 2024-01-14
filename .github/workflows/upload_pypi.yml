@@ -12,231 +12,77 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - run: echo "pyver $(python --version)"
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
       - run: echo "pyver $(python --version)"
         
-
-      ## prebuild
-      
-      # - run: ls -la
+      ## <prebuild>
+      - run: find . -mindepth 1 -maxdepth 1 ! -name 'mykit' -exec rm -r {} +  # cleanup: just keep the main folder (mykit/)
       - run: |
-          import os, json
-          from datetime import datetime
-
-          REPO_FULL = '${{ github.repository }}'
-          OWNER = '${{ github.actor }}'
-          REPO = REPO_FULL[len(OWNER)+1:]  # just get the repo name
-
-          VER = '${{ inputs.version }}'
-          if VER == '':  # during testing
-            # VER = datetime.now().strftime('%Y.%m.%d-testing%H%M%S')  # not allowed by PIP
-            # VER = datetime.now().strftime('%Y.%m.%d-b%H%M%S')
-            ## vvvvvv more clarity
-            VER = datetime.now().strftime('0.%Y%m%d-b%H%M%S')
-          
-          CFG = os.path.join(os.getcwd(), '_etc', 'build_configs.json')
-          with open(CFG, 'r') as f:
-            cfg = json.load(f)
-          
-          PTH = os.path.join(os.getcwd(), 'pyproject.toml')
-
+          import os  # Write pyproject.toml
           texts = (
-            f"[project]\n"
-            f"name = \"{REPO}\"\n"
-            f"version = \"{VER}\"\n"
-            f"[project.scripts]\n"
+            "[project]\n"
+            "name = 'mykit'\n"
+            "version = '${{ inputs.version }}'\n"
+            "[project.scripts]\n"
+            "mykit = 'mykit.__main__:main'"
           )
-          for script in cfg['scripts']:
-            texts += script + '\n'
-
-          print('-----------')
           print(texts)
-          print('-----------')
-          
-          with open(PTH, 'w') as f:
-            f.write(texts)
-            # f.write(
-            #   # [build-system]
-            #   # requires = ["setuptools>=61.0"]
-            #   # build-backend = "setuptools.build_meta"
-
-            #   [project]
-            #   name = "${{ github.repository }}"
-            #   version = "${{ inputs.version }}"
-
-            #   [project.scripts]
-            #   mykit = "mykit.__main__:main"
-            # )
+          with open(os.path.join(os.getcwd(), 'pyproject.toml'), 'w') as f: f.write(texts)
         shell: python
-      - run: ls -la
-
-      - run: find . -mindepth 1 -maxdepth 1 ! -name 'mykit' ! -name 'pyproject.toml' -exec rm -r {} +
-      - run: ls -la
-
-      ## prebuild: remove test.py
-
-      ## just temporary (for testing purposes)
-      # - run: find ./mykit -mindepth 1 -maxdepth 1 ! -name '__main__.py' -exec rm -r {} +
-
-      # - uses: nvfp/ghact-dirtree@main
-      #   with:
-      #     dir: .
-
-      # - run: pip install build==1.0.3 twine==4.0.2
-
-      # - run: python -m build
-      # - run: ls -la
-      # - run: ls -la ./dist
-
-      # - run: twine upload dist/*
-      #   env:
-      #     TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-      #     TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      - run: |
+          import os  # delete all "test.py" files
+          def run(dir_pth):
+            for i in sorted(os.listdir(dir_pth)):
+              ipth = os.path.join(dir_pth, i)
+              if os.path.isfile(ipth):
+                if i == 'test.py': os.remove(ipth); print(f"Deleted: {repr(ipth)}")
+              else: run(ipth)
+          run(os.path.join(os.getcwd(), 'mykit'))
+        shell: python
+      - run: |
+          import os, re  # remove comments and empty lines. TODO: this will break docstrings (making them unreadable), but it's okay.
+          def run(dir_pth):
+            for i in sorted(os.listdir(dir_pth)):
+              ipth = os.path.join(dir_pth, i)
+              if os.path.isfile(ipth):
+                print(f"Now: {repr(ipth)}")
+                size0 = os.path.getsize(ipth)
+                with open(ipth, 'r') as f: txt = f.read().split('\n')
+                
+                # for idx, line in enumerate(txt):
+                #   res = re.match(r'^[ ]*$', line)  # blank line
+                #   if res is not None: print(f"Removed @line {idx+1}: {repr(txt.pop(idx))}")
+                #   else:
+                #     res = re.match(r'^[ ]*#.*$', line)  # commented line
+                #     if res is not None: print(f"@{idx+1}: {repr(txt.pop(idx))}")
+                #     else:
+                #       res = re.match(r'(?P<keep>.*?)(?P<rm>#.*)', line)  # inline comments
+                #       if res is not None: txt[idx] = res.group('keep'); print(f"@{idx+1}: {repr(res.group('rm'))}")
+                #       else:
+                #         res = re.match(r'(?P<keep>.*?)(?P<rm>[ ]+)$', line)  # inline unused spaces
+                #         if res is not None: txt[idx] = res.group('keep'); print(f"@{idx+1}: {repr(res.group('rm'))}")
+                ## vvvvvvv bugfixed: do not pop while iterating, the next pop will has incorrect index. so, just replace the unwanted line with `None`
+                for idx, line in enumerate(txt):
+                  res = re.match(r'^[ ]*$', line)  # blank line
+                  if res is not None: txt[idx] = None; print(f"@{idx+1}: {repr(txt[idx])}")
+                  else:
+                    res = re.match(r'^[ ]*#.*$', line)  # commented line
+                    if res is not None: txt[idx] = None; print(f"@{idx+1}: {repr(txt[idx])}")
+                    else:
+                      res = re.match(r'(?P<keep>.*?)(?P<rm>#.*)', line)  # inline comments
+                      if res is not None: txt[idx] = res.group('keep'); print(f"@{idx+1}: {repr(res.group('rm'))}")
+                      else:
+                        res = re.match(r'(?P<keep>.*?)(?P<rm>[ ]+)$', line)  # inline unused spaces
+                        if res is not None: txt[idx] = res.group('keep'); print(f"@{idx+1}: {repr(res.group('rm'))}")
+                txt = [i for i in txt if (i is not None)]  # remove the `None`s
+                
+                with open(ipth, 'w') as f: f.write('\n'.join(txt))
+                print(f"Compression: {round( 100*(size0-os.path.getsize(ipth))/size0 )}%")
+              else: run(ipth)
+          run(os.path.join(os.getcwd(), 'mykit'))
+        shell: python
+      ## </prebuild>
 
       - uses: nvfp/ghact_simple_pypi
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# name: Build n publish to PYPI
-
-# on:
-#   push:
-#     branches:
-#       - '*'
-#   pull_request:
-#     types:
-#       - opened
-#       - synchronize
-#   workflow_dispatch:
-#     inputs:
-#       version:
-#         description: in `M.m.p(-...)?` format, like 1.0.0 or 3.1.4-b0 or 9.9.9-foo9
-#         required: true
-
-# jobs:
-#   run:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v4
-
-#       - run: |
-#           printf '─%.0s' {1..111}; echo; echo "DEBUG: default pyver: $(python --version)"
-#         shell: bash
-#       - uses: actions/setup-python@v4
-#         with:
-#           python-version: '3.10'
-#       - run: |
-#           printf '─%.0s' {1..111}; printf '\n'; echo "DEBUG: custom pyver: $(python --version)"
-#         shell: bash
-        
-#       - run: pip install build==1.0.3 twine==4.0.2
-#       - run: pip list
-
-#       ## prebuild
-      
-#       - run: ls -la
-#       - run: |
-#           import os, json
-#           from datetime import datetime
-
-#           REPO_FULL = '${{ github.repository }}'
-#           OWNER = '${{ github.actor }}'
-#           REPO = REPO_FULL[len(OWNER)+1:]  # just get the repo name
-
-#           VER = '${{ inputs.version }}'
-#           if VER == '':  # during testing
-#             # VER = datetime.now().strftime('%Y.%m.%d-testing%H%M%S')  # not allowed by PIP
-#             # VER = datetime.now().strftime('%Y.%m.%d-b%H%M%S')
-#             ## vvvvvv more clarity
-#             VER = datetime.now().strftime('0.%Y%m%d-b%H%M%S')
-          
-#           CFG = os.path.join(os.getcwd(), '_etc', 'build_configs.json')
-#           with open(CFG, 'r') as f:
-#             cfg = json.load(f)
-          
-#           PTH = os.path.join(os.getcwd(), 'pyproject.toml')
-
-#           texts = (
-#             f"[project]\n"
-#             f"name = \"{REPO}\"\n"
-#             f"version = \"{VER}\"\n"
-#             f"[project.scripts]\n"
-#           )
-#           for script in cfg['scripts']:
-#             texts += script + '\n'
-
-#           print('-----------')
-#           print(texts)
-#           print('-----------')
-          
-#           with open(PTH, 'w') as f:
-#             f.write(texts)
-#             # f.write(
-#             #   # [build-system]
-#             #   # requires = ["setuptools>=61.0"]
-#             #   # build-backend = "setuptools.build_meta"
-
-#             #   [project]
-#             #   name = "${{ github.repository }}"
-#             #   version = "${{ inputs.version }}"
-
-#             #   [project.scripts]
-#             #   mykit = "mykit.__main__:main"
-#             # )
-#         shell: python
-#       - run: ls -la
-
-#       - run: find . -mindepth 1 -maxdepth 1 ! -name 'mykit' ! -name 'pyproject.toml' -exec rm -r {} +
-#       - run: ls -la
-
-#       ## prebuild: remove test.py
-
-#       ## just temporary (for testing purposes)
-#       # - run: find ./mykit -mindepth 1 -maxdepth 1 ! -name '__main__.py' -exec rm -r {} +
-
-#       - uses: nvfp/ghact-dirtree@main
-#         with:
-#           dir: .
-#       - run: python -m build
-#       - run: ls -la
-#       - run: ls -la ./dist
-
-#       - run: twine upload dist/*
-#         env:
-#           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-#           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
