@@ -1,7 +1,7 @@
 
 
 def main():
-    print('hello 123')
+    print('hello 123 abc')
 
 
 # if __name__ == '__main__':  # not needed, since the binary `mykit` will execute `main` regardless this line exist or not

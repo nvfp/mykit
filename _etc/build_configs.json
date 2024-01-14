@@ -1,5 +1,5 @@
 {
     "scripts": [
-        "mykit = 'mykit:main'"
+        "mykit = 'mykit.__main__:main'"
     ]
 }
