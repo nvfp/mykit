@@ -8,7 +8,7 @@ from mykit.kit.cli_parser.single_simple import SingleSimple as _SingleSimple
 
 
 __version__ = None  # This value will be written during the build process before production.
-
+VER = None  # lib version. will be written during build.
 
 def lock_version(version:str, /) -> _Union[None, _NoReturn]:
     """Will raise `AssertionError` if the versions don't match"""

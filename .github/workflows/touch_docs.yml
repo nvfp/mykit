@@ -1,5 +1,4 @@
-name: Rebuild docs
-
+name: Touch docs
 on:
   push:
     branches:
@@ -7,17 +6,13 @@ on:
     paths:
       - '_etc/docs/**'
   workflow_dispatch:
-
 jobs:
   run:
     steps:
-      - uses: nvfp/now-i-can-sleep@v4
+      - uses: nvfp/now-i-can-sleep@v5
         with:
-
           src: ./_etc/docs
-          author: Nicholas Valentinus
+          author: NVfastplease
           analytics: G-G3HERGXF6P
-
     runs-on: ubuntu-latest
     permissions: { pages: write, id-token: write }
-    environment: { name: Documentation }
