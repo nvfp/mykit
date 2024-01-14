@@ -19,7 +19,65 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - run: |
+          printf '─%.0s' {1..111}; echo; echo "DEBUG: default pyver: $(python --version)"
+        shell: bash
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: |
+          printf '─%.0s' {1..111}; printf '\n'; echo "DEBUG: custom pyver: $(python --version)"
+        shell: bash
+        
       - run: pip install build twine
+      - run: pip list
+
+      ## prebuild
+      
+      - run: ls -la
+      - run: |
+          import os, json
+          
+          CFG = os.path.join(os.getcwd(), '_etc', 'build_configs.json')
+          with open(CFG, 'r') as f:
+            cfg = json.load(f)
+          
+          PTH = os.path.join(os.getcwd(), 'pyproject.toml')
+
+          texts = (
+            f"[project]\n"
+            f"name = \"${{ github.repository }}\"\n"
+            f"version = \"${{ inputs.version }}\"\n"
+            f"[project.scripts]\n"
+          )
+          for script in cfg['scripts']:
+            texts += script + '\n'
+
+          print('-----------')
+          print(texts)
+          print('-----------')
+          
+          with open(PTH, 'w') as f:
+            f.write(texts)
+            # f.write(
+            #   # [build-system]
+            #   # requires = ["setuptools>=61.0"]
+            #   # build-backend = "setuptools.build_meta"
+
+            #   [project]
+            #   name = "${{ github.repository }}"
+            #   version = "${{ inputs.version }}"
+
+            #   [project.scripts]
+            #   mykit = "mykit.__main__:main"
+            # )
+        shell: python
+      - run: ls -la
+
+      - run: find . -mindepth 1 -maxdepth 1 ! -name 'mykit' -exec rm -r {} +
+      - run: ls -la
+
       - run: ls -la
       - run: python -m build
       - run: ls -la
