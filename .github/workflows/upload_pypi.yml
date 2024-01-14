@@ -85,4 +85,21 @@ jobs:
         shell: python
       ## </prebuild>
 
-      - uses: nvfp/ghact_simple_pypi@main
+
+      ## Build and publish
+
+      - uses: nvfp/ghact-dirtree@main
+        with:
+          dir: .
+
+      - run: pip install build==1.0.3 twine==4.0.2
+      - run: python -m build
+
+      - uses: nvfp/ghact-dirtree@main
+        with:
+          dir: .
+
+      - run: twine upload dist/*
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
