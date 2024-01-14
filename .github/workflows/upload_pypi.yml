@@ -22,7 +22,7 @@ jobs:
 
       ## prebuild
       
-      - run: ls -la
+      # - run: ls -la
       - run: |
           import os, json
           from datetime import datetime
@@ -82,20 +82,22 @@ jobs:
       ## just temporary (for testing purposes)
       # - run: find ./mykit -mindepth 1 -maxdepth 1 ! -name '__main__.py' -exec rm -r {} +
 
-      - uses: nvfp/ghact-dirtree@main
-        with:
-          dir: .
+      # - uses: nvfp/ghact-dirtree@main
+      #   with:
+      #     dir: .
 
-      - run: pip install build==1.0.3 twine==4.0.2
+      # - run: pip install build==1.0.3 twine==4.0.2
 
-      - run: python -m build
-      - run: ls -la
-      - run: ls -la ./dist
+      # - run: python -m build
+      # - run: ls -la
+      # - run: ls -la ./dist
 
-      - run: twine upload dist/*
-        env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      # - run: twine upload dist/*
+      #   env:
+      #     TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+      #     TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+
+      - uses: nvfp/ghact_simple_pypi
 
 
 
