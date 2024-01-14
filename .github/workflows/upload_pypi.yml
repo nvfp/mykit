@@ -1,0 +1,14 @@
+name: Build n publish to PYPI
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: in `M.m.p(-...)?` format, like 1.0.0 or 3.1.4-b0 or 9.9.9-foo9
+        required: true
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
