@@ -85,4 +85,4 @@ jobs:
         shell: python
       ## </prebuild>
 
-      - uses: nvfp/ghact_simple_pypi
+      - uses: nvfp/ghact_simple_pypi@main
