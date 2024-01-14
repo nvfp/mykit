@@ -2,14 +2,14 @@ name: Run tests
 
 on:
   push:
-  #   branches:
-  #     - '*'
-  #   paths:
-  #     - 'mykit/**'
-  # pull_request:
-  #   types:
-  #     - opened
-  #     - synchronize
+    branches:
+      - '*'
+    # paths:
+    #   - 'mykit/**'
+  pull_request:
+    types:
+      - opened
+      - synchronize
   workflow_dispatch:
 
 jobs:

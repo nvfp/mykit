@@ -1,17 +1,10 @@
 name: Build n publish to PYPI
 
 on:
-  push:
-    branches:
-      - '*'
-  pull_request:
-    types:
-      - opened
-      - synchronize
   workflow_dispatch:
     inputs:
       version:
-        description: in `M.m.p(-...)?` format, like 1.0.0 or 3.1.4-b0 or 9.9.9-foo9
+        description: Double check and make sure it's correct.
         required: true
 
 jobs:
@@ -19,8 +12,231 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: pip install build twine
+
+      - run: echo "pyver $(python --version)"
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: echo "pyver $(python --version)"
+        
+
+      ## prebuild
+      
+      # - run: ls -la
+      - run: |
+          import os, json
+          from datetime import datetime
+
+          REPO_FULL = '${{ github.repository }}'
+          OWNER = '${{ github.actor }}'
+          REPO = REPO_FULL[len(OWNER)+1:]  # just get the repo name
+
+          VER = '${{ inputs.version }}'
+          if VER == '':  # during testing
+            # VER = datetime.now().strftime('%Y.%m.%d-testing%H%M%S')  # not allowed by PIP
+            # VER = datetime.now().strftime('%Y.%m.%d-b%H%M%S')
+            ## vvvvvv more clarity
+            VER = datetime.now().strftime('0.%Y%m%d-b%H%M%S')
+          
+          CFG = os.path.join(os.getcwd(), '_etc', 'build_configs.json')
+          with open(CFG, 'r') as f:
+            cfg = json.load(f)
+          
+          PTH = os.path.join(os.getcwd(), 'pyproject.toml')
+
+          texts = (
+            f"[project]\n"
+            f"name = \"{REPO}\"\n"
+            f"version = \"{VER}\"\n"
+            f"[project.scripts]\n"
+          )
+          for script in cfg['scripts']:
+            texts += script + '\n'
+
+          print('-----------')
+          print(texts)
+          print('-----------')
+          
+          with open(PTH, 'w') as f:
+            f.write(texts)
+            # f.write(
+            #   # [build-system]
+            #   # requires = ["setuptools>=61.0"]
+            #   # build-backend = "setuptools.build_meta"
+
+            #   [project]
+            #   name = "${{ github.repository }}"
+            #   version = "${{ inputs.version }}"
+
+            #   [project.scripts]
+            #   mykit = "mykit.__main__:main"
+            # )
+        shell: python
       - run: ls -la
-      - run: python -m build
+
+      - run: find . -mindepth 1 -maxdepth 1 ! -name 'mykit' ! -name 'pyproject.toml' -exec rm -r {} +
       - run: ls -la
-      - run: ls -la ./dist
+
+      ## prebuild: remove test.py
+
+      ## just temporary (for testing purposes)
+      # - run: find ./mykit -mindepth 1 -maxdepth 1 ! -name '__main__.py' -exec rm -r {} +
+
+      # - uses: nvfp/ghact-dirtree@main
+      #   with:
+      #     dir: .
+
+      # - run: pip install build==1.0.3 twine==4.0.2
+
+      # - run: python -m build
+      # - run: ls -la
+      # - run: ls -la ./dist
+
+      # - run: twine upload dist/*
+      #   env:
+      #     TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+      #     TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+
+      - uses: nvfp/ghact_simple_pypi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# name: Build n publish to PYPI
+
+# on:
+#   push:
+#     branches:
+#       - '*'
+#   pull_request:
+#     types:
+#       - opened
+#       - synchronize
+#   workflow_dispatch:
+#     inputs:
+#       version:
+#         description: in `M.m.p(-...)?` format, like 1.0.0 or 3.1.4-b0 or 9.9.9-foo9
+#         required: true
+
+# jobs:
+#   run:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - run: |
+#           printf '─%.0s' {1..111}; echo; echo "DEBUG: default pyver: $(python --version)"
+#         shell: bash
+#       - uses: actions/setup-python@v4
+#         with:
+#           python-version: '3.10'
+#       - run: |
+#           printf '─%.0s' {1..111}; printf '\n'; echo "DEBUG: custom pyver: $(python --version)"
+#         shell: bash
+        
+#       - run: pip install build==1.0.3 twine==4.0.2
+#       - run: pip list
+
+#       ## prebuild
+      
+#       - run: ls -la
+#       - run: |
+#           import os, json
+#           from datetime import datetime
+
+#           REPO_FULL = '${{ github.repository }}'
+#           OWNER = '${{ github.actor }}'
+#           REPO = REPO_FULL[len(OWNER)+1:]  # just get the repo name
+
+#           VER = '${{ inputs.version }}'
+#           if VER == '':  # during testing
+#             # VER = datetime.now().strftime('%Y.%m.%d-testing%H%M%S')  # not allowed by PIP
+#             # VER = datetime.now().strftime('%Y.%m.%d-b%H%M%S')
+#             ## vvvvvv more clarity
+#             VER = datetime.now().strftime('0.%Y%m%d-b%H%M%S')
+          
+#           CFG = os.path.join(os.getcwd(), '_etc', 'build_configs.json')
+#           with open(CFG, 'r') as f:
+#             cfg = json.load(f)
+          
+#           PTH = os.path.join(os.getcwd(), 'pyproject.toml')
+
+#           texts = (
+#             f"[project]\n"
+#             f"name = \"{REPO}\"\n"
+#             f"version = \"{VER}\"\n"
+#             f"[project.scripts]\n"
+#           )
+#           for script in cfg['scripts']:
+#             texts += script + '\n'
+
+#           print('-----------')
+#           print(texts)
+#           print('-----------')
+          
+#           with open(PTH, 'w') as f:
+#             f.write(texts)
+#             # f.write(
+#             #   # [build-system]
+#             #   # requires = ["setuptools>=61.0"]
+#             #   # build-backend = "setuptools.build_meta"
+
+#             #   [project]
+#             #   name = "${{ github.repository }}"
+#             #   version = "${{ inputs.version }}"
+
+#             #   [project.scripts]
+#             #   mykit = "mykit.__main__:main"
+#             # )
+#         shell: python
+#       - run: ls -la
+
+#       - run: find . -mindepth 1 -maxdepth 1 ! -name 'mykit' ! -name 'pyproject.toml' -exec rm -r {} +
+#       - run: ls -la
+
+#       ## prebuild: remove test.py
+
+#       ## just temporary (for testing purposes)
+#       # - run: find ./mykit -mindepth 1 -maxdepth 1 ! -name '__main__.py' -exec rm -r {} +
+
+#       - uses: nvfp/ghact-dirtree@main
+#         with:
+#           dir: .
+#       - run: python -m build
+#       - run: ls -la
+#       - run: ls -la ./dist
+
+#       - run: twine upload dist/*
+#         env:
+#           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+#           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
