@@ -1,6 +1,6 @@
 # myKit🧰
 
-Collections of common functions for Python.
+Miscellaneous Python modules of functions that are commonly used in day-to-day projects.
 
 [![Run tests](https://github.com/nvfp/mykit/actions/workflows/run-tests.yml/badge.svg)](https://github.com/nvfp/mykit/actions/workflows/run-tests.yml)
 [![Rebuild docs](https://github.com/nvfp/mykit/actions/workflows/rebuild-docs.yml/badge.svg)](https://github.com/nvfp/mykit/actions/workflows/rebuild-docs.yml)
@@ -31,6 +31,8 @@ print(x)  # 2.79 PiB
 
 ## Dependencies
 
+Requires Python: `>=3.10`.
+
 Install these if you're using functions that need these dependencies.
 
 - `numba>=0.55.2`
@@ -38,5 +40,4 @@ Install these if you're using functions that need these dependencies.
 
 ## License
 
-[MIT License](https://en.wikipedia.org/wiki/MIT_License). Everyone is welcome to change, share, contribute, sell, etc. the code.
-
+[MIT License](https://en.wikipedia.org/wiki/MIT_License). Everyone is welcome to change, reuse, contribute, sell, etc. the code.

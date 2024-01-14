@@ -5,23 +5,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mykit"
 version = "10.0.0b11"
-description = "Python utility library"
-readme = "README.md"
-requires-python = ">=3.8"
-license = {text = "MIT"}
-authors = [
-  	{name = "Nicholas Valentinus", email = "nicho@scapeville.com"},
-]
 
 [tool.setuptools.packages.find]
 exclude = [
     "_etc*",
     "tests*",
 ]
-
-[project.urls]
-Documentation = "https://nvfp.github.io/mykit"
-Repository = "https://github.com/nvfp/mykit"
 
 [project.scripts]
 mykit = "mykit.__main__:main"
