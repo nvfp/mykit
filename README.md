@@ -40,4 +40,4 @@ Install these if you're using functions that need these dependencies.
 
 ## License
 
-[MIT License](https://en.wikipedia.org/wiki/MIT_License). Everyone is welcome to change, reuse, contribute, sell, etc. the code.
+[MIT License](https://en.wikipedia.org/wiki/MIT_License). Everyone is welcome to change, reuse, contribute, sell, share, etc. the code.
