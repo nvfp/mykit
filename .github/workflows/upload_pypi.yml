@@ -38,10 +38,15 @@ jobs:
       - run: ls -la
       - run: |
           import os, json
+          from datetime import datetime
 
           REPO_FULL = '${{ github.repository }}'
           OWNER = '${{ github.actor }}'
           REPO = REPO_FULL[len(OWNER)+1:]  # just get the repo name
+
+          VER = '${{ inputs.version }}'
+          if VER == '':  # during testing
+            VER = datetime.now().strf('%Y.%m.%d-testing%H%M%S')
           
           CFG = os.path.join(os.getcwd(), '_etc', 'build_configs.json')
           with open(CFG, 'r') as f:
@@ -52,7 +57,7 @@ jobs:
           texts = (
             f"[project]\n"
             f"name = \"{REPO}\"\n"
-            f"version = \"${{ inputs.version }}\"\n"
+            f"version = \"{VER}\"\n"
             f"[project.scripts]\n"
           )
           for script in cfg['scripts']:
