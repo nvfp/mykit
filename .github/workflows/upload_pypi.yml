@@ -52,28 +52,11 @@ jobs:
                 if size0 == 0: print("Empty file..."); continue
                 with open(ipth, 'r') as f: txt = f.read().split('\n')
                 
-                # for idx, line in enumerate(txt):
-                #   res = re.match(r'^[ ]*$', line)  # blank line
-                #   if res is not None: print(f"Removed @line {idx+1}: {repr(txt.pop(idx))}")
-                #   else:
-                #     res = re.match(r'^[ ]*#.*$', line)  # commented line
-                #     if res is not None: print(f"@{idx+1}: {repr(txt.pop(idx))}")
-                #     else:
-                #       res = re.match(r'(?P<keep>.*?)(?P<rm>#.*)', line)  # inline comments
-                #       if res is not None: txt[idx] = res.group('keep'); print(f"@{idx+1}: {repr(res.group('rm'))}")
-                #       else:
-                #         res = re.match(r'(?P<keep>.*?)(?P<rm>[ ]+)$', line)  # inline unused spaces
-                #         if res is not None: txt[idx] = res.group('keep'); print(f"@{idx+1}: {repr(res.group('rm'))}")
-                ## vvvvvvv bugfixed: do not pop while iterating, the next pop will has incorrect index. so, just replace the unwanted line with `None`
                 for idx, line in enumerate(txt):
                   res = re.match(r'^[ ]*$', line)  # blank line
-                  # if res is not None: print(f"@{idx+1}: {repr(txt[idx])}"); txt[idx] = None
-                  ## vvvv devdocs: print first then assign, so will not printing `None`.
                   if res is not None: txt[idx] = None; print(f"@{idx+1}: {repr(txt[idx])}")
                   else:
                     res = re.match(r'^[ ]*#.*$', line)  # commented line
-                    # if res is not None: txt[idx] = None; print(f"@{idx+1}: {repr(txt[idx])}")
-                    ## vvv print first
                     if res is not None: print(f"@{idx+1}: {repr(txt[idx])}"); txt[idx] = None
                     else:
                       res = re.match(r'(?P<keep>.*?)(?P<rm>#.*)', line)  # inline comments

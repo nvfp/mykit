@@ -23,3 +23,5 @@ jobs:
       - uses: nvfp/turbotest@main
         with:
           python_ver: ${{ matrix.py_ver }}
+          # dir: ./mykit
+          dir: ./mykit/simplex  # temporarily: just test this
